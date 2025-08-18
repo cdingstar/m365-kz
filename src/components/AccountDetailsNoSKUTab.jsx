@@ -45,14 +45,60 @@ const AccountDetailsNoSKUTab = () => {
         <div className="col-span-2 space-y-4">
           <div className="bg-gray-800 p-3 rounded-lg border border-gray-700">
             <h3 className="font-medium text-white mb-2 text-sm">userPrincipalName</h3>
+            
+            {/* 搜索框 */}
+            <div className="mb-3">
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
+                  <svg className="h-3 w-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </div>
+                <input
+                  type="text"
+                  placeholder="Zoeken"
+                  className="block w-full pl-7 pr-2 py-1.5 border border-gray-600 rounded text-gray-300 bg-gray-700 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-teal-500 focus:border-teal-500 text-xs"
+                />
+              </div>
+            </div>
+
+            {/* 复选框列表 */}
             <div className="space-y-2">
               <div className="flex items-center">
                 <input type="checkbox" className="mr-2 w-3 h-3 text-teal-600 bg-gray-700 border-gray-600 rounded focus:ring-teal-500" />
-                <span className="text-gray-300 text-xs">All</span>
+                <span className="text-gray-300 text-xs">Alles selecteren</span>
               </div>
               <div className="flex items-center">
                 <input type="checkbox" className="mr-2 w-3 h-3 text-teal-600 bg-gray-700 border-gray-600 rounded focus:ring-teal-500" />
-                <span className="text-gray-300 text-xs">Accounts</span>
+                <span className="text-gray-300 text-xs">admin@company.com</span>
+              </div>
+              <div className="flex items-center">
+                <input type="checkbox" className="mr-2 w-3 h-3 text-teal-600 bg-gray-700 border-gray-600 rounded focus:ring-teal-500" />
+                <span className="text-gray-300 text-xs">user1@company.com</span>
+              </div>
+              <div className="flex items-center">
+                <input type="checkbox" className="mr-2 w-3 h-3 text-teal-600 bg-gray-700 border-gray-600 rounded focus:ring-teal-500" />
+                <span className="text-gray-300 text-xs">user2@company.com</span>
+              </div>
+              <div className="flex items-center">
+                <input type="checkbox" className="mr-2 w-3 h-3 text-teal-600 bg-gray-700 border-gray-600 rounded focus:ring-teal-500" />
+                <span className="text-gray-300 text-xs">manager@company.com</span>
+              </div>
+              <div className="flex items-center">
+                <input type="checkbox" className="mr-2 w-3 h-3 text-teal-600 bg-gray-700 border-gray-600 rounded focus:ring-teal-500" />
+                <span className="text-gray-300 text-xs">support@company.com</span>
+              </div>
+              <div className="flex items-center">
+                <input type="checkbox" className="mr-2 w-3 h-3 text-teal-600 bg-gray-700 border-gray-600 rounded focus:ring-teal-500" />
+                <span className="text-gray-300 text-xs">sales@company.com</span>
+              </div>
+              <div className="flex items-center">
+                <input type="checkbox" className="mr-2 w-3 h-3 text-teal-600 bg-gray-700 border-gray-600 rounded focus:ring-teal-500" />
+                <span className="text-gray-300 text-xs">hr@company.com</span>
+              </div>
+              <div className="flex items-center">
+                <input type="checkbox" className="mr-2 w-3 h-3 text-teal-600 bg-gray-700 border-gray-600 rounded focus:ring-teal-500" />
+                <span className="text-gray-300 text-xs">finance@company.com</span>
               </div>
             </div>
           </div>
@@ -81,9 +127,80 @@ const AccountDetailsNoSKUTab = () => {
 
           <div className="bg-gray-800 p-3 rounded-lg border border-gray-700">
             <h3 className="font-medium text-white mb-2 text-sm">Recommendation Name</h3>
-            <select className="w-full p-2 bg-gray-700 border border-gray-600 rounded text-gray-300 text-xs focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
-              <option>All</option>
-            </select>
+            
+            {/* 搜索框 */}
+            <div className="mb-3">
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
+                  <svg className="h-3 w-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </div>
+                <input
+                  type="text"
+                  placeholder="Zoeken"
+                  className="block w-full pl-7 pr-2 py-1.5 border border-gray-600 rounded text-gray-300 bg-gray-700 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-teal-500 focus:border-teal-500 text-xs"
+                />
+              </div>
+            </div>
+
+            {/* 复选框列表 */}
+            <div className="space-y-2">
+              <div className="flex items-center">
+                <input 
+                  type="checkbox" 
+                  id="select-all-rec" 
+                  className="mr-2 w-3 h-3 text-teal-600 bg-gray-700 border-gray-600 rounded focus:ring-teal-500"
+                />
+                <label htmlFor="select-all-rec" className="text-gray-300 text-xs">
+                  Alles selecteren
+                </label>
+              </div>
+              
+              <div className="flex items-center">
+                <input 
+                  type="checkbox" 
+                  id="active-never-used-rec" 
+                  className="mr-2 w-3 h-3 text-teal-600 bg-gray-700 border-gray-600 rounded focus:ring-teal-500"
+                />
+                <label htmlFor="active-never-used-rec" className="text-gray-300 text-xs">
+                  Active User (member) with a product that was never...
+                </label>
+              </div>
+              
+              <div className="flex items-center">
+                <input 
+                  type="checkbox" 
+                  id="active-inactive-product-rec" 
+                  className="mr-2 w-3 h-3 text-teal-600 bg-gray-700 border-gray-600 rounded focus:ring-teal-500"
+                />
+                <label htmlFor="active-inactive-product-rec" className="text-gray-300 text-xs">
+                  Active User (member) with a Product with Inactive...
+                </label>
+              </div>
+              
+              <div className="flex items-center">
+                <input 
+                  type="checkbox" 
+                  id="not-in-mfa-rec" 
+                  className="mr-2 w-3 h-3 text-teal-600 bg-gray-700 border-gray-600 rounded focus:ring-teal-500"
+                />
+                <label htmlFor="not-in-mfa-rec" className="text-gray-300 text-xs">
+                  Active users not included in MFA policy (excluded)
+                </label>
+              </div>
+              
+              <div className="flex items-center">
+                <input 
+                  type="checkbox" 
+                  id="copilot-candidate-rec" 
+                  className="mr-2 w-3 h-3 text-teal-600 bg-gray-700 border-gray-600 rounded focus:ring-teal-500"
+                />
+                <label htmlFor="copilot-candidate-rec" className="text-gray-300 text-xs">
+                  Copilot Candidate Users
+                </label>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -389,70 +506,142 @@ const AccountDetailsNoSKUTab = () => {
         </div>
       </div>
 
-      <div className="mt-8 grid grid-cols-2 gap-8">
-        <div className="bg-gray-800 p-6 rounded-lg border border-gray-700">
+      <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="bg-gray-800 p-4 rounded-lg border border-gray-700">
           <h3 className="text-lg font-semibold text-white mb-4">Account Aging Classification</h3>
-          <div className="space-y-4">
+          <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-gray-300 text-sm">Active accounts (signed in within 30 days)</span>
+              <span className="text-gray-300 text-xs">Active</span>
               <div className="flex items-center">
-                <div className="w-40 bg-gray-600 rounded-full h-4 mr-3">
-                  <div className="bg-green-500 h-4 rounded-full transition-all duration-300" style={{width: '75%'}}></div>
+                <div className="w-24 bg-gray-600 rounded-full h-3 mr-2">
+                  <div className="bg-green-500 h-3 rounded-full transition-all duration-300" style={{width: '75%'}}></div>
                 </div>
-                <span className="text-sm font-medium text-white min-w-[60px] text-right">1,234</span>
+                <span className="text-xs font-medium text-white min-w-[50px] text-right">1,234</span>
               </div>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-gray-300 text-sm">Inactive accounts (31-90 days)</span>
+              <span className="text-gray-300 text-xs">31-60 Days</span>
               <div className="flex items-center">
-                <div className="w-40 bg-gray-600 rounded-full h-4 mr-3">
-                  <div className="bg-yellow-500 h-4 rounded-full transition-all duration-300" style={{width: '45%'}}></div>
+                <div className="w-24 bg-gray-600 rounded-full h-3 mr-2">
+                  <div className="bg-yellow-500 h-3 rounded-full transition-all duration-300" style={{width: '45%'}}></div>
                 </div>
-                <span className="text-sm font-medium text-white min-w-[60px] text-right">567</span>
+                <span className="text-xs font-medium text-white min-w-[50px] text-right">567</span>
               </div>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-gray-300 text-sm">Stale accounts (over 90 days)</span>
+              <span className="text-gray-300 text-xs">60-180 Days</span>
               <div className="flex items-center">
-                <div className="w-40 bg-gray-600 rounded-full h-4 mr-3">
-                  <div className="bg-red-500 h-4 rounded-full transition-all duration-300" style={{width: '25%'}}></div>
+                <div className="w-24 bg-gray-600 rounded-full h-3 mr-2">
+                  <div className="bg-red-500 h-3 rounded-full transition-all duration-300" style={{width: '25%'}}></div>
                 </div>
-                <span className="text-sm font-medium text-white min-w-[60px] text-right">123</span>
+                <span className="text-xs font-medium text-white min-w-[50px] text-right">123</span>
+              </div>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-gray-300 text-xs">Over 180 Days</span>
+              <div className="flex items-center">
+                <div className="w-24 bg-gray-600 rounded-full h-3 mr-2">
+                  <div className="bg-red-500 h-3 rounded-full transition-all duration-300" style={{width: '25%'}}></div>
+                </div>
+                <span className="text-xs font-medium text-white min-w-[50px] text-right">123</span>
+              </div>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-gray-300 text-xs">No Activity Dates</span>
+              <div className="flex items-center">
+                <div className="w-24 bg-gray-600 rounded-full h-3 mr-2">
+                  <div className="bg-red-500 h-3 rounded-full transition-all duration-300" style={{width: '25%'}}></div>
+                </div>
+                <span className="text-xs font-medium text-white min-w-[50px] text-right">123</span>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="bg-gray-800 p-6 rounded-lg border border-gray-700">
+        <div className="bg-gray-800 p-4 rounded-lg border border-gray-700">
           <h3 className="text-lg font-semibold text-white mb-4">Recommendations</h3>
-          <div className="space-y-4">
+          <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-gray-300 text-sm">Remove unused licenses</span>
+              <span className="text-gray-300 text-xs">Remove unused licenses</span>
               <div className="flex items-center">
-                <div className="w-40 bg-gray-600 rounded-full h-4 mr-3">
-                  <div className="bg-blue-500 h-4 rounded-full transition-all duration-300" style={{width: '80%'}}></div>
+                <div className="w-24 bg-gray-600 rounded-full h-3 mr-2">
+                  <div className="bg-blue-500 h-3 rounded-full transition-all duration-300" style={{width: '80%'}}></div>
                 </div>
-                <span className="text-sm font-medium text-white min-w-[60px] text-right">456</span>
+                <span className="text-xs font-medium text-white min-w-[50px] text-right">456</span>
               </div>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-gray-300 text-sm">Disable inactive accounts</span>
+              <span className="text-gray-300 text-xs">Disable inactive accounts</span>
               <div className="flex items-center">
-                <div className="w-40 bg-gray-600 rounded-full h-4 mr-3">
-                  <div className="bg-purple-500 h-4 rounded-full transition-all duration-300" style={{width: '60%'}}></div>
+                <div className="w-24 bg-gray-600 rounded-full h-3 mr-2">
+                  <div className="bg-purple-500 h-3 rounded-full transition-all duration-300" style={{width: '60%'}}></div>
                 </div>
-                <span className="text-sm font-medium text-white min-w-[60px] text-right">234</span>
+                <span className="text-xs font-medium text-white min-w-[50px] text-right">234</span>
               </div>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-gray-300 text-sm">Review access permissions</span>
+              <span className="text-gray-300 text-xs">Review access permissions</span>
               <div className="flex items-center">
-                <div className="w-40 bg-gray-600 rounded-full h-4 mr-3">
-                  <div className="bg-orange-500 h-4 rounded-full transition-all duration-300" style={{width: '40%'}}></div>
+                <div className="w-24 bg-gray-600 rounded-full h-3 mr-2">
+                  <div className="bg-orange-500 h-3 rounded-full transition-all duration-300" style={{width: '40%'}}></div>
                 </div>
-                <span className="text-sm font-medium text-white min-w-[60px] text-right">89</span>
+                <span className="text-xs font-medium text-white min-w-[50px] text-right">89</span>
               </div>
             </div>
+          </div>
+        </div>
+
+        <div className="bg-gray-800 p-4 rounded-lg border border-gray-700">
+          <h3 className="text-lg font-semibold text-white mb-4">License Summary</h3>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-gray-600">
+                  <th className="text-left py-1 px-2 text-xs font-medium text-gray-300 uppercase">skuName</th>
+                  <th className="text-right py-1 px-2 text-xs font-medium text-gray-300 uppercase">Count</th>
+                  <th className="text-right py-1 px-2 text-xs font-medium text-gray-300 uppercase">Cost</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-600">
+                <tr className="hover:bg-gray-700 transition-colors">
+                  <td className="py-1 px-2 text-xs text-gray-300">App Connect (IW)</td>
+                  <td className="py-1 px-2 text-xs text-gray-300 text-right">2</td>
+                  <td className="py-1 px-2 text-xs text-gray-300 text-right">0.00</td>
+                </tr>
+                <tr className="hover:bg-gray-700 transition-colors">
+                  <td className="py-1 px-2 text-xs text-gray-300">Business Apps (Free)</td>
+                  <td className="py-1 px-2 text-xs text-gray-300 text-right">7</td>
+                  <td className="py-1 px-2 text-xs text-gray-300 text-right">0.00</td>
+                </tr>
+                <tr className="hover:bg-gray-700 transition-colors">
+                  <td className="py-1 px-2 text-xs text-gray-300">Dynamics 365 BC (IW)</td>
+                  <td className="py-1 px-2 text-xs text-gray-300 text-right">4</td>
+                  <td className="py-1 px-2 text-xs text-gray-300 text-right">0.00</td>
+                </tr>
+                <tr className="hover:bg-gray-700 transition-colors">
+                  <td className="py-1 px-2 text-xs text-gray-300">D365 Commerce (Trial)</td>
+                  <td className="py-1 px-2 text-xs text-gray-300 text-right">1</td>
+                  <td className="py-1 px-2 text-xs text-gray-300 text-right">0.00</td>
+                </tr>
+                <tr className="hover:bg-gray-700 transition-colors">
+                  <td className="py-1 px-2 text-xs text-gray-300">D365 Sales Enterprise</td>
+                  <td className="py-1 px-2 text-xs text-gray-300 text-right">1,498</td>
+                  <td className="py-1 px-2 text-xs text-gray-300 text-right">157,290</td>
+                </tr>
+                <tr className="hover:bg-gray-700 transition-colors">
+                  <td className="py-1 px-2 text-xs text-gray-300">D365 Talent (Trial)</td>
+                  <td className="py-1 px-2 text-xs text-gray-300 text-right">2</td>
+                  <td className="py-1 px-2 text-xs text-gray-300 text-right">0.00</td>
+                </tr>
+              </tbody>
+              <tfoot className="border-t border-gray-600">
+                <tr className="font-semibold">
+                  <td className="py-2 px-2 text-xs text-white">Totaal</td>
+                  <td className="py-2 px-2 text-xs text-white text-right">130,416</td>
+                  <td className="py-2 px-2 text-xs text-white text-right">534,448</td>
+                </tr>
+              </tfoot>
+            </table>
           </div>
         </div>
       </div>
