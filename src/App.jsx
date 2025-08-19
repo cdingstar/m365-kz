@@ -2,12 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import LoginPage from './LoginPage';
 import Header from './Header';
-import OverviewContent from './components/OverviewContent';
-import { UserAdoptionContent, FeatureUsageContent } from './components/AdoptionContent';
-import { TeamAnalyticsContent, CollaborationContent } from './components/TeamsContent';
-import OptimizeAccountsContent from './components/OptimizeAccountsContent';
-import { UsageAnalyticsContent, PerformanceContent } from './components/ProductUsageContent';
-import { LicensePlansContent, CostAnalysisContent } from './components/PlansContent';
+import OverviewContent from './components/Home/Overview/OverviewContent';
+import { PowerBIUsageContent, PowerAppsUsageContent, PowerAutomateUsageContent } from './components/Home/Adoption/AdoptionContent';
+import { TeamAnalyticsContent, CollaborationContent } from './components/Home/Teams/TeamsContent';
+import OptimizeAccountsContent from './components/Optimize/Accounts/OptimizeAccountsContent';
+import { UsageAnalyticsContent, PerformanceContent } from './components/Optimize/ProductUsage/ProductUsageContent';
+import { LicensePlansContent, CostAnalysisContent } from './components/Optimize/Plans/PlansContent';
 import { 
   IdentityAccountsContent, 
   PermissionsContent, 
@@ -15,7 +15,7 @@ import {
   AccessControlContent, 
   UserProfilesContent, 
   SettingsContent 
-} from './components/IdentityContent';
+} from './components/Identity/Accounts/IdentityContent';
 import {
   LayoutDashboard,
   BarChart,
@@ -69,12 +69,14 @@ const OverviewPage = ({ activeTab, selectedMenuItem }) => {
                 return <OverviewContent activeTab={activeTab} />;
             } else if (pageName === 'Adoption') {
                 switch (activeTab) {
-                    case 'User Adoption':
-                        return <UserAdoptionContent />;
-                    case 'Feature Usage':
-                        return <FeatureUsageContent />;
+                    case 'Power BI Usage':
+                        return <PowerBIUsageContent />;
+                    case 'Power Apps Usage':
+                        return <PowerAppsUsageContent />;
+                    case 'Power Automate Usage':
+                        return <PowerAutomateUsageContent />;
                     default:
-                        return <UserAdoptionContent />;
+                        return <PowerBIUsageContent />;
                 }
             } else if (pageName === 'Teams') {
                 switch (activeTab) {
@@ -271,7 +273,7 @@ const App = () => {
         if (menuName === 'Overview') {
           return ['Company Profile', 'License Top 10', 'Cost Optimisation'];
         } else if (menuName === 'Adoption') {
-          return ['User Adoption', 'Feature Usage'];
+          return ['Power BI Usage', 'Power Apps Usage', 'Power Automate Usage'];
         } else if (menuName === 'Teams') {
           return ['Team Analytics', 'Collaboration'];
         }
@@ -282,7 +284,7 @@ const App = () => {
         } else if (menuName === 'Product Usage') {
           return ['Usage Analytics', 'Performance'];
         } else if (menuName === 'Plans') {
-          return ['License Plans', 'Cost Analysis'];
+          return ['SKU Adoption', 'License Plans', 'Cost Analysis'];
         }
         break;
       case 'Identity':
