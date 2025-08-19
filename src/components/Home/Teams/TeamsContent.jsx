@@ -1,33 +1,79 @@
-import React from 'react';
+import React, { useState } from 'react';
+import TeamsTrendsTab from './TeamsTrendsTab';
+import TeamsMetricsByLOBTab from './TeamsMetricsByLOBTab';
+import TeamsMetricsByCountryTab from './TeamsMetricsByCountryTab';
+import TeamsPremiumTab from './TeamsPremiumTab';
+import TeamsBySmartTagTab from './TeamsBySmartTagTab';
 
-// Team Analytics Tab component
-export const TeamAnalyticsContent = () => (
-  <div className="w-full h-full bg-[#1e293b] p-8">
-    <div className="w-full h-full bg-[#334155] p-8 rounded-lg border border-[#475569] flex items-center justify-center" style={{backgroundColor: '#334155'}}>
-      <div className="text-center">
-        <h1 className="text-2xl font-bold mb-4 text-white">
-          Teams - Team Analytics
-        </h1>
-        <p className="text-[#94a3b8] text-lg">
-          Placeholder
-        </p>
+const TeamsContent = () => {
+  const [activeTab, setActiveTab] = useState('premium');
+
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 'trends':
+        return <TeamsTrendsTab />;
+      case 'metricsLOB':
+        return <TeamsMetricsByLOBTab />;
+      case 'metricsCountry':
+        return <TeamsMetricsByCountryTab />;
+      case 'premium':
+        return <TeamsPremiumTab />;
+      case 'smartTag':
+        return <TeamsBySmartTagTab />;
+      default:
+        return <TeamsPremiumTab />;
+    }
+  };
+
+  return (
+    <div className="w-full h-full bg-[#1e293b]">
+      <div className="flex border-b border-[#475569]">
+        <button
+          className={`px-4 py-3 text-sm ${
+            activeTab === 'trends' ? 'text-white border-b-2 border-blue-500' : 'text-[#94a3b8]'
+          }`}
+          onClick={() => setActiveTab('trends')}
+        >
+          Trends Summary
+        </button>
+        <button
+          className={`px-4 py-3 text-sm ${
+            activeTab === 'metricsLOB' ? 'text-white border-b-2 border-blue-500' : 'text-[#94a3b8]'
+          }`}
+          onClick={() => setActiveTab('metricsLOB')}
+        >
+          Metrics by Line of Business
+        </button>
+        <button
+          className={`px-4 py-3 text-sm ${
+            activeTab === 'metricsCountry' ? 'text-white border-b-2 border-blue-500' : 'text-[#94a3b8]'
+          }`}
+          onClick={() => setActiveTab('metricsCountry')}
+        >
+          Metrics by Country
+        </button>
+        <button
+          className={`px-4 py-3 text-sm ${
+            activeTab === 'premium' ? 'text-white border-b-2 border-blue-500' : 'text-[#94a3b8]'
+          }`}
+          onClick={() => setActiveTab('premium')}
+        >
+          Teams Premium
+        </button>
+        <button
+          className={`px-4 py-3 text-sm ${
+            activeTab === 'smartTag' ? 'text-white border-b-2 border-blue-500' : 'text-[#94a3b8]'
+          }`}
+          onClick={() => setActiveTab('smartTag')}
+        >
+          Teams by Smart Tag
+        </button>
+      </div>
+      <div className="h-[calc(100%-48px)]">
+        {renderTabContent()}
       </div>
     </div>
-  </div>
-);
+  );
+};
 
-// Collaboration Tab component
-export const CollaborationContent = () => (
-  <div className="w-full h-full bg-[#1e293b] p-8">
-    <div className="w-full h-full bg-[#334155] p-8 rounded-lg border border-[#475569] flex items-center justify-center" style={{backgroundColor: '#334155'}}>
-      <div className="text-center">
-        <h1 className="text-2xl font-bold mb-4 text-white">
-          Teams - Collaboration
-        </h1>
-        <p className="text-[#94a3b8] text-lg">
-          Placeholder
-        </p>
-      </div>
-    </div>
-  </div>
-);
+export default TeamsContent;

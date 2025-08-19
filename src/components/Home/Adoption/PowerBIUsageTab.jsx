@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import DateRangePicker from '../../DateRangePicker';
 
 const PowerBIUsageTab = () => {
   // 模拟数据
@@ -56,6 +57,25 @@ const PowerBIUsageTab = () => {
     { name: 'Power BI (Free)', value: 35 }
   ];
 
+  // 为每个卡片分配不同的渐变色
+  const cardGradients = [
+    'from-blue-600 to-indigo-700',
+    'from-indigo-600 to-purple-700',
+    'from-purple-600 to-blue-700',
+    'from-blue-500 to-indigo-600'
+  ];
+
+  // 为图表分配更丰富的颜色
+  const chartColors = {
+    microsoftPowerBI: '#4f46e5',
+    powerBICommunity: '#7c3aed',
+    powerBIDataRefresh: '#60a5fa',
+    powerBIDesktop: '#818cf8',
+    powerBIPowerShell: '#3b82f6',
+    powerBIService: '#6366f1',
+    slimPowerBI: '#a78bfa'
+  };
+
   return (
     <div className="w-full h-full bg-[#1e293b] p-6 overflow-y-auto">
       <div className="max-w-full">
@@ -63,11 +83,11 @@ const PowerBIUsageTab = () => {
         <div className="mb-6">
           <div className="flex justify-between items-center">
             <h1 className="text-2xl font-bold text-white">Power BI Usage</h1>
-            <div className="flex items-center gap-4 text-sm text-[#94a3b8]">
-              <span>Last App Signin Day</span>
-              <span>Smart Tag Name、Smart Tag value</span>
-              <span>上 ▼ 1 年 ▼ 所有 ▼</span>
-              <span>📅 2024/8/19 - 2025/8/18</span>
+            <div className="flex items-center gap-4">
+              <DateRangePicker 
+                initialDateRange="2024/8/19 - 2025/8/18"
+                onDateRangeChange={(newDateRange) => console.log("Date range changed:", newDateRange)}
+              />
             </div>
           </div>
         </div>
@@ -75,8 +95,11 @@ const PowerBIUsageTab = () => {
         {/* 统计卡片 */}
         <div className="grid grid-cols-4 gap-4 mb-6">
           {stats.map((stat, index) => (
-            <div key={index} className="bg-[#334155] p-4 rounded-lg border border-[#475569]">
-              <div className="text-[#94a3b8] text-sm mb-1">{stat.label}</div>
+            <div 
+              key={index} 
+              className={`bg-gradient-to-br ${cardGradients[index]} p-4 rounded-lg border border-[#475569] shadow-lg`}
+            >
+              <div className="text-blue-100 text-sm mb-1">{stat.label}</div>
               <div className="text-white text-2xl font-bold">{stat.value}</div>
             </div>
           ))}
@@ -85,7 +108,7 @@ const PowerBIUsageTab = () => {
         {/* 数据表格区域 */}
         <div className="grid grid-cols-2 gap-6 mb-6">
           {/* Power BI App Summary Usage by User */}
-          <div className="bg-[#334155] rounded-lg border border-[#475569] p-4">
+          <div className="bg-gradient-to-br from-[#334155] to-[#283447] rounded-lg border border-[#475569] p-4 shadow-md">
             <h3 className="text-white font-semibold mb-4">Power BI App Summary Usage by User</h3>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
@@ -118,7 +141,7 @@ const PowerBIUsageTab = () => {
           </div>
 
           {/* Power BI App Summary Detail */}
-          <div className="bg-[#334155] rounded-lg border border-[#475569] p-4">
+          <div className="bg-gradient-to-br from-[#334155] to-[#283447] rounded-lg border border-[#475569] p-4 shadow-md">
             <h3 className="text-white font-semibold mb-4">Power BI App Summary Detail</h3>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
@@ -157,31 +180,107 @@ const PowerBIUsageTab = () => {
         {/* 图表区域 */}
         <div className="grid grid-cols-3 gap-6">
           {/* Power BI Activity */}
-          <div className="bg-[#334155] rounded-lg border border-[#475569] p-4">
+          <div className="bg-gradient-to-br from-[#334155] to-[#1e293b] rounded-lg border border-[#475569] p-4 shadow-md">
             <h3 className="text-white font-semibold mb-4">Power BI Activity</h3>
-            <div className="h-64 flex items-end justify-between gap-1 px-2">
-              {activityData.map((item, index) => (
-                <div key={index} className="flex flex-col items-center flex-1">
-                  <div 
-                    className="bg-[#6366f1] rounded-t w-full relative"
-                    style={{ height: `${(item.value / 60) * 200}px` }}
-                  >
-                    <span className="absolute -top-6 left-1/2 transform -translate-x-1/2 text-xs text-[#94a3b8]">
-                      {item.value}
+            <div className="flex h-64">
+              {/* 左侧Y轴数字 */}
+              <div className="flex flex-col justify-between pr-2 text-xs text-[#94a3b8]">
+                <span>60</span>
+                <span>40</span>
+                <span>20</span>
+                <span>0</span>
+              </div>
+              
+              {/* 中间柱状图 */}
+              <div className="flex-1 flex items-end justify-between">
+                {[
+                  { 
+                    month: '2024年10月', 
+                    total: 5,
+                    segments: [
+                      { name: 'Microsoft Power BI', value: 1, color: chartColors.microsoftPowerBI },
+                      { name: 'Power BI Service', value: 3, color: chartColors.powerBIService },
+                      { name: 'Power BI Desktop', value: 1, color: chartColors.powerBIDesktop }
+                    ] 
+                  },
+                  { 
+                    month: '2024年12月', 
+                    total: 18,
+                    segments: [
+                      { name: 'Microsoft Power BI', value: 10, color: chartColors.microsoftPowerBI },
+                      { name: 'Power BI Service', value: 5, color: chartColors.powerBIService },
+                      { name: 'Power BI Data Refresh', value: 3, color: chartColors.powerBIDataRefresh }
+                    ] 
+                  },
+                  { 
+                    month: '2025年3月', 
+                    total: 53,
+                    segments: [
+                      { name: 'Power BI Service', value: 36, color: chartColors.powerBIService },
+                      { name: 'Microsoft Power BI', value: 9, color: chartColors.microsoftPowerBI },
+                      { name: 'Power BI Desktop', value: 4, color: chartColors.powerBIDesktop },
+                      { name: 'Power BI Data Refresh', value: 4, color: chartColors.powerBIDataRefresh }
+                    ] 
+                  },
+                  { 
+                    month: '2025年6月', 
+                    total: 13,
+                    segments: [
+                      { name: 'Microsoft Power BI', value: 4, color: chartColors.microsoftPowerBI },
+                      { name: 'Power BI Service', value: 5, color: chartColors.powerBIService },
+                      { name: 'Power BI Desktop', value: 4, color: chartColors.powerBIDesktop }
+                    ] 
+                  },
+                  { 
+                    month: '2025年9月', 
+                    total: 50,
+                    segments: [
+                      { name: 'Power BI Service', value: 41, color: chartColors.powerBIService },
+                      { name: 'Microsoft Power BI', value: 5, color: chartColors.microsoftPowerBI },
+                      { name: 'Power BI Desktop', value: 4, color: chartColors.powerBIDesktop }
+                    ] 
+                  }
+                ].map((item, index) => (
+                  <div key={index} className="flex flex-col items-center">
+                    <div className="relative">
+                      <span className="absolute -top-6 left-1/2 transform -translate-x-1/2 text-xs text-[#94a3b8]">
+                        {item.total}
+                      </span>
+                    </div>
+                    <div className="w-8 flex flex-col-reverse">
+                      {item.segments.map((segment, i) => (
+                        <div 
+                          key={i}
+                          className="w-full"
+                          style={{ 
+                            backgroundColor: segment.color, 
+                            height: `${(segment.value / 60) * 200}px`
+                          }}
+                        ></div>
+                      ))}
+                    </div>
+                    <span className="text-xs text-[#94a3b8] mt-2 transform -rotate-45 origin-left">
+                      {item.month}
                     </span>
                   </div>
-                  <span className="text-xs text-[#94a3b8] mt-2 transform -rotate-45 origin-left">
-                    {item.month}
-                  </span>
-                </div>
-              ))}
-            </div>
-            <div className="mt-4">
-              <div className="flex flex-wrap gap-2 text-xs">
-                {['Microsoft Power BI', 'Power BI Community - Prod', 'Power BI Data Refresh', 'Power BI Desktop', 'Power BI PowerShell', 'Power BI Service', 'SLIM Power BI'].map((app, index) => (
-                  <div key={index} className="flex items-center gap-1">
-                    <div className="w-3 h-3 rounded-full bg-[#6366f1]"></div>
-                    <span className="text-[#94a3b8]">{app}</span>
+                ))}
+              </div>
+              
+              {/* 右侧图例 */}
+              <div className="ml-4 flex flex-col justify-center">
+                <div className="text-xs text-[#94a3b8] mb-2">App Name</div>
+                {[
+                  { name: 'Microsoft Power BI', color: chartColors.microsoftPowerBI },
+                  { name: 'Power BI Community - Prod', color: chartColors.powerBICommunity },
+                  { name: 'Power BI Data Refresh', color: chartColors.powerBIDataRefresh },
+                  { name: 'Power BI Desktop', color: chartColors.powerBIDesktop },
+                  { name: 'Power BI PowerShell', color: chartColors.powerBIPowerShell },
+                  { name: 'Power BI Service', color: chartColors.powerBIService },
+                  { name: 'SLIM Power BI', color: chartColors.slimPowerBI }
+                ].map((app, index) => (
+                  <div key={index} className="flex items-center gap-1 mb-1">
+                    <div className="w-3 h-3 rounded-full" style={{ backgroundColor: app.color }}></div>
+                    <span className="text-[#94a3b8] text-xs">{app.name}</span>
                   </div>
                 ))}
               </div>
@@ -189,7 +288,7 @@ const PowerBIUsageTab = () => {
           </div>
 
           {/* Power BI App Usage */}
-          <div className="bg-[#334155] rounded-lg border border-[#475569] p-4">
+          <div className="bg-gradient-to-br from-[#334155] to-[#1e293b] rounded-lg border border-[#475569] p-4 shadow-md">
             <h3 className="text-white font-semibold mb-4">Power BI App Usage</h3>
             <div className="space-y-3">
               {appUsageData.map((item, index) => (
@@ -197,7 +296,7 @@ const PowerBIUsageTab = () => {
                   <span className="text-[#94a3b8] text-sm w-40 truncate">{item.name}</span>
                   <div className="flex-1 bg-[#475569] rounded-full h-6 relative">
                     <div 
-                      className="bg-[#6366f1] h-full rounded-full flex items-center justify-end pr-2"
+                      className="bg-gradient-to-r from-blue-600 to-indigo-500 h-full rounded-full flex items-center justify-end pr-2"
                       style={{ width: `${(item.value / 70) * 100}%` }}
                     >
                       <span className="text-white text-xs font-medium">{item.value}</span>
@@ -206,10 +305,19 @@ const PowerBIUsageTab = () => {
                 </div>
               ))}
             </div>
+            <div className="mt-4">
+              <div className="flex justify-between text-xs text-[#94a3b8]">
+                <span>0</span>
+                <span>20</span>
+                <span>40</span>
+                <span>60</span>
+                <span>80</span>
+              </div>
+            </div>
           </div>
 
           {/* Assigned Power BI Capable Licenses to App Users */}
-          <div className="bg-[#334155] rounded-lg border border-[#475569] p-4">
+          <div className="bg-gradient-to-br from-[#334155] to-[#1e293b] rounded-lg border border-[#475569] p-4 shadow-md">
             <h3 className="text-white font-semibold mb-4">Assigned Power BI Capable Licenses to App Users</h3>
             <div className="space-y-4">
               {licenseData.map((item, index) => (
@@ -217,7 +325,7 @@ const PowerBIUsageTab = () => {
                   <span className="text-[#94a3b8] text-sm w-32">{item.name}</span>
                   <div className="flex-1 bg-[#475569] rounded-full h-8 relative">
                     <div 
-                      className="bg-[#6366f1] h-full rounded-full flex items-center justify-end pr-3"
+                      className="bg-gradient-to-r from-indigo-600 to-purple-500 h-full rounded-full flex items-center justify-end pr-3"
                       style={{ width: `${(item.value / 45) * 100}%` }}
                     >
                       <span className="text-white text-sm font-medium">{item.value}</span>
@@ -226,7 +334,7 @@ const PowerBIUsageTab = () => {
                 </div>
               ))}
             </div>
-            <div className="mt-4 text-center">
+            <div className="mt-4">
               <div className="flex justify-between text-xs text-[#94a3b8]">
                 <span>0</span>
                 <span>10</span>

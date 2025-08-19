@@ -4,7 +4,7 @@ import LoginPage from './LoginPage';
 import Header from './Header';
 import OverviewContent from './components/Home/Overview/OverviewContent';
 import { PowerBIUsageContent, PowerAppsUsageContent, PowerAutomateUsageContent } from './components/Home/Adoption/AdoptionContent';
-import { TeamAnalyticsContent, CollaborationContent } from './components/Home/Teams/TeamsContent';
+import TeamsContent from './components/Home/Teams/TeamsContent';
 import OptimizeAccountsContent from './components/Optimize/Accounts/OptimizeAccountsContent';
 import { UsageAnalyticsContent, PerformanceContent } from './components/Optimize/ProductUsage/ProductUsageContent';
 import { LicensePlansContent, CostAnalysisContent } from './components/Optimize/Plans/PlansContent';
@@ -79,14 +79,7 @@ const OverviewPage = ({ activeTab, selectedMenuItem }) => {
                         return <PowerBIUsageContent />;
                 }
             } else if (pageName === 'Teams') {
-                switch (activeTab) {
-                    case 'Team Analytics':
-                        return <TeamAnalyticsContent />;
-                    case 'Collaboration':
-                        return <CollaborationContent />;
-                    default:
-                        return <TeamAnalyticsContent />;
-                }
+                return <TeamsContent />;
             }
         }
         
@@ -275,7 +268,7 @@ const App = () => {
         } else if (menuName === 'Adoption') {
           return ['Power BI Usage', 'Power Apps Usage', 'Power Automate Usage'];
         } else if (menuName === 'Teams') {
-          return ['Team Analytics', 'Collaboration'];
+          return ['Teams Premium'];
         }
         break;
       case 'Optimize':
