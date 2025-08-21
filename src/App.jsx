@@ -1,147 +1,59 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import LoginPage from './LoginPage';
 import Header from './Header';
-import OverviewContent from './components/Home/Overview/OverviewContent';
-import { PowerBIUsageContent, PowerAppsUsageContent, PowerAutomateUsageContent } from './components/Home/Adoption/AdoptionContent';
-import TeamsContent from './components/Home/Teams/TeamsContent';
-import OptimizeAccountsContent from './components/Optimize/Accounts/OptimizeAccountsContent';
-import { UsageAnalyticsContent, PerformanceContent } from './components/Optimize/ProductUsage/ProductUsageContent';
-import { LicensePlansContent, CostAnalysisContent } from './components/Optimize/Plans/PlansContent';
-import { 
-  IdentityAccountsContent, 
-  PermissionsContent, 
-  GroupManagementContent, 
-  AccessControlContent, 
-  UserProfilesContent, 
-  SettingsContent 
-} from './components/Identity/Accounts/IdentityContent';
-import {
-  LayoutDashboard,
-  BarChart,
-  Users,
-  Building,
-  ChevronsLeft,
-  ChevronsRight,
-  UserCircle,
-  Folder,
-  Layers,
-  User,
-  LogOut
-} from 'lucide-react';
-
-// 定义菜单项
-const navItems = [
-  {
-    category: 'Home',
-    items: [
-      { name: 'Overview', icon: LayoutDashboard, id: 'Home/Overview' },
-      { name: 'Adoption', icon: Users, id: 'Home/Adoption' },
-      { name: 'Teams', icon: Building, id: 'Home/Teams' },
-    ],
-  },
-  {
-    category: 'Optimize',
-    items: [
-      { name: 'Accounts', icon: User, id: 'Optimize/Accounts' },
-      { name: 'Product Usage', icon: BarChart, id: 'Optimize/Product Usage' },
-      { name: 'Plans', icon: Folder, id: 'Optimize/Plans' },
-    ],
-  },
-  {
-    category: 'Identity',
-    items: [
-      { name: 'Accounts', icon: Users, id: 'Identity/Accounts' },
-      { name: 'Groups', icon: Layers, id: 'Identity/Groups' },
-      { name: 'Profiles', icon: UserCircle, id: 'Identity/Profiles' },
-    ],
-  },
-];
+import LeftSideBar from './LeftSideBar';
+import DashboardContent from './Home/Dashboard/DashboardContent';
+import OverviewContent from './Home/Overview/OverviewContent';
+import AccountsContent from './Optimize/Accounts/AccountsContent';
+import PlansContent from './Optimize/Plans/PlansContent';
+import SummaryContent from './Adoption/Summary/SummaryContent';
+import PowerPlatformContent from './Adoption/PowerPlatform/PowerPlatformContent';
+import TeamsContent from './Adoption/Teams/TeamsContent';
+import VisioContent from './Adoption/Visio/VisioContent';
+import ProjectContent from './Adoption/Project/ProjectContent';
+import { getTabs, getDefaultTab } from './TabRegistry';
 
 // Universal page component with consistent tabs for all pages
-const OverviewPage = ({ activeTab, selectedMenuItem }) => {
+const PageContent = ({ activeTab, selectedMenuItem }) => {
     const renderContent = () => {
         const [category, pageName] = selectedMenuItem.split('/');
         
         // Home category
         if (category === 'Home') {
-            if (pageName === 'Overview') {
+            if (pageName === 'Dashboard') {
+                return <DashboardContent />;
+            } else if (pageName === 'Overview') {
                 return <OverviewContent activeTab={activeTab} />;
-            } else if (pageName === 'Adoption') {
-                switch (activeTab) {
-                    case 'Power BI Usage':
-                        return <PowerBIUsageContent />;
-                    case 'Power Apps Usage':
-                        return <PowerAppsUsageContent />;
-                    case 'Power Automate Usage':
-                        return <PowerAutomateUsageContent />;
-                    default:
-                        return <PowerBIUsageContent />;
-                }
-            } else if (pageName === 'Teams') {
-                return <TeamsContent />;
             }
         }
         
         // Optimize category
         else if (category === 'Optimize') {
             if (pageName === 'Accounts') {
-                return <OptimizeAccountsContent activeTab={activeTab} />;
-            } else if (pageName === 'Product Usage') {
-                switch (activeTab) {
-                    case 'Usage Analytics':
-                        return <UsageAnalyticsContent />;
-                    case 'Performance':
-                        return <PerformanceContent />;
-                    default:
-                        return <UsageAnalyticsContent />;
-                }
+                return <AccountsContent />;
             } else if (pageName === 'Plans') {
-                switch (activeTab) {
-                    case 'License Plans':
-                        return <LicensePlansContent />;
-                    case 'Cost Analysis':
-                        return <CostAnalysisContent />;
-                    default:
-                        return <LicensePlansContent />;
-                }
+                return <PlansContent activeTab={activeTab} />;
             }
         }
         
-        // Identity category
-        else if (category === 'Identity') {
-            if (pageName === 'Accounts') {
-                switch (activeTab) {
-                    case 'Identity Accounts':
-                        return <IdentityAccountsContent />;
-                    case 'Permissions':
-                        return <PermissionsContent />;
-                    default:
-                        return <IdentityAccountsContent />;
-                }
-            } else if (pageName === 'Groups') {
-                switch (activeTab) {
-                    case 'Group Management':
-                        return <GroupManagementContent />;
-                    case 'Access Control':
-                        return <AccessControlContent />;
-                    default:
-                        return <GroupManagementContent />;
-                }
-            } else if (pageName === 'Profiles') {
-                switch (activeTab) {
-                    case 'User Profiles':
-                        return <UserProfilesContent />;
-                    case 'Settings':
-                        return <SettingsContent />;
-                    default:
-                        return <UserProfilesContent />;
-                }
+        // Adoption category
+        else if (category === 'Adoption') {
+            if (pageName === 'Summary') {
+                return <SummaryContent activeTab={activeTab} />;
+            } else if (pageName === 'PowerPlatform') {
+                return <PowerPlatformContent activeTab={activeTab} />;
+            } else if (pageName === 'Teams') {
+                return <TeamsContent activeTab={activeTab} />;
+            } else if (pageName === 'Visio') {
+                return <VisioContent activeTab={activeTab} />;
+            } else if (pageName === 'Project') {
+                return <ProjectContent activeTab={activeTab} />;
             }
         }
         
         // Fallback
-        return <OverviewContent />;
+        return <DashboardContent />;
     };
 
     return (
@@ -154,42 +66,16 @@ const OverviewPage = ({ activeTab, selectedMenuItem }) => {
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-  const [selectedMenuItem, setSelectedMenuItem] = useState('Home/Overview');
-  const [currentPath, setCurrentPath] = useState('Home / Overview');
+  const [selectedMenuItem, setSelectedMenuItem] = useState('Home/Dashboard');
+  const [currentPath, setCurrentPath] = useState('HOME / Dashboard');
   const [message, setMessage] = useState('');
   const [showMessage, setShowMessage] = useState(false);
-  const [activeTab, setActiveTab] = useState('Company Profile');
-
-  // Get default tab for each page
-  const getDefaultTabForPage = (pageId) => {
-    const [category, pageName] = pageId.split('/');
-    
-    switch (category) {
-      case 'Home':
-        return 'Company Profile';
-      case 'Optimize':
-        if (pageName === 'Accounts') {
-          return 'Account Details (no SKU)';
-        } else if (pageName === 'Product Usage') {
-          return 'Usage Analytics';
-        } else if (pageName === 'Plans') {
-          return 'License Plans';
-        }
-        break;
-      case 'Identity':
-        if (pageName === 'Accounts') {
-          return 'Identity Accounts';
-        } else if (pageName === 'Groups') {
-          return 'Group Management';
-        } else if (pageName === 'Profiles') {
-          return 'User Profiles';
-        }
-        break;
-      default:
-        return 'Company Profile';
-    }
-    return 'Company Profile';
-  };
+  const [activeTab, setActiveTab] = useState('');
+  const [expandedCategories, setExpandedCategories] = useState({
+    HOME: true,
+    OPTIMIZE: true,
+    ADOPTION: true
+  });
 
   const showMessageBox = (msg) => {
     setMessage(msg);
@@ -199,120 +85,33 @@ const App = () => {
     }, 3000);
   };
 
-  // Sidebar
-  const Sidebar = () => (
-    <div
-      className={`bg-gray-800 text-white flex flex-col transition-all duration-300 ease-in-out ${
-        isSidebarCollapsed ? 'w-20' : 'w-64'
-      }`}
-    >
-      <div className="flex items-center p-4 h-16 border-b border-gray-700">
-        {!isSidebarCollapsed && (
-          <span className="text-xl font-bold text-[#2563eb]">MS365 SaaS</span>
-        )}
-        <button
-          onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-          className={`ml-auto p-2 rounded-md hover:bg-gray-700 transition-colors ${
-            isSidebarCollapsed ? '' : 'text-[#2563eb]'
-          }`}
-        >
-          {isSidebarCollapsed ? <ChevronsRight size={20} /> : <ChevronsLeft size={20} />}
-        </button>
-      </div>
-      <nav className="flex-1 overflow-y-auto mt-2">
-        {navItems.map((category, catIndex) => (
-          <div key={catIndex} className="mb-4">
-            {!isSidebarCollapsed && (
-              <h2 className="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
-                {category.category}
-              </h2>
-            )}
-            <ul>
-              {category.items.map((item, itemIndex) => (
-                <li key={itemIndex}>
-                  <button
-                    onClick={() => {
-                        setSelectedMenuItem(item.id);
-                        setCurrentPath(`${category.category} / ${item.name}`);
-                        // Set default tab based on the selected page
-                        const defaultTab = getDefaultTabForPage(item.id);
-                        setActiveTab(defaultTab);
-                    }}
-                    className={`flex items-center w-full px-4 py-3 text-sm font-medium transition-colors ${
-                      selectedMenuItem === item.id
-                        ? 'bg-[#2563eb] text-white rounded-r-full shadow-lg'
-                        : 'text-gray-300 hover:bg-gray-700'
-                    }`}
-                  >
-                    <item.icon size={20} className="mr-3" />
-                    {!isSidebarCollapsed && <span>{item.name}</span>}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </nav>
-    </div>
-  );
-
-  // Get tabs for current page - different tabs based on selected menu item
-  const getCurrentPageTabs = () => {
-    const menuCategory = selectedMenuItem.split('/')[0];
-    const menuName = selectedMenuItem.split('/')[1];
-    
-    switch (menuCategory) {
-      case 'Home':
-        if (menuName === 'Overview') {
-          return ['Company Profile', 'License Top 10', 'Cost Optimisation'];
-        } else if (menuName === 'Adoption') {
-          return ['Power BI Usage', 'Power Apps Usage', 'Power Automate Usage'];
-        } else if (menuName === 'Teams') {
-          return ['Teams Premium'];
-        }
-        break;
-      case 'Optimize':
-        if (menuName === 'Accounts') {
-          return ['Account Details (no SKU)', 'Account Details (with SKU)'];
-        } else if (menuName === 'Product Usage') {
-          return ['Usage Analytics', 'Performance'];
-        } else if (menuName === 'Plans') {
-          return ['SKU Adoption', 'License Plans', 'Cost Analysis'];
-        }
-        break;
-      case 'Identity':
-        if (menuName === 'Accounts') {
-          return ['Identity Accounts', 'Permissions'];
-        } else if (menuName === 'Groups') {
-          return ['Group Management', 'Access Control'];
-        } else if (menuName === 'Profiles') {
-          return ['User Profiles', 'Settings'];
-        }
-        break;
-      default:
-        return ['Company Profile', 'License Top 10'];
-    }
-    return ['Company Profile', 'License Top 10'];
-  };
-
   // Handle tab change
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
 
-  // Main content area - all pages now use the same structure as Overview
+  // Main content area - all pages now use the same structure
   const MainContent = () => {
-    // All pages now use the same tab-based structure as Overview
-    return <OverviewPage activeTab={activeTab} selectedMenuItem={selectedMenuItem} />;
+    return <PageContent activeTab={activeTab} selectedMenuItem={selectedMenuItem} />;
   };
 
   // Main application layout
   const MainLayout = () => {
-    const tabs = getCurrentPageTabs();
+    // 使用TabRegistry获取当前页面的标签页
+    const tabs = getTabs(selectedMenuItem);
     
     return (
       <div className="flex min-h-screen w-screen font-sans bg-gray-900 dark:bg-gray-900 dark:text-white overflow-hidden">
-        <Sidebar />
+        <LeftSideBar 
+          isSidebarCollapsed={isSidebarCollapsed}
+          setIsSidebarCollapsed={setIsSidebarCollapsed}
+          selectedMenuItem={selectedMenuItem}
+          setSelectedMenuItem={setSelectedMenuItem}
+          setCurrentPath={setCurrentPath}
+          setActiveTab={setActiveTab}
+          expandedCategories={expandedCategories}
+          setExpandedCategories={setExpandedCategories}
+        />
         <div className="flex flex-col flex-1 min-w-0 w-full h-screen">
           <Header 
             currentPath={currentPath} 
