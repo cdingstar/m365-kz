@@ -1,44 +1,193 @@
-import React from 'react';
+import React, { useState } from 'react';
+import DropdownSingleFilter from '../../components/Filters/DropdownSingleFilter';
+import DropdownSearchMultiSelFilter from '../../components/Filters/DropdownSearchMultiSelFilter';
+import PriceRangeFilter from '../../components/Filters/PriceRangeFilter';
 
 const SKUAdoptionTab = () => {
-  // SKU采用数据
-  const skuAdoptionData = [
-    { id: 1, name: 'Microsoft 365 E3', total: 1200, assigned: 1150, unassigned: 50, adoptionRate: 96 },
-    { id: 2, name: 'Microsoft 365 E5', total: 450, assigned: 410, unassigned: 40, adoptionRate: 91 },
-    { id: 3, name: 'Office 365 E1', total: 300, assigned: 285, unassigned: 15, adoptionRate: 95 },
-    { id: 4, name: 'Exchange Online Plan 1', total: 200, assigned: 180, unassigned: 20, adoptionRate: 90 },
-    { id: 5, name: 'Power BI Pro', total: 150, assigned: 120, unassigned: 30, adoptionRate: 80 },
-    { id: 6, name: 'Project Plan 3', total: 100, assigned: 85, unassigned: 15, adoptionRate: 85 },
-    { id: 7, name: 'Visio Plan 2', total: 75, assigned: 60, unassigned: 15, adoptionRate: 80 },
-    { id: 8, name: 'Teams Phone Standard', total: 50, assigned: 45, unassigned: 5, adoptionRate: 90 }
+  const [selectedSKUType, setSelectedSKUType] = useState('all');
+  const [selectedLicenses, setSelectedLicenses] = useState(['all']);
+  const [priceRange, setPriceRange] = useState([0, 500]);
+  
+  // SKU类型选项
+  const skuTypeOptions = [
+    { value: 'all', label: 'All SKUs' },
+    { value: 'microsoft365', label: 'Microsoft 365' },
+    { value: 'office365', label: 'Office 365' },
+    { value: 'standalone', label: 'Standalone Products' }
+  ];
+  
+  // License选项
+  const licenseOptions = [
+    { value: 'all', label: '全选' },
+    { value: 'entra_id_p2', label: 'Entra ID P2' },
+    { value: 'audio_conferencing', label: 'Microsoft 365 Audio Conferencing' },
+    { value: 'copilot', label: 'Microsoft 365 Copilot' },
+    { value: 'e3', label: 'Microsoft 365 E3' },
+    { value: 'power_bi_pro', label: 'Power BI Pro' },
+    { value: 'pstn', label: 'PSTN Domestic and International' },
+    { value: 'teams_phone', label: 'Teams Phone Standard' },
+    { value: 'teams_premium', label: 'Teams Premium (Intro Pricing)' },
+    { value: 'teams_rooms', label: 'Teams Rooms Standard w/o Audio' }
   ];
 
-  // 部门采用率数据
-  const departmentAdoption = [
-    { department: 'IT', e3: 98, e5: 95, e1: 90 },
-    { department: 'Sales', e3: 95, e5: 90, e1: 85 },
-    { department: 'Marketing', e3: 92, e5: 88, e1: 80 },
-    { department: 'Finance', e3: 90, e5: 85, e1: 75 },
-    { department: 'HR', e3: 88, e5: 80, e1: 70 },
-    { department: 'Operations', e3: 85, e5: 75, e1: 65 }
+  // 许可证价格
+  const licensePrice = "USD 386.80";
+
+  // 许可证数据
+  const licenseData = [
+    { 
+      name: 'Microsoft Teams', 
+      sku: 'TEAMS1', 
+      plansCount: 1, 
+      assignedCount: 1, 
+      usersAssigned: 40269, 
+      accountsUsing: 30297, 
+      hasRule: true, 
+      usagePercent: 73.3 
+    },
+    { 
+      name: 'Microsoft Entra ID P1', 
+      sku: 'AAD_PREMIUM', 
+      plansCount: 1, 
+      assignedCount: 1, 
+      usersAssigned: 40267, 
+      accountsUsing: 0, 
+      hasRule: true, 
+      usagePercent: 0.0 
+    },
+    { 
+      name: 'Microsoft Intune', 
+      sku: 'INTUNE_A', 
+      plansCount: 1, 
+      assignedCount: 1, 
+      usersAssigned: 40266, 
+      accountsUsing: 22514, 
+      hasRule: true, 
+      usagePercent: 55.9 
+    },
+    { 
+      name: 'Office for the Web', 
+      sku: 'SHAREPOINTWAC', 
+      plansCount: 1, 
+      assignedCount: 1, 
+      usersAssigned: 40225, 
+      accountsUsing: 38767, 
+      hasRule: true, 
+      usagePercent: 90.2 
+    },
+    { 
+      name: 'MICROSOFT AZURE MULTI-FACTOR AUTHENTICATION', 
+      sku: 'MFA_PREMIUM', 
+      plansCount: 1, 
+      assignedCount: 1, 
+      usersAssigned: 40210, 
+      accountsUsing: 37725, 
+      hasRule: true, 
+      usagePercent: 93.8 
+    },
+    { 
+      name: 'Microsoft Bookings', 
+      sku: 'MICROSOFTBOOKINGS', 
+      plansCount: 1, 
+      assignedCount: 1, 
+      usersAssigned: 40210, 
+      accountsUsing: 0, 
+      hasRule: true, 
+      usagePercent: 0.0 
+    },
+    { 
+      name: 'AZURE INFORMATION PROTECTION PREMIUM P1', 
+      sku: 'RMS_S_ENTERPRISE', 
+      plansCount: 1, 
+      assignedCount: 1, 
+      usersAssigned: 40209, 
+      accountsUsing: 0, 
+      hasRule: true, 
+      usagePercent: 0.0 
+    },
+    { 
+      name: 'Microsoft Entra RIGHTS', 
+      sku: 'RMS_S_PREMIUM', 
+      plansCount: 1, 
+      assignedCount: 1, 
+      usersAssigned: 40209, 
+      accountsUsing: 0, 
+      hasRule: true, 
+      usagePercent: 0.0 
+    },
+    { 
+      name: 'Microsoft StaffHub', 
+      sku: 'Deskless', 
+      plansCount: 1, 
+      assignedCount: 1, 
+      usersAssigned: 40209, 
+      accountsUsing: 0, 
+      hasRule: true, 
+      usagePercent: 0.0 
+    },
+    { 
+      name: 'RETIRED - Commercial data protection for Microsoft Copilot', 
+      sku: 'Bing_Chat_Enterprise', 
+      plansCount: 1, 
+      assignedCount: 1, 
+      usersAssigned: 40209, 
+      accountsUsing: 0, 
+      hasRule: false, 
+      usagePercent: 0.0 
+    },
+    { 
+      name: 'Sway', 
+      sku: 'SWAY', 
+      plansCount: 1, 
+      assignedCount: 1, 
+      usersAssigned: 40209, 
+      accountsUsing: 125, 
+      hasRule: true, 
+      usagePercent: 0.3 
+    },
+    { 
+      name: 'Universal Print', 
+      sku: 'UNIVERSAL_PRINT_01', 
+      plansCount: 1, 
+      assignedCount: 1, 
+      usersAssigned: 40209, 
+      accountsUsing: 0, 
+      hasRule: false, 
+      usagePercent: 0.0 
+    },
+    { 
+      name: 'Viva Learning Seeded', 
+      sku: 'VIVA_LEARNING_SEEDED', 
+      plansCount: 1, 
+      assignedCount: 1, 
+      usersAssigned: 40209, 
+      accountsUsing: 0, 
+      hasRule: false, 
+      usagePercent: 0.0 
+    },
+    { 
+      name: 'Windows Update for Business Deployment Service', 
+      sku: 'WINDOWSUPDATEFORBUSINESS_DEPLOYMENTSERVICE', 
+      plansCount: 1, 
+      assignedCount: 1, 
+      usersAssigned: 40209, 
+      accountsUsing: 0, 
+      hasRule: false, 
+      usagePercent: 0.0 
+    }
   ];
+
+  // 计算总计
+  const totals = {
+    plansCount: 236,
+    assignedCount: 211,
+    usersAssigned: 41722,
+    accountsUsing: 331002,
+    usagePercent: 17.0
+  };
 
   return (
     <div className="p-6 bg-gray-900 min-h-screen">
-      {/* 版本信息 */}
-      <div className="flex justify-end items-center mb-8">
-        <div className="flex items-center space-x-6">
-          <div className="text-right">
-            <div className="text-sm font-medium text-gray-300">4.1</div>
-            <div className="text-xs text-gray-400">Current Version</div>
-          </div>
-          <div className="text-right">
-            <div className="text-sm font-medium text-gray-300">28-7-2025</div>
-            <div className="text-xs text-gray-400">Last Refresh</div>
-          </div>
-        </div>
-      </div>
-
       {/* 摘要卡片 */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <div className="bg-gray-800 rounded-lg shadow-lg p-6">
@@ -66,244 +215,129 @@ const SKUAdoptionTab = () => {
       {/* SKU采用表格 */}
       <div className="bg-gray-800 rounded-lg shadow-lg overflow-hidden mb-8">
         <div className="p-4 border-b border-gray-700 flex justify-between items-center">
-          <h2 className="text-xl font-semibold text-white">SKU Adoption Details</h2>
-          <div className="flex space-x-2">
-            <select className="px-3 py-2 bg-gray-700 text-white rounded-md border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-              <option>All SKUs</option>
-              <option>Microsoft 365</option>
-              <option>Office 365</option>
-              <option>Standalone Products</option>
-            </select>
-            <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
-              Filter
-            </button>
+          <div className="flex items-center">
+            <h2 className="text-xl font-semibold text-white">SKU Adoption Details</h2>
+            <span className="ml-4 text-gray-400 text-sm">{licensePrice} Per License</span>
           </div>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="min-w-full">
-            <thead className="bg-gray-700">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">SKU Name</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Total</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Assigned</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Unassigned</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Adoption Rate</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Progress</th>
-              </tr>
-            </thead>
-            <tbody className="bg-gray-800 divide-y divide-gray-700">
-              {skuAdoptionData.map((sku) => (
-                <tr key={sku.id} className="hover:bg-gray-750 transition-colors">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">{sku.name}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{sku.total}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{sku.assigned}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{sku.unassigned}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{sku.adoptionRate}%</td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="w-full bg-gray-700 rounded-full h-2.5">
-                      <div 
-                        className={`h-2.5 rounded-full ${
-                          sku.adoptionRate > 90 ? 'bg-green-600' : 
-                          sku.adoptionRate > 80 ? 'bg-blue-600' : 
-                          sku.adoptionRate > 70 ? 'bg-yellow-600' : 'bg-red-600'
-                        }`}
-                        style={{ width: `${sku.adoptionRate}%` }}
-                      ></div>
+          <div className="flex justify-end">
+            <table className="border-collapse table-fixed" style={{ width: '900px' }}>
+              <tbody>
+                <tr>
+                  <td className="px-2" style={{ width: '60px' }}>
+                    <span className="text-sm text-gray-300">License:</span>
+                  </td>
+                  <td className="px-2" style={{ width: '280px' }}>
+                    <DropdownSearchMultiSelFilter
+                      selectedValues={selectedLicenses}
+                      onChange={setSelectedLicenses}
+                      options={licenseOptions}
+                      placeholder="选择License"
+                      searchPlaceholder="搜索License"
+                      noResultsText="无结果"
+                      selectAllText="全选"
+                      applyText="应用"
+                      closeText="关闭"
+                      className="w-60"
+                      dropdownWidth="w-60"
+                    />
+                  </td>
+                  <td className="px-2" style={{ width: '320px' }}>
+                    <div className="flex items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <PriceRangeFilter
+                        minValue={0}
+                        maxValue={999.99}
+                        value={priceRange}
+                        onChange={setPriceRange}
+                        label=""
+                        className="w-64"
+                        inputClassName="w-16"
+                        sliderWidth="w-32"
+                      />
                     </div>
                   </td>
+                  <td className="px-2" style={{ width: '160px' }}>
+                    <DropdownSingleFilter
+                      value={selectedSKUType}
+                      onChange={setSelectedSKUType}
+                      options={skuTypeOptions}
+                      placeholder="All SKUs"
+                      className="w-32"
+                    />
+                  </td>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <div className="p-4 border-t border-gray-700 flex justify-between items-center">
-          <div className="text-sm text-gray-400">
-            Showing 8 of 15 SKUs
-          </div>
-          <div className="flex space-x-2">
-            <button className="px-3 py-1 bg-gray-700 text-white rounded-md hover:bg-gray-600 transition-colors">
-              Previous
-            </button>
-            <button className="px-3 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
-              Next
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* 部门采用率和优化建议 */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-        {/* 部门采用率 */}
-        <div className="bg-gray-800 rounded-lg shadow-lg overflow-hidden">
-          <div className="p-4 border-b border-gray-700">
-            <h2 className="text-xl font-semibold text-white">Department Adoption Rates</h2>
-          </div>
-          <div className="overflow-x-auto">
-            <table className="min-w-full">
-              <thead className="bg-gray-700">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Department</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">M365 E3</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">M365 E5</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">O365 E1</th>
-                </tr>
-              </thead>
-              <tbody className="bg-gray-800 divide-y divide-gray-700">
-                {departmentAdoption.map((dept, index) => (
-                  <tr key={index} className="hover:bg-gray-750 transition-colors">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">{dept.department}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center">
-                        <div className="w-full bg-gray-700 rounded-full h-2.5 mr-2">
-                          <div 
-                            className="h-2.5 rounded-full bg-green-600"
-                            style={{ width: `${dept.e3}%` }}
-                          ></div>
-                        </div>
-                        <span className="text-sm text-gray-300">{dept.e3}%</span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center">
-                        <div className="w-full bg-gray-700 rounded-full h-2.5 mr-2">
-                          <div 
-                            className="h-2.5 rounded-full bg-blue-600"
-                            style={{ width: `${dept.e5}%` }}
-                          ></div>
-                        </div>
-                        <span className="text-sm text-gray-300">{dept.e5}%</span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center">
-                        <div className="w-full bg-gray-700 rounded-full h-2.5 mr-2">
-                          <div 
-                            className="h-2.5 rounded-full bg-yellow-600"
-                            style={{ width: `${dept.e1}%` }}
-                          ></div>
-                        </div>
-                        <span className="text-sm text-gray-300">{dept.e1}%</span>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
               </tbody>
             </table>
           </div>
         </div>
-
-        {/* 优化建议 */}
-        <div className="bg-gray-800 rounded-lg shadow-lg p-6">
-          <h2 className="text-xl font-semibold text-white mb-4">Optimization Recommendations</h2>
-          <div className="space-y-4">
-            <div className="bg-gray-700 p-4 rounded-lg">
-              <div className="flex items-start">
-                <div className="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="text-white font-medium">Reassign Unassigned Licenses</h3>
-                  <p className="text-gray-400 text-sm mt-1">190 unassigned licenses could be reassigned or removed to save costs.</p>
-                  <button className="mt-2 text-blue-400 text-sm hover:text-blue-300 transition-colors">View Details</button>
-                </div>
-              </div>
-            </div>
-            <div className="bg-gray-700 p-4 rounded-lg">
-              <div className="flex items-start">
-                <div className="w-10 h-10 bg-yellow-600 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="text-white font-medium">Low Adoption in HR Department</h3>
-                  <p className="text-gray-400 text-sm mt-1">HR department shows lower adoption rates across all license types.</p>
-                  <button className="mt-2 text-blue-400 text-sm hover:text-blue-300 transition-colors">View Details</button>
-                </div>
-              </div>
-            </div>
-            <div className="bg-gray-700 p-4 rounded-lg">
-              <div className="flex items-start">
-                <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="text-white font-medium">Power BI Pro Underutilization</h3>
-                  <p className="text-gray-400 text-sm mt-1">20% of Power BI Pro licenses are unassigned. Consider reducing license count.</p>
-                  <button className="mt-2 text-blue-400 text-sm hover:text-blue-300 transition-colors">View Details</button>
-                </div>
-              </div>
-            </div>
-          </div>
+        
+        <div className="p-3 bg-gray-700 text-xs text-gray-300">
+          <p>Note (Rule on plan outlines if a rule is in place to identify use of the plan (Green = Yes), right click on plan name to view further details</p>
         </div>
-      </div>
-
-      {/* 底部区域：月度趋势 */}
-      <div className="bg-gray-800 rounded-lg shadow-lg p-6">
-        <h2 className="text-xl font-semibold text-white mb-4">Monthly Adoption Trend</h2>
-        <div className="h-64 bg-gray-700 rounded-lg relative overflow-hidden">
-          <svg className="absolute inset-0 w-full h-full" viewBox="0 0 400 200">
-            {/* 背景网格线 */}
-            <defs>
-              <pattern id="grid" width="40" height="20" patternUnits="userSpaceOnUse">
-                <path d="M 40 0 L 0 0 0 20" fill="none" stroke="#4B5563" strokeWidth="0.5"/>
-              </pattern>
-              <linearGradient id="gradient1" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#10B981" stopOpacity="0.8"/>
-                <stop offset="100%" stopColor="#10B981" stopOpacity="0.1"/>
-              </linearGradient>
-              <linearGradient id="gradient2" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.8"/>
-                <stop offset="100%" stopColor="#3B82F6" stopOpacity="0.1"/>
-              </linearGradient>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#grid)" />
-            
-            {/* Y轴标签 */}
-            <text x="15" y="20" fill="#9CA3AF" fontSize="10" textAnchor="middle">100%</text>
-            <text x="15" y="60" fill="#9CA3AF" fontSize="10" textAnchor="middle">75%</text>
-            <text x="15" y="100" fill="#9CA3AF" fontSize="10" textAnchor="middle">50%</text>
-            <text x="15" y="140" fill="#9CA3AF" fontSize="10" textAnchor="middle">25%</text>
-            <text x="15" y="180" fill="#9CA3AF" fontSize="10" textAnchor="middle">0%</text>
-            
-            {/* X轴标签 */}
-            <text x="40" y="195" fill="#9CA3AF" fontSize="10" textAnchor="middle">Jan</text>
-            <text x="80" y="195" fill="#9CA3AF" fontSize="10" textAnchor="middle">Feb</text>
-            <text x="120" y="195" fill="#9CA3AF" fontSize="10" textAnchor="middle">Mar</text>
-            <text x="160" y="195" fill="#9CA3AF" fontSize="10" textAnchor="middle">Apr</text>
-            <text x="200" y="195" fill="#9CA3AF" fontSize="10" textAnchor="middle">May</text>
-            <text x="240" y="195" fill="#9CA3AF" fontSize="10" textAnchor="middle">Jun</text>
-            <text x="280" y="195" fill="#9CA3AF" fontSize="10" textAnchor="middle">Jul</text>
-            <text x="320" y="195" fill="#9CA3AF" fontSize="10" textAnchor="middle">Aug</text>
-            
-            {/* 曲线1：总体采用率 */}
-            <path 
-              d="M 40 60 L 80 65 L 120 55 L 160 50 L 200 45 L 240 40 L 280 35 L 320 30" 
-              fill="none" 
-              stroke="#10B981" 
-              strokeWidth="3"
-              strokeLinecap="round"
-            />
-            
-            {/* 曲线2：分配率 */}
-            <path 
-              d="M 40 80 L 80 75 L 120 70 L 160 65 L 200 60 L 240 55 L 280 50 L 320 45" 
-              fill="none" 
-              stroke="#3B82F6" 
-              strokeWidth="3"
-              strokeLinecap="round"
-            />
-            
-            {/* 图例 */}
-            <rect x="40" y="15" width="12" height="4" fill="#10B981" />
-            <text x="58" y="19" fill="#9CA3AF" fontSize="10">Overall Adoption</text>
-            <rect x="140" y="15" width="12" height="4" fill="#3B82F6" />
-            <text x="158" y="19" fill="#9CA3AF" fontSize="10">Assignment Rate</text>
-          </svg>
+        
+        <div className="overflow-x-auto">
+          <table className="min-w-full">
+            <thead className="bg-gray-700">
+              <tr>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Plan Name (Friendly)</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Plans within SKU</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Users Assigned Plan</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Accounts using plan in &lt; 30 Days</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">% Plan Assigned and Used in &lt; 30 Days</th>
+              </tr>
+            </thead>
+            <tbody className="bg-gray-800 divide-y divide-gray-700">
+              {licenseData.map((license, index) => (
+                <tr key={index} className="hover:bg-gray-750 transition-colors">
+                  <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-white">{license.name}</td>
+                  <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-300">{license.sku}</td>
+                  <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-300 text-center">{license.usersAssigned.toLocaleString()}</td>
+                  <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-300 text-center">{license.accountsUsing.toLocaleString()}</td>
+                  <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-300">
+                    <div className="flex items-center">
+                      <div className="w-24 bg-gray-700 rounded-full h-2.5 mr-2">
+                        <div 
+                          className={`h-2.5 rounded-full ${
+                            license.usagePercent > 90 ? 'bg-green-600' : 
+                            license.usagePercent > 50 ? 'bg-blue-600' : 
+                            license.usagePercent > 20 ? 'bg-yellow-600' : 'bg-red-600'
+                          }`}
+                          style={{ width: `${license.usagePercent}%` }}
+                        ></div>
+                      </div>
+                      <span>{license.usagePercent.toFixed(1)}%</span>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+              {/* 汇总行 */}
+              <tr className="bg-gray-700 font-medium">
+                <td className="px-4 py-3 whitespace-nowrap text-sm text-white">Summary</td>
+                <td className="px-4 py-3 whitespace-nowrap text-sm text-white">All SKUs</td>
+                <td className="px-4 py-3 whitespace-nowrap text-sm text-white text-center">
+                  {licenseData.reduce((sum, license) => sum + license.usersAssigned, 0).toLocaleString()}
+                </td>
+                <td className="px-4 py-3 whitespace-nowrap text-sm text-white text-center">
+                  {licenseData.reduce((sum, license) => sum + license.accountsUsing, 0).toLocaleString()}
+                </td>
+                <td className="px-4 py-3 whitespace-nowrap text-sm text-white">
+                  <div className="flex items-center">
+                    <div className="w-24 bg-gray-600 rounded-full h-2.5 mr-2">
+                      <div 
+                        className="h-2.5 rounded-full bg-blue-500"
+                        style={{ width: `${(licenseData.reduce((sum, license) => sum + license.accountsUsing, 0) / licenseData.reduce((sum, license) => sum + license.usersAssigned, 0) * 100).toFixed(1)}%` }}
+                      ></div>
+                    </div>
+                    <span>
+                      {(licenseData.reduce((sum, license) => sum + license.accountsUsing, 0) / licenseData.reduce((sum, license) => sum + license.usersAssigned, 0) * 100).toFixed(1)}%
+                    </span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

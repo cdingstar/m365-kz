@@ -56,28 +56,6 @@ const CompanyProfileTab = () => {
 
   return (
     <div className="p-6 bg-gray-900 min-h-screen">
-      {/* 页面标题和版本信息 */}
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-bold text-white">Company Profile</h1>
-        <div className="flex items-center space-x-6">
-          <div className="text-right">
-            <div className="text-sm font-medium text-gray-300">4.1</div>
-            <div className="text-xs text-gray-400">Current Version</div>
-          </div>
-          <div className="text-right">
-            <div className="text-sm font-medium text-gray-300">28-7-2025</div>
-            <div className="text-xs text-gray-400">Last Refresh</div>
-          </div>
-          <div className="w-12 h-12 bg-teal-600 rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold">M</span>
-          </div>
-          <div className="text-right">
-            <div className="text-sm font-medium text-gray-300">USD</div>
-            <div className="text-xs text-gray-400">Currency</div>
-          </div>
-        </div>
-      </div>
-
       {/* 主要内容区域：左右布局 */}
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 mb-8">
         {/* 左侧区域：包含3个摘要表格 */}
@@ -178,6 +156,31 @@ const CompanyProfileTab = () => {
               </div>
             </div>
           </div>
+          
+          {/* Regional Account Distribution - 移动到这里 */}
+          <div>
+            <h2 className="text-xl font-semibold text-white mb-4">Regional Account Distribution</h2>
+            <div className="bg-gray-800 rounded-lg shadow-lg p-6">
+              <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+                {statsCards.map((card, index) => (
+                  <div key={index} className="bg-gray-700 rounded-lg shadow p-4 text-center hover:bg-gray-650 transition-colors">
+                    <div className="w-16 h-16 bg-gray-600 rounded-full flex items-center justify-center mx-auto mb-3 hover:bg-gray-500 transition-colors">
+                      <span className="text-2xl">{card.icon}</span>
+                    </div>
+                    <h3 className="text-sm font-medium text-gray-400 mb-2 leading-tight">{card.title}</h3>
+                    <p className="text-2xl font-bold text-white">{card.value}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* 底部说明文字 */}
+              <div className="mt-6 text-center">
+                <p className="text-xs text-gray-500 leading-relaxed">
+                  ** Total Licensed Accounts = Internal and External, Enabled or Disabled users with MSFT licenses assigned
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* 右侧区域：域名图表 */}
@@ -231,99 +234,6 @@ const CompanyProfileTab = () => {
                   ))}
                 </tbody>
               </table>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* 底部区域：User Increase Chart 和统计卡片 */}
-      <div className="grid grid-cols-1 lg:grid-cols-6 gap-8">
-        {/* 左侧：User Increase Chart */}
-        <div className="lg:col-span-2">
-          <h2 className="text-xl font-semibold text-white mb-4">User Increase Chart</h2>
-          <div className="bg-gray-800 rounded-lg shadow-lg p-6">
-            <div className="w-full h-64 bg-gray-700 rounded-lg relative overflow-hidden">
-              <svg className="absolute inset-0 w-full h-full" viewBox="0 0 400 200">
-                {/* 背景网格线 */}
-                <defs>
-                  <pattern id="grid" width="40" height="20" patternUnits="userSpaceOnUse">
-                    <path d="M 40 0 L 0 0 0 20" fill="none" stroke="#4B5563" strokeWidth="0.5"/>
-                  </pattern>
-                  <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stopColor="#0D9488" stopOpacity="0.8"/>
-                    <stop offset="100%" stopColor="#0D9488" stopOpacity="0.1"/>
-                  </linearGradient>
-                </defs>
-                <rect width="100%" height="100%" fill="url(#grid)" />
-                
-                {/* Y轴标签 */}
-                <text x="15" y="20" fill="#9CA3AF" fontSize="10" textAnchor="middle">100k</text>
-                <text x="15" y="60" fill="#9CA3AF" fontSize="10" textAnchor="middle">75k</text>
-                <text x="15" y="100" fill="#9CA3AF" fontSize="10" textAnchor="middle">50k</text>
-                <text x="15" y="140" fill="#9CA3AF" fontSize="10" textAnchor="middle">25k</text>
-                <text x="15" y="180" fill="#9CA3AF" fontSize="10" textAnchor="middle">0</text>
-                
-                {/* X轴标签 */}
-                <text x="60" y="195" fill="#9CA3AF" fontSize="10" textAnchor="middle">Jan</text>
-                <text x="120" y="195" fill="#9CA3AF" fontSize="10" textAnchor="middle">Mar</text>
-                <text x="180" y="195" fill="#9CA3AF" fontSize="10" textAnchor="middle">May</text>
-                <text x="240" y="195" fill="#9CA3AF" fontSize="10" textAnchor="middle">Jul</text>
-                <text x="300" y="195" fill="#9CA3AF" fontSize="10" textAnchor="middle">Sep</text>
-                <text x="360" y="195" fill="#9CA3AF" fontSize="10" textAnchor="middle">Nov</text>
-                
-                {/* 曲线下方填充 */}
-                <path 
-                  d="M 40 160 Q 80 140 120 120 T 200 80 T 280 50 T 360 30 L 360 180 L 40 180 Z" 
-                  fill="url(#gradient)" 
-                  opacity="0.3"
-                />
-                
-                {/* 增长曲线 */}
-                <path 
-                  d="M 40 160 Q 80 140 120 120 T 200 80 T 280 50 T 360 30" 
-                  fill="none" 
-                  stroke="#0D9488" 
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                />
-                
-                {/* 数据点 */}
-                <circle cx="40" cy="160" r="4" fill="#0D9488" stroke="#fff" strokeWidth="2" />
-                <circle cx="120" cy="120" r="4" fill="#0D9488" stroke="#fff" strokeWidth="2" />
-                <circle cx="200" cy="80" r="4" fill="#0D9488" stroke="#fff" strokeWidth="2" />
-                <circle cx="280" cy="50" r="4" fill="#0D9488" stroke="#fff" strokeWidth="2" />
-                <circle cx="360" cy="30" r="4" fill="#0D9488" stroke="#fff" strokeWidth="2" />
-              </svg>
-              
-              {/* 图表标题 */}
-              <div className="absolute top-4 left-4">
-                <span className="text-gray-300 text-sm font-medium">Monthly Active Users Growth</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* 右侧：统计卡片 */}
-        <div className="lg:col-span-4">
-          <h2 className="text-xl font-semibold text-white mb-4">Regional Account Distribution</h2>
-          <div className="bg-gray-800 rounded-lg shadow-lg p-6">
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-              {statsCards.map((card, index) => (
-                <div key={index} className="bg-gray-700 rounded-lg shadow p-4 text-center hover:bg-gray-650 transition-colors">
-                  <div className="w-16 h-16 bg-gray-600 rounded-full flex items-center justify-center mx-auto mb-3 hover:bg-gray-500 transition-colors">
-                    <span className="text-2xl">{card.icon}</span>
-                  </div>
-                  <h3 className="text-sm font-medium text-gray-400 mb-2 leading-tight">{card.title}</h3>
-                  <p className="text-2xl font-bold text-white">{card.value}</p>
-                </div>
-              ))}
-            </div>
-
-            {/* 底部说明文字 */}
-            <div className="mt-6 text-center">
-              <p className="text-xs text-gray-500 leading-relaxed">
-                ** Total Licensed Accounts = Internal and External, Enabled or Disabled users with MSFT licenses assigned
-              </p>
             </div>
           </div>
         </div>

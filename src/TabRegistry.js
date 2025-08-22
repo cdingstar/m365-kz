@@ -8,7 +8,7 @@ const tabRegistry = {
   'Home/Overview': ['Company Profile', 'License Assignment', 'Optimization Summary'],
   
   // Optimize
-  'Optimize/Accounts': ['Accounts'],
+  'Optimize/Accounts': ['Active Inactive Accounts'],
   'Optimize/Plans': ['SKU Adoption'],
   
   // Adoption

@@ -187,28 +187,6 @@ const LicenseAssignmentTab = () => {
 
   return (
     <div className="p-6 bg-gray-900 min-h-screen">
-      {/* 页面标题和版本信息 */}
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-bold text-white">License Assignment</h1>
-        <div className="flex items-center space-x-6">
-          <div className="text-right">
-            <div className="text-sm font-medium text-gray-300">4.1</div>
-            <div className="text-xs text-gray-400">Current Version</div>
-          </div>
-          <div className="text-right">
-            <div className="text-sm font-medium text-gray-300">28-7-2025</div>
-            <div className="text-xs text-gray-400">Last Refresh</div>
-          </div>
-          <div className="w-12 h-12 bg-teal-600 rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold">M</span>
-          </div>
-          <div className="text-right">
-            <div className="text-sm font-medium text-gray-300">USD</div>
-            <div className="text-xs text-gray-400">Currency</div>
-          </div>
-        </div>
-      </div>
-
       {/* 投资概览卡片 */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         <div className="bg-gray-800 rounded-lg shadow-lg p-6">
@@ -218,7 +196,7 @@ const LicenseAssignmentTab = () => {
             </div>
             <div>
               <h3 className="text-sm text-gray-400">Total License Investment</h3>
-              <p className="text-xs text-gray-500">Yearly</p>
+              <p className="text-xs text-gray-500">Annually</p>
             </div>
           </div>
           <p className="text-2xl font-bold text-white">{investmentData.yearlyInvestment}</p>
@@ -230,8 +208,8 @@ const LicenseAssignmentTab = () => {
               <span className="text-white text-lg">💰</span>
             </div>
             <div>
-              <h3 className="text-sm text-gray-400">Total License Investment</h3>
-              <p className="text-xs text-gray-500">Monthly</p>
+              <h3 className="text-sm text-gray-400">Total Unassigned Cost</h3>
+              <p className="text-xs text-gray-500">Annually</p>
             </div>
           </div>
           <p className="text-2xl font-bold text-white">{investmentData.monthlyInvestment}</p>
@@ -262,9 +240,9 @@ const LicenseAssignmentTab = () => {
         </div>
       </div>
 
-      {/* License Breakdown - Top 10 表格 */}
+      {/* License Breakdown 表格 */}
       <div>
-        <h2 className="text-xl font-semibold text-white mb-4">License Breakdown - Top 10</h2>
+        <h2 className="text-xl font-semibold text-white mb-4">License Breakdown</h2>
         <div className="bg-gray-800 rounded-lg shadow-lg overflow-hidden">
           <div className="overflow-x-auto">
             <table className="min-w-full">

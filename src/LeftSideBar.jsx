@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { getDefaultTab } from './TabRegistry';
 import {
   LayoutDashboard,
@@ -76,7 +76,35 @@ const LeftSideBar = ({
     >
       <div className="flex items-center p-4 h-16 border-b border-gray-700">
         {!isSidebarCollapsed && (
-          <span className="text-xl font-bold text-[#2563eb]">MS365 SaaS</span>
+          <div className="relative group">
+            <div className="flex items-center cursor-pointer hover:scale-105 transition-transform duration-300">
+              <span className="text-xl font-bold text-[#2563eb] group-hover:text-blue-400 transition-colors duration-300">MS365 SaaS</span>
+              <ChevronDown 
+                size={16} 
+                className="ml-2 text-[#2563eb] transform transition-all duration-300 
+                           group-hover:rotate-180 group-hover:text-blue-400 group-hover:translate-y-1" 
+              />
+            </div>
+            
+            {/* 下拉菜单 */}
+            <div className="absolute left-0 mt-2 w-full bg-gray-800 rounded-md shadow-lg py-1 z-50 
+                          opacity-0 invisible group-hover:opacity-100 group-hover:visible 
+                          transition-all duration-300 transform origin-top scale-95 group-hover:scale-100
+                          border border-transparent group-hover:border-blue-800">
+              <button className="flex items-center px-4 py-2 text-sm text-[#2563eb] font-bold hover:bg-gray-700 w-full text-left
+                               transition-all duration-200 hover:pl-6 hover:text-blue-400">
+                MS365 SaaS
+              </button>
+              <button className="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 w-full text-left
+                               transition-all duration-200 hover:pl-6 hover:text-blue-400">
+                Azure SaaS
+              </button>
+              <button className="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 w-full text-left
+                               transition-all duration-200 hover:pl-6 hover:text-blue-400">
+                AWS SaaS
+              </button>
+            </div>
+          </div>
         )}
         <button
           onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}

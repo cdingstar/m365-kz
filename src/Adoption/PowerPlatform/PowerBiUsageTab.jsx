@@ -32,19 +32,7 @@ const PowerBiUsageTab = () => {
 
   return (
     <div className="p-6 bg-gray-900 min-h-screen">
-      {/* 版本信息 */}
-      <div className="flex justify-end items-center mb-8">
-        <div className="flex items-center space-x-6">
-          <div className="text-right">
-            <div className="text-sm font-medium text-gray-300">4.1</div>
-            <div className="text-xs text-gray-400">Current Version</div>
-          </div>
-          <div className="text-right">
-            <div className="text-sm font-medium text-gray-300">28-7-2025</div>
-            <div className="text-xs text-gray-400">Last Refresh</div>
-          </div>
-        </div>
-      </div>
+      {/* 删除版本信息 */}
 
       {/* 摘要卡片 */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">

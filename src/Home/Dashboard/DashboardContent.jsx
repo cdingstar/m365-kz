@@ -1,173 +1,237 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
+import { CircleDollarSign, TrendingDown, ListChecks } from 'lucide-react';
+
+// 模拟支出数据 - 过去6个月
+const spendData = [
+  { month: 'Mar', value: 3700 },
+  { month: 'Apr', value: 3850 },
+  { month: 'May', value: 4000 },
+  { month: 'Jun', value: 4200 },
+  { month: 'Jul', value: 4100 },
+  { month: 'Aug', value: 4000 },
+];
+
+// 模拟账户数据 - 过去6个月
+const accountsData = [
+  { month: 'Mar', value: 780 },
+  { month: 'Apr', value: 790 },
+  { month: 'May', value: 800 },
+  { month: 'Jun', value: 805 },
+  { month: 'Jul', value: 810 },
+  { month: 'Aug', value: 815 },
+];
 
 const DashboardContent = () => {
-  // 仪表盘数据
-  const summaryCards = [
-    { title: 'Total Users', value: '86,295', change: '+2.4%', icon: '👥' },
-    { title: 'Licensed Accounts', value: '41,725', change: '+1.2%', icon: '🔑' },
-    { title: 'Monthly Cost', value: '$1,163,311', change: '-3.5%', icon: '💰' },
-    { title: 'Active Devices', value: '49,290', change: '+5.7%', icon: '💻' }
-  ];
-
-  const adoptionMetrics = [
-    { product: 'Microsoft 365 E3', total: 1200, active: 980, percentage: 82 },
-    { product: 'Microsoft 365 E5', total: 450, active: 410, percentage: 91 },
-    { product: 'Office 365 E1', total: 300, active: 245, percentage: 82 },
-    { product: 'Exchange Online', total: 200, active: 185, percentage: 93 }
-  ];
+  // 添加状态来跟踪选中的项目
+  const [selectedSpendItem, setSelectedSpendItem] = useState('licenseConsumed');
+  const [selectedOperationItem, setSelectedOperationItem] = useState('accounts');
 
   return (
-    <div className="p-6 bg-gray-900 min-h-screen">
-      {/* 页面标题和版本信息 */}
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-bold text-white">Dashboard</h1>
-        <div className="flex items-center space-x-6">
-          <div className="text-right">
-            <div className="text-sm font-medium text-gray-300">4.1</div>
-            <div className="text-xs text-gray-400">Current Version</div>
+    <div className="p-4 bg-gray-900 h-screen flex flex-col overflow-hidden">
+      {/* 顶部卡片 */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+        {/* 支出卡片 */}
+        <div className="bg-gray-800 rounded-lg shadow-lg flex">
+          <div className="bg-teal-900/30 p-4 flex items-center justify-center rounded-l-lg">
+            <CircleDollarSign size={36} className="text-teal-500" />
           </div>
-          <div className="text-right">
-            <div className="text-sm font-medium text-gray-300">28-7-2025</div>
-            <div className="text-xs text-gray-400">Last Refresh</div>
-          </div>
-        </div>
-      </div>
-
-      {/* 摘要卡片 */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        {summaryCards.map((card, index) => (
-          <div key={index} className="bg-gray-800 rounded-lg shadow-lg p-6 hover:bg-gray-750 transition-colors">
-            <div className="flex justify-between items-start">
-              <div>
-                <p className="text-gray-400 text-sm">{card.title}</p>
-                <p className="text-2xl font-bold text-white mt-1">{card.value}</p>
-                <p className={`text-sm mt-2 ${card.change.startsWith('+') ? 'text-green-500' : 'text-red-500'}`}>
-                  {card.change} from last month
-                </p>
-              </div>
-              <div className="w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center text-2xl">
-                {card.icon}
-              </div>
+          <div className="p-4 flex-1">
+            <h3 className="text-gray-400 font-medium">Spend</h3>
+            <div className="flex justify-between items-center mt-1">
+              <span className="text-4xl font-bold text-white">£4K</span>
+              <span className="text-red-500">-£311.05</span>
             </div>
           </div>
-        ))}
-      </div>
-
-      {/* 主要内容区域：左右布局 */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-        {/* 左侧区域：许可证使用情况 */}
-        <div className="lg:col-span-2 bg-gray-800 rounded-lg shadow-lg p-6">
-          <h2 className="text-xl font-semibold text-white mb-4">License Usage Overview</h2>
-          <div className="overflow-x-auto">
-            <table className="min-w-full">
-              <thead className="bg-gray-700">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Product</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Total</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Active</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Usage %</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Progress</th>
-                </tr>
-              </thead>
-              <tbody className="bg-gray-800 divide-y divide-gray-700">
-                {adoptionMetrics.map((item, index) => (
-                  <tr key={index} className="hover:bg-gray-750 transition-colors">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">{item.product}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{item.total}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{item.active}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{item.percentage}%</td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="w-full bg-gray-700 rounded-full h-2.5">
-                        <div 
-                          className={`h-2.5 rounded-full ${
-                            item.percentage > 85 ? 'bg-green-600' : 
-                            item.percentage > 70 ? 'bg-blue-600' : 'bg-yellow-600'
-                          }`}
-                          style={{ width: `${item.percentage}%` }}
-                        ></div>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
         </div>
-
-        {/* 右侧区域：快速访问 */}
-        <div className="bg-gray-800 rounded-lg shadow-lg p-6">
-          <h2 className="text-xl font-semibold text-white mb-4">Quick Access</h2>
-          <div className="space-y-4">
-            <button className="w-full bg-gray-700 hover:bg-gray-650 text-white p-4 rounded-lg flex items-center transition-colors">
-              <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center mr-4">
-                <span className="text-xl">📊</span>
-              </div>
-              <div className="text-left">
-                <p className="font-medium">License Assignment</p>
-                <p className="text-sm text-gray-400">View and manage licenses</p>
-              </div>
-            </button>
-            
-            <button className="w-full bg-gray-700 hover:bg-gray-650 text-white p-4 rounded-lg flex items-center transition-colors">
-              <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center mr-4">
-                <span className="text-xl">👥</span>
-              </div>
-              <div className="text-left">
-                <p className="font-medium">Active Accounts</p>
-                <p className="text-sm text-gray-400">Manage user accounts</p>
-              </div>
-            </button>
-            
-            <button className="w-full bg-gray-700 hover:bg-gray-650 text-white p-4 rounded-lg flex items-center transition-colors">
-              <div className="w-10 h-10 bg-teal-600 rounded-lg flex items-center justify-center mr-4">
-                <span className="text-xl">📱</span>
-              </div>
-              <div className="text-left">
-                <p className="font-medium">Power Platform</p>
-                <p className="text-sm text-gray-400">View usage analytics</p>
-              </div>
-            </button>
-            
-            <button className="w-full bg-gray-700 hover:bg-gray-650 text-white p-4 rounded-lg flex items-center transition-colors">
-              <div className="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center mr-4">
-                <span className="text-xl">💬</span>
-              </div>
-              <div className="text-left">
-                <p className="font-medium">Teams Usage</p>
-                <p className="text-sm text-gray-400">Monitor Teams adoption</p>
-              </div>
-            </button>
+        
+        {/* 节省卡片 */}
+        <div className="bg-gray-800 rounded-lg shadow-lg flex">
+          <div className="bg-green-900/30 p-4 flex items-center justify-center rounded-l-lg">
+            <TrendingDown size={36} className="text-green-500" />
           </div>
-        </div>
-      </div>
-
-      {/* 底部区域：最近活动 */}
-      <div className="bg-gray-800 rounded-lg shadow-lg p-6">
-        <h2 className="text-xl font-semibold text-white mb-4">Recent Activities</h2>
-        <div className="space-y-4">
-          {[1, 2, 3, 4].map((item, index) => (
-            <div key={index} className="flex items-start p-3 hover:bg-gray-750 rounded-lg transition-colors">
-              <div className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center mr-4">
-                <span className="text-lg">
-                  {index === 0 ? '🔑' : index === 1 ? '👤' : index === 2 ? '📊' : '⚙️'}
-                </span>
-              </div>
-              <div>
-                <p className="text-white font-medium">
-                  {index === 0 ? 'License allocation updated' : 
-                   index === 1 ? 'New user accounts added' : 
-                   index === 2 ? 'Monthly report generated' : 
-                   'System maintenance completed'}
-                </p>
-                <p className="text-sm text-gray-400">
-                  {index === 0 ? '2 hours ago' : 
-                   index === 1 ? 'Yesterday' : 
-                   index === 2 ? '3 days ago' : 
-                   '1 week ago'}
-                </p>
-              </div>
+          <div className="p-4 flex-1">
+            <h3 className="text-gray-400 font-medium">Savings</h3>
+            <div className="flex justify-between items-center mt-1">
+              <span className="text-4xl font-bold text-white">£1.67K</span>
+              <span className="text-red-500">-£1,529.03</span>
             </div>
-          ))}
+          </div>
+        </div>
+        
+        {/* 推荐卡片 */}
+        <div className="bg-gray-800 rounded-lg shadow-lg flex">
+          <div className="bg-blue-900/30 p-4 flex items-center justify-center rounded-l-lg">
+            <ListChecks size={36} className="text-blue-500" />
+          </div>
+          <div className="p-4 flex-1">
+            <h3 className="text-gray-400 font-medium">Recommendations</h3>
+            <div className="flex justify-between items-center mt-1">
+              <span className="text-4xl font-bold text-white">999</span>
+              <span className="text-red-500">-101</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 支出概览部分 */}
+      <div className="bg-gray-800 rounded-lg p-4 shadow-lg mb-4 h-[calc(42.5%-2.5rem)]">
+        <h2 className="text-lg font-semibold text-white mb-3">Spend Overview</h2>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-3">
+          {/* 许可证消费 */}
+          <div 
+            className={`p-4 rounded-lg cursor-pointer transition-colors duration-200 border ${selectedSpendItem === 'licenseConsumed' ? 'bg-teal-900/30 border-teal-600' : 'border-transparent hover:bg-gray-700'}`}
+            onClick={() => setSelectedSpendItem('licenseConsumed')}
+          >
+            <h3 className="text-gray-400 font-medium mb-2">License Consumed</h3>
+            <div className="flex justify-between items-center">
+              <span className="text-2xl font-bold text-white">£4K</span>
+              <span className="text-red-500">-7.8%</span>
+            </div>
+          </div>
+          
+          {/* 许可证浪费 */}
+          <div 
+            className={`p-4 rounded-lg cursor-pointer transition-colors duration-200 border ${selectedSpendItem === 'licenseWastage' ? 'bg-teal-900/30 border-teal-600' : 'border-transparent hover:bg-gray-700'}`}
+            onClick={() => setSelectedSpendItem('licenseWastage')}
+          >
+            <h3 className="text-gray-400 font-medium mb-2">License Wastage</h3>
+            <div className="flex justify-between items-center">
+              <span className="text-2xl font-bold text-white">£45</span>
+              <span className="text-red-500">-84.8%</span>
+            </div>
+          </div>
+          
+          {/* 节省潜力 */}
+          <div 
+            className={`p-4 rounded-lg cursor-pointer transition-colors duration-200 border ${selectedSpendItem === 'savingsPotential' ? 'bg-teal-900/30 border-teal-600' : 'border-transparent hover:bg-gray-700'}`}
+            onClick={() => setSelectedSpendItem('savingsPotential')}
+          >
+            <h3 className="text-gray-400 font-medium mb-2">Savings Potential</h3>
+            <div className="flex justify-between items-center">
+              <span className="text-2xl font-bold text-white">£1.1K</span>
+              <span className="text-red-500">-40.8%</span>
+            </div>
+          </div>
+        </div>
+        
+        {/* 支出趋势图表 */}
+        <div className="h-[calc(100%-100px)]">
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart
+              data={spendData}
+              margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+            >
+              <defs>
+                <linearGradient id="colorSpend" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#0D9488" stopOpacity={0.8} />
+                  <stop offset="95%" stopColor="#0D9488" stopOpacity={0.1} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#4B5563" />
+              <XAxis dataKey="month" tick={{ fontSize: 12, fill: '#9CA3AF' }} tickLine={false} axisLine={false} />
+              <YAxis
+                domain={['dataMin - 300', 'dataMax + 300']}
+                tick={{ fontSize: 12, fill: '#9CA3AF' }}
+                tickLine={false}
+                axisLine={false}
+                tickFormatter={(value) => `£${value / 1000}K`}
+              />
+              <Tooltip 
+                contentStyle={{ backgroundColor: '#1F2937', borderColor: '#374151', color: '#F9FAFB' }}
+                formatter={(value) => [`£${value}`, 'Spend']}
+                labelStyle={{ color: '#F9FAFB' }}
+              />
+              <Area
+                type="monotone"
+                dataKey="value"
+                stroke="#0D9488"
+                fillOpacity={1}
+                fill="url(#colorSpend)"
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      {/* 运营部分 */}
+      <div className="bg-gray-800 rounded-lg p-4 shadow-lg h-[calc(42.5%-2.5rem)]">
+        <h2 className="text-lg font-semibold text-white mb-3">Operations</h2>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-3">
+          {/* 账户 */}
+          <div 
+            className={`p-4 rounded-lg cursor-pointer transition-colors duration-200 border ${selectedOperationItem === 'accounts' ? 'bg-teal-900/30 border-teal-600' : 'border-transparent hover:bg-gray-700'}`}
+            onClick={() => setSelectedOperationItem('accounts')}
+          >
+            <h3 className="text-gray-400 font-medium mb-2">Accounts</h3>
+            <div className="flex justify-between items-center">
+              <span className="text-2xl font-bold text-white">815</span>
+              <span className="text-green-500">1.9%</span>
+            </div>
+          </div>
+          
+          {/* 端点 */}
+          <div 
+            className={`p-4 rounded-lg cursor-pointer transition-colors duration-200 border ${selectedOperationItem === 'endpoints' ? 'bg-teal-900/30 border-teal-600' : 'border-transparent hover:bg-gray-700'}`}
+            onClick={() => setSelectedOperationItem('endpoints')}
+          >
+            <h3 className="text-gray-400 font-medium mb-2">Endpoints</h3>
+            <div className="flex justify-between items-center">
+              <span className="text-2xl font-bold text-white">391</span>
+              <span className="text-green-500">4%</span>
+            </div>
+          </div>
+          
+          {/* 群组 */}
+          <div 
+            className={`p-4 rounded-lg cursor-pointer transition-colors duration-200 border ${selectedOperationItem === 'groups' ? 'bg-teal-900/30 border-teal-600' : 'border-transparent hover:bg-gray-700'}`}
+            onClick={() => setSelectedOperationItem('groups')}
+          >
+            <h3 className="text-gray-400 font-medium mb-2">Groups</h3>
+            <div className="flex justify-between items-center">
+              <span className="text-2xl font-bold text-white">455</span>
+              <span className="text-green-500">2%</span>
+            </div>
+          </div>
+        </div>
+        
+        {/* 账户趋势图表 */}
+        <div className="h-[calc(100%-100px)]">
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart
+              data={accountsData}
+              margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+            >
+              <defs>
+                <linearGradient id="colorAccounts" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#0D9488" stopOpacity={0.8} />
+                  <stop offset="95%" stopColor="#0D9488" stopOpacity={0.1} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#4B5563" />
+              <XAxis dataKey="month" tick={{ fontSize: 12, fill: '#9CA3AF' }} tickLine={false} axisLine={false} />
+              <YAxis
+                domain={['dataMin - 20', 'dataMax + 20']}
+                tick={{ fontSize: 12, fill: '#9CA3AF' }}
+                tickLine={false}
+                axisLine={false}
+              />
+              <Tooltip 
+                contentStyle={{ backgroundColor: '#1F2937', borderColor: '#374151', color: '#F9FAFB' }}
+                formatter={(value) => [`${value}`, 'Accounts']}
+                labelStyle={{ color: '#F9FAFB' }}
+              />
+              <Area
+                type="monotone"
+                dataKey="value"
+                stroke="#0D9488"
+                fillOpacity={1}
+                fill="url(#colorAccounts)"
+              />
+            </AreaChart>
+          </ResponsiveContainer>
         </div>
       </div>
     </div>

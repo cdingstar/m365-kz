@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
-import AccountsTab from './AccountsTab';
+import React from 'react';
+import ActiveInactiveAccountsTab from './ActiveInactiveAccountsTab';
 import { registerTabs } from '../../TabRegistry';
 
 // 定义该组件的标签页
-const TABS = ['Accounts'];
+const TABS = ['Active Inactive Accounts'];
 
 // 注册标签页
 registerTabs('Optimize/Accounts', TABS);
@@ -13,7 +13,7 @@ const AccountsContent = () => {
     <div className="min-h-screen bg-gray-900">
       {/* 标签内容 */}
       <div className="w-full">
-        <AccountsTab />
+        <ActiveInactiveAccountsTab />
       </div>
     </div>
   );

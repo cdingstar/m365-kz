@@ -88,22 +88,36 @@ const Header = ({ currentPath, onLogout, activeTab, tabs, onTabChange }) => {
       {/* Tab navigation bar */}
       {tabs && tabs.length > 0 && (
         <div className="px-8 py-4 border-t border-gray-700">
-          <div className="flex space-x-8">
-            {tabs.map((tab) => (
-              <button
-                key={tab}
-                onClick={() => onTabChange && onTabChange(tab)}
-                className={`
-                  pb-2 font-bold text-xl transition-colors whitespace-nowrap
-                  ${activeTab === tab
-                    ? 'text-[#2563eb] border-b-2 border-[#2563eb]'
-                    : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'
-                  }
-                `}
-              >
-                {tab}
-              </button>
-            ))}
+          <div className="flex justify-between items-center">
+            <div className="flex space-x-8">
+              {tabs.map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => onTabChange && onTabChange(tab)}
+                  className={`
+                    pb-2 font-bold text-xl transition-colors whitespace-nowrap
+                    ${activeTab === tab
+                      ? 'text-[#2563eb] border-b-2 border-[#2563eb]'
+                      : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'
+                    }
+                  `}
+                >
+                  {tab}
+                </button>
+              ))}
+            </div>
+            
+            {/* 日期和货币信息 */}
+            <div className="flex items-center space-x-6">
+              <div className="text-right">
+                <div className="text-sm font-medium text-gray-300">28-7-2025</div>
+                <div className="text-xs text-gray-400">Last Refresh</div>
+              </div>
+              <div className="text-right">
+                <div className="text-sm font-medium text-gray-300">USD</div>
+                <div className="text-xs text-gray-400">Currency</div>
+              </div>
+            </div>
           </div>
         </div>
       )}

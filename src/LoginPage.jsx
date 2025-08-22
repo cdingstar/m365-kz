@@ -1,8 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const LoginPage = ({ onLogin }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [countdown, setCountdown] = useState(3);
+
+  // 添加自动跳过登录的计时器
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onLogin();
+    }, 3000);
+
+    // 倒计时显示
+    const countdownInterval = setInterval(() => {
+      setCountdown((prevCount) => prevCount - 1);
+    }, 1000);
+
+    // 如果用户点击了页面上的任何元素，清除计时器
+    const handleUserInteraction = () => {
+      clearTimeout(timer);
+      clearInterval(countdownInterval);
+    };
+
+    document.addEventListener('click', handleUserInteraction);
+    document.addEventListener('keydown', handleUserInteraction);
+
+    return () => {
+      clearTimeout(timer);
+      clearInterval(countdownInterval);
+      document.removeEventListener('click', handleUserInteraction);
+      document.removeEventListener('keydown', handleUserInteraction);
+    };
+  }, [onLogin]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
