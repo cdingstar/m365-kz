@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import DateRangePicker from '../../components/DateRangePicker';
-import { Calendar, License, Users, BarChart, TrendingUp } from 'lucide-react';
+import { Calendar, Key, Users, BarChart, TrendingUp } from 'lucide-react';
 
 const PowerBiUsageTab = () => {
   const [dateRange, setDateRange] = useState('2024/8/24 - 2025/8/23');
@@ -94,7 +94,7 @@ const PowerBiUsageTab = () => {
         <div className="bg-gray-800 rounded-lg shadow-lg p-6">
           <div className="flex items-start">
             <div className="mr-4">
-              <License size={36} className="text-blue-500" />
+              <Key size={36} className="text-blue-500" />
             </div>
             <div>
               <h3 className="text-gray-400 text-sm mb-1">Assigned Power BI Capable Licenses</h3>
