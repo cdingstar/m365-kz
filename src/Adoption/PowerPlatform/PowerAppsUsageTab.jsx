@@ -1,231 +1,274 @@
-import React from 'react';
+import React, { useState } from 'react';
+import DateRangePicker from '../../components/DateRangePicker';
+import { Calendar, Key, Users, BarChart, TrendingUp } from 'lucide-react';
 
 const PowerAppsUsageTab = () => {
-  // Power Apps 使用数据
+  const [dateRange, setDateRange] = useState('2024/8/24 - 2025/8/23');
+  
+  const handleDateRangeChange = (newRange) => {
+    setDateRange(newRange);
+  };
+  // Power Apps App Summary Usage by User 数据
+  const userSummaryData = [
+    { userId: '0dd552621a9eaf9d45d89bc372292cd8ddd908f', userCount: 1, appCount: 5, lastSignin: 1 },
+    { userId: '193a88f139039254246c6b2472aff5c059c693b4', userCount: 1, appCount: 2, lastSignin: 1 },
+    { userId: '1a1ac37c6620f4961559b46f427092428796437', userCount: 1, appCount: 4, lastSignin: 1 },
+    { userId: '4fcad4802620c25dd1471dc11d887fb521bc3b1', userCount: 1, appCount: 5, lastSignin: 1 },
+    { userId: '571710b20467afcc1a4f4d1acafb6dd6f39ad806', userCount: 1, appCount: 1, lastSignin: 1 },
+    { userId: '9de963cc329a626083d34a26c6766cdc7a1d37a4', userCount: 1, appCount: 2, lastSignin: 1 },
+    { userId: 'b0ca73216498c61b1c2c3019458cd3f8cd5c6c4', userCount: 1, appCount: 2, lastSignin: 1 },
+    { userId: 'bb9c38772dbcf13977451da3db554d9654140456', userCount: 1, appCount: 4, lastSignin: 1 },
+    { userId: 'cb6130545d2a92a46f75c0431af1e4bcc58bc7f', userCount: 1, appCount: 2, lastSignin: 1 },
+    { userId: 'cfa5becfc38b34ac57821c2bc78337c6019c28a', userCount: 1, appCount: 4, lastSignin: 1 },
+    { userId: 'd0f497cb3f8db082dc66c8638c3f68bb00ba239', userCount: 1, appCount: 4, lastSignin: 1 }
+  ];
+
+  // Power Apps App Summary Detail 数据
+  const appDetailData = [
+    { userId: '0dd552621a9eaf9d45d89bc372292cd8ddd908f', userCount: 1, lastSigninDays: 1, app: 'Microsoft Power Apps', pbiUserAssigned: 2 },
+    { userId: '193a88f139039254246c6b2472aff5c059c693b4', userCount: 1, lastSigninDays: 1, app: 'Microsoft Power Apps', pbiUserAssigned: 1 },
+    { userId: '1a1ac37c6620f4961559b46f427092428796437', userCount: 1, lastSigninDays: 1, app: 'Microsoft Power Apps', pbiUserAssigned: 2 },
+    { userId: '4fcad4802620c25dd1471dc11d887fb521bc3b1', userCount: 1, lastSigninDays: 1, app: 'Microsoft Power Apps', pbiUserAssigned: 2 },
+    { userId: '571710b20467afcc1a4f4d1acafb6dd6f39ad806', userCount: 1, lastSigninDays: 1, app: 'Microsoft Power Apps', pbiUserAssigned: 1 },
+    { userId: '9de963cc329a626083d34a26c6766cdc7a1d37a4', userCount: 1, lastSigninDays: 1, app: 'Microsoft Power Apps', pbiUserAssigned: 1 }
+  ];
+
+  // Power Apps App Usage 数据
+  const appUsageData = [
+    { app: 'Microsoft Power Apps', count: 70 },
+    { app: 'Power Apps Service', count: 60 },
+    { app: 'Power Apps Data Refresh', count: 25 },
+    { app: 'Power Apps Desktop', count: 18 },
+    { app: 'SLIM Power Apps', count: 16 },
+    { app: 'Power Apps Community - Prod', count: 3 },
+    { app: 'Power Apps PowerShell', count: 2 }
+  ];
+
+  // Assigned Power Apps Capable Licenses to App Users 数据
+  const licenseData = [
+    { license: 'Power Apps Pro', count: 41 },
+    { license: 'Power Apps (Free)', count: 35 }
+  ];
+
+  // Power Apps 使用数据（按部门）
   const powerAppsUsageData = [
-    { department: 'Finance', totalUsers: 25, activeUsers: 18, apps: 12, adoptionRate: 72 },
-    { department: 'Sales', totalUsers: 30, activeUsers: 22, apps: 15, adoptionRate: 73 },
-    { department: 'Marketing', totalUsers: 20, activeUsers: 15, apps: 10, adoptionRate: 75 },
-    { department: 'IT', totalUsers: 15, activeUsers: 14, apps: 20, adoptionRate: 93 },
-    { department: 'Operations', totalUsers: 20, activeUsers: 12, apps: 8, adoptionRate: 60 },
-    { department: 'HR', totalUsers: 10, activeUsers: 5, apps: 6, adoptionRate: 50 }
+    { department: 'Finance', totalUsers: 45, activeUsers: 40, reports: 28, dashboards: 12, adoptionRate: 89 },
+    { department: 'Sales', totalUsers: 60, activeUsers: 48, reports: 35, dashboards: 15, adoptionRate: 80 },
+    { department: 'Marketing', totalUsers: 35, activeUsers: 30, reports: 22, dashboards: 10, adoptionRate: 86 },
+    { department: 'IT', totalUsers: 25, activeUsers: 24, reports: 30, dashboards: 18, adoptionRate: 96 },
+    { department: 'Operations', totalUsers: 30, activeUsers: 25, reports: 20, dashboards: 8, adoptionRate: 83 },
+    { department: 'HR', totalUsers: 15, activeUsers: 10, reports: 12, dashboards: 5, adoptionRate: 67 }
   ];
 
-  // 热门应用数据
-  const topApps = [
-    { name: 'Expense Approval', launches: 320, department: 'Finance', creator: 'John Smith' },
-    { name: 'Sales Lead Tracker', launches: 280, department: 'Sales', creator: 'Sarah Johnson' },
-    { name: 'Marketing Campaign Manager', launches: 240, department: 'Marketing', creator: 'Michael Brown' },
-    { name: 'IT Ticket System', launches: 220, department: 'IT', creator: 'Emily Davis' },
-    { name: 'Inventory Checker', launches: 180, department: 'Operations', creator: 'Robert Wilson' }
+  // 报表使用趋势数据
+  const reportUsageTrend = [
+    { month: 'Jan', views: 1250, interactions: 850, exports: 320 },
+    { month: 'Feb', views: 1320, interactions: 920, exports: 350 },
+    { month: 'Mar', views: 1450, interactions: 980, exports: 380 },
+    { month: 'Apr', views: 1520, interactions: 1050, exports: 410 },
+    { month: 'May', views: 1680, interactions: 1150, exports: 450 },
+    { month: 'Jun', views: 1750, interactions: 1220, exports: 480 }
   ];
 
-  // 应用类型分布
-  const appTypeDistribution = [
-    { type: 'Canvas Apps', count: 42, percentage: 60 },
-    { type: 'Model-driven Apps', count: 18, percentage: 26 },
-    { type: 'Portal Apps', count: 10, percentage: 14 }
+  // 热门报表数据
+  const topReports = [
+    { name: 'Financial Dashboard', views: 450, department: 'Finance', creator: 'John Smith' },
+    { name: 'Sales Performance', views: 420, department: 'Sales', creator: 'Sarah Johnson' },
+    { name: 'Marketing Campaign Analysis', views: 380, department: 'Marketing', creator: 'Michael Brown' },
+    { name: 'IT Infrastructure Metrics', views: 350, department: 'IT', creator: 'Emily Davis' },
+    { name: 'Operations KPIs', views: 320, department: 'Operations', creator: 'Robert Wilson' }
   ];
 
   return (
     <div className="p-6 bg-gray-900 min-h-screen">
-      {/* 删除版本信息 */}
+      {/* 日期范围显示 */}
+      <div className="flex justify-end mb-4">
+        <DateRangePicker 
+          initialDateRange={dateRange}
+          onDateRangeChange={handleDateRangeChange}
+        />
+      </div>
 
-      {/* 摘要卡片 */}
+      {/* 摘要卡片 - 移动到顶部 */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <div className="bg-gray-800 rounded-lg shadow-lg p-6">
-          <h3 className="text-gray-400 text-sm mb-1">Total Power Apps Users</h3>
-          <p className="text-2xl font-bold text-white">120</p>
-          <p className="text-sm text-green-500 mt-2">+8.0% from last month</p>
+          <div className="flex items-start">
+            <div className="mr-4">
+              <Key size={36} className="text-blue-500" />
+            </div>
+            <div>
+              <h3 className="text-gray-400 text-sm mb-1">Assigned Power Apps Capable Licenses</h3>
+              <p className="text-2xl font-bold text-white">80</p>
+            </div>
+          </div>
         </div>
         <div className="bg-gray-800 rounded-lg shadow-lg p-6">
-          <h3 className="text-gray-400 text-sm mb-1">Active Users</h3>
-          <p className="text-2xl font-bold text-white">86</p>
-          <p className="text-sm text-green-500 mt-2">+12.5% from last month</p>
+          <div className="flex items-start">
+            <div className="mr-4">
+              <Users size={36} className="text-green-500" />
+            </div>
+            <div>
+              <h3 className="text-gray-400 text-sm mb-1">Power Apps Capable Users</h3>
+              <p className="text-2xl font-bold text-white">64</p>
+            </div>
+          </div>
         </div>
         <div className="bg-gray-800 rounded-lg shadow-lg p-6">
-          <h3 className="text-gray-400 text-sm mb-1">Total Apps</h3>
-          <p className="text-2xl font-bold text-white">70</p>
-          <p className="text-sm text-green-500 mt-2">+15.0% from last month</p>
+          <div className="flex items-start">
+            <div className="mr-4">
+              <BarChart size={36} className="text-yellow-500" />
+            </div>
+            <div>
+              <h3 className="text-gray-400 text-sm mb-1">Power Apps App Users</h3>
+              <p className="text-2xl font-bold text-white">102</p>
+            </div>
+          </div>
         </div>
         <div className="bg-gray-800 rounded-lg shadow-lg p-6">
-          <h3 className="text-gray-400 text-sm mb-1">Overall Adoption Rate</h3>
-          <p className="text-2xl font-bold text-white">72%</p>
-          <p className="text-sm text-green-500 mt-2">+4.0% from last month</p>
+          <div className="flex items-start">
+            <div className="mr-4">
+              <TrendingUp size={36} className="text-purple-500" />
+            </div>
+            <div>
+              <h3 className="text-gray-400 text-sm mb-1">Power Apps User Utilisation</h3>
+              <p className="text-2xl font-bold text-white">159.4%</p>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* 主要内容区域：左右布局 */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-        {/* 左侧区域：部门使用情况表格 */}
-        <div className="lg:col-span-2 bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+      {/* 应用使用情况和许可证信息 - 移动到顶部 */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        {/* Power Apps App Usage */}
+        <div className="bg-gray-800 rounded-lg shadow-lg p-6">
+          <h2 className="text-xl font-semibold text-white mb-4">Power Apps App Usage</h2>
+          <div className="h-64 bg-gray-700 rounded-lg p-4 relative">
+            {appUsageData.map((item, index) => (
+              <div key={index} className="flex items-center mb-3">
+                <div className="w-32 text-sm text-gray-300">{item.app}</div>
+                <div className="flex-1 mx-2">
+                  <div className="bg-gray-600 h-6 rounded-md relative">
+                    <div 
+                      className="bg-blue-500 h-6 rounded-md"
+                      style={{ width: `${(item.count / 70) * 100}%` }}
+                    ></div>
+                    <div className="absolute right-2 top-1/2 transform -translate-y-1/2 text-white text-xs">
+                      {item.count}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+            <div className="absolute bottom-4 left-0 right-0 flex justify-between px-4">
+              <div className="text-xs text-gray-400">0</div>
+              <div className="text-xs text-gray-400">50</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Assigned Power Apps Capable Licenses to App Users */}
+        <div className="bg-gray-800 rounded-lg shadow-lg p-6">
+          <h2 className="text-xl font-semibold text-white mb-4">Assigned Power Apps Capable Licenses to App Users</h2>
+          <div className="h-64 bg-gray-700 rounded-lg p-4 relative">
+            {licenseData.map((item, index) => (
+              <div key={index} className="flex items-center mb-3">
+                <div className="w-32 text-sm text-gray-300">{item.license}</div>
+                <div className="flex-1 mx-2">
+                  <div className="bg-gray-600 h-6 rounded-md relative">
+                    <div 
+                      className="bg-blue-500 h-6 rounded-md"
+                      style={{ width: `${(item.count / 41) * 100}%` }}
+                    ></div>
+                    <div className="absolute right-2 top-1/2 transform -translate-y-1/2 text-white text-xs">
+                      {item.count}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+            <div className="absolute bottom-4 left-0 right-0 flex justify-between px-4">
+              <div className="text-xs text-gray-400">0</div>
+              <div className="text-xs text-gray-400">10</div>
+              <div className="text-xs text-gray-400">20</div>
+              <div className="text-xs text-gray-400">30</div>
+              <div className="text-xs text-gray-400">40</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 用户摘要和应用详情部分 - 移动到顶部 */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        {/* 左侧：Power Apps App Summary Usage by User */}
+        <div className="bg-gray-800 rounded-lg shadow-lg overflow-hidden">
           <div className="p-4 border-b border-gray-700">
-            <h2 className="text-xl font-semibold text-white">Power Apps Usage by Department</h2>
+            <h2 className="text-xl font-semibold text-white">Power Apps App Summary Usage by User</h2>
           </div>
           <div className="overflow-x-auto">
             <table className="min-w-full">
               <thead className="bg-gray-700">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Department</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Total Users</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Active Users</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Apps</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Adoption Rate</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">User using Power Apps Apps (Auth to Power Apps)</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"># User</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">App Count</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Last App signin (Days)</th>
                 </tr>
               </thead>
               <tbody className="bg-gray-800 divide-y divide-gray-700">
-                {powerAppsUsageData.map((dept, index) => (
+                {userSummaryData.map((item, index) => (
                   <tr key={index} className="hover:bg-gray-750 transition-colors">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">{dept.department}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{dept.totalUsers}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{dept.activeUsers}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{dept.apps}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center">
-                        <div className="w-full bg-gray-700 rounded-full h-2.5 mr-2 max-w-[100px]">
-                          <div 
-                            className={`h-2.5 rounded-full ${
-                              dept.adoptionRate >= 90 ? 'bg-green-600' : 
-                              dept.adoptionRate >= 70 ? 'bg-blue-600' : 
-                              dept.adoptionRate >= 50 ? 'bg-yellow-600' : 'bg-red-600'
-                            }`}
-                            style={{ width: `${dept.adoptionRate}%` }}
-                          ></div>
-                        </div>
-                        <span className="text-sm text-gray-300">{dept.adoptionRate}%</span>
-                      </div>
-                    </td>
+                    <td className="px-4 py-2 whitespace-nowrap text-sm text-white">{item.userId}</td>
+                    <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-300">{item.userCount}</td>
+                    <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-300">{item.appCount}</td>
+                    <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-300">{item.lastSignin}</td>
                   </tr>
                 ))}
+                <tr className="bg-gray-700 font-medium">
+                  <td className="px-4 py-2 whitespace-nowrap text-sm text-white">总计</td>
+                  <td className="px-4 py-2 whitespace-nowrap text-sm text-white">83</td>
+                  <td className="px-4 py-2 whitespace-nowrap text-sm text-white">194</td>
+                  <td className="px-4 py-2 whitespace-nowrap text-sm text-white"></td>
+                </tr>
               </tbody>
             </table>
           </div>
         </div>
 
-        {/* 右侧区域：应用类型分布 */}
-        <div className="bg-gray-800 rounded-lg shadow-lg p-6">
-          <h2 className="text-xl font-semibold text-white mb-4">App Type Distribution</h2>
-          <div className="space-y-4">
-            {appTypeDistribution.map((type, index) => (
-              <div key={index} className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium text-white">{type.type}</span>
-                  <span className="text-sm text-gray-400">{type.count} ({type.percentage}%)</span>
-                </div>
-                <div className="w-full bg-gray-700 rounded-full h-2.5">
-                  <div 
-                    className={`h-2.5 rounded-full ${
-                      index === 0 ? 'bg-purple-600' : 
-                      index === 1 ? 'bg-blue-600' : 'bg-teal-600'
-                    }`}
-                    style={{ width: `${type.percentage}%` }}
-                  ></div>
-                </div>
-              </div>
-            ))}
+        {/* 右侧：Power Apps App Summary Detail */}
+        <div className="bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+          <div className="p-4 border-b border-gray-700">
+            <h2 className="text-xl font-semibold text-white">Power Apps App Summary Detail</h2>
           </div>
-          <div className="mt-6 pt-6 border-t border-gray-700">
-            <h3 className="text-lg font-medium text-white mb-4">App Creation Trend</h3>
-            <div className="h-40 bg-gray-700 rounded-lg relative overflow-hidden">
-              <svg className="absolute inset-0 w-full h-full" viewBox="0 0 200 100">
-                {/* 背景网格线 */}
-                <defs>
-                  <pattern id="smallgrid" width="10" height="10" patternUnits="userSpaceOnUse">
-                    <path d="M 10 0 L 0 0 0 10" fill="none" stroke="#4B5563" strokeWidth="0.5"/>
-                  </pattern>
-                </defs>
-                <rect width="100%" height="100%" fill="url(#smallgrid)" />
-                
-                {/* 柱状图 */}
-                <rect x="20" y="70" width="15" height="20" fill="#9333EA" />
-                <rect x="45" y="60" width="15" height="30" fill="#9333EA" />
-                <rect x="70" y="50" width="15" height="40" fill="#9333EA" />
-                <rect x="95" y="40" width="15" height="50" fill="#9333EA" />
-                <rect x="120" y="30" width="15" height="60" fill="#9333EA" />
-                <rect x="145" y="20" width="15" height="70" fill="#9333EA" />
-                
-                {/* X轴标签 */}
-                <text x="27" y="95" fill="#9CA3AF" fontSize="8" textAnchor="middle">Jan</text>
-                <text x="52" y="95" fill="#9CA3AF" fontSize="8" textAnchor="middle">Feb</text>
-                <text x="77" y="95" fill="#9CA3AF" fontSize="8" textAnchor="middle">Mar</text>
-                <text x="102" y="95" fill="#9CA3AF" fontSize="8" textAnchor="middle">Apr</text>
-                <text x="127" y="95" fill="#9CA3AF" fontSize="8" textAnchor="middle">May</text>
-                <text x="152" y="95" fill="#9CA3AF" fontSize="8" textAnchor="middle">Jun</text>
-              </svg>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* 热门应用 */}
-      <div className="bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
-        <h2 className="text-xl font-semibold text-white mb-4">Top Apps by Usage</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-          {topApps.map((app, index) => (
-            <div key={index} className="bg-gray-700 p-4 rounded-lg hover:bg-gray-650 transition-colors">
-              <div className="flex flex-col h-full">
-                <div className="flex items-center mb-3">
-                  <div className={`w-10 h-10 rounded-lg flex items-center justify-center mr-3 ${
-                    index === 0 ? 'bg-purple-600' : 
-                    index === 1 ? 'bg-blue-600' : 
-                    index === 2 ? 'bg-teal-600' : 
-                    index === 3 ? 'bg-green-600' : 'bg-yellow-600'
-                  }`}>
-                    <span className="text-white font-bold">{index + 1}</span>
-                  </div>
-                  <div>
-                    <h3 className="text-white font-medium text-sm">{app.name}</h3>
-                    <p className="text-xs text-gray-400">{app.department}</p>
-                  </div>
-                </div>
-                <div className="mt-auto">
-                  <div className="flex justify-between text-xs text-gray-400">
-                    <span>Created by {app.creator}</span>
-                    <span>{app.launches} launches</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* 底部区域：采用建议 */}
-      <div className="bg-gray-800 rounded-lg shadow-lg p-6">
-        <h2 className="text-xl font-semibold text-white mb-4">Adoption Recommendations</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-gray-700 p-4 rounded-lg">
-            <div className="flex items-start">
-              <div className="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
-                <span className="text-white font-bold">1</span>
-              </div>
-              <div>
-                <h3 className="text-white font-medium">HR & Operations Focus</h3>
-                <p className="text-gray-400 text-sm mt-1">HR and Operations have the lowest adoption rates. Schedule targeted training sessions.</p>
-              </div>
-            </div>
-          </div>
-          <div className="bg-gray-700 p-4 rounded-lg">
-            <div className="flex items-start">
-              <div className="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
-                <span className="text-white font-bold">2</span>
-              </div>
-              <div>
-                <h3 className="text-white font-medium">App Showcase</h3>
-                <p className="text-gray-400 text-sm mt-1">Organize monthly app showcases to highlight successful implementations and share best practices.</p>
-              </div>
-            </div>
-          </div>
-          <div className="bg-gray-700 p-4 rounded-lg">
-            <div className="flex items-start">
-              <div className="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
-                <span className="text-white font-bold">3</span>
-              </div>
-              <div>
-                <h3 className="text-white font-medium">Model-driven Apps</h3>
-                <p className="text-gray-400 text-sm mt-1">Increase awareness and training for model-driven apps to diversify app types across departments.</p>
-              </div>
-            </div>
+          <div className="overflow-x-auto">
+            <table className="min-w-full">
+              <thead className="bg-gray-700">
+                <tr>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">User using Power Apps Apps (Auth to Power Apps)</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"># User</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Last App sign in Days Ago</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">App</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Power Apps User Assigned License count</th>
+                </tr>
+              </thead>
+              <tbody className="bg-gray-800 divide-y divide-gray-700">
+                {appDetailData.map((item, index) => (
+                  <tr key={index} className="hover:bg-gray-750 transition-colors">
+                    <td className="px-4 py-2 whitespace-nowrap text-sm text-white">{item.userId}</td>
+                    <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-300">{item.userCount}</td>
+                    <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-300">{item.lastSigninDays}</td>
+                    <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-300">{item.app}</td>
+                    <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-300">{item.pbiUserAssigned}</td>
+                  </tr>
+                ))}
+                <tr className="bg-gray-700 font-medium">
+                  <td className="px-4 py-2 whitespace-nowrap text-sm text-white">总计</td>
+                  <td className="px-4 py-2 whitespace-nowrap text-sm text-white">83</td>
+                  <td className="px-4 py-2 whitespace-nowrap text-sm text-white"></td>
+                  <td className="px-4 py-2 whitespace-nowrap text-sm text-white"></td>
+                  <td className="px-4 py-2 whitespace-nowrap text-sm text-white">73</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
