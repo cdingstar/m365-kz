@@ -46,29 +46,29 @@ const DashboardContent = () => {
         </div>
         
         {/* 节省卡片 */}
-        <div className="bg-gray-800 rounded-lg shadow-lg flex">
+        <div className="bg-gray-800 rounded-lg shadow-lg flex opacity-60">
           <div className="bg-green-900/30 p-4 flex items-center justify-center rounded-l-lg">
             <TrendingDown size={36} className="text-green-500" />
           </div>
           <div className="p-4 flex-1">
             <h3 className="text-gray-400 font-medium">Savings</h3>
             <div className="flex justify-between items-center mt-1">
-              <span className="text-4xl font-bold text-white">£1.67K</span>
-              <span className="text-red-500">-£1,529.03</span>
+              <span className="text-4xl font-bold text-gray-500">£0</span>
+              <span className="text-gray-500">0</span>
             </div>
           </div>
         </div>
         
         {/* 推荐卡片 */}
-        <div className="bg-gray-800 rounded-lg shadow-lg flex">
+        <div className="bg-gray-800 rounded-lg shadow-lg flex opacity-60">
           <div className="bg-blue-900/30 p-4 flex items-center justify-center rounded-l-lg">
             <ListChecks size={36} className="text-blue-500" />
           </div>
           <div className="p-4 flex-1">
             <h3 className="text-gray-400 font-medium">Recommendations</h3>
             <div className="flex justify-between items-center mt-1">
-              <span className="text-4xl font-bold text-white">999</span>
-              <span className="text-red-500">-101</span>
+              <span className="text-4xl font-bold text-gray-500">0</span>
+              <span className="text-gray-500">0</span>
             </div>
           </div>
         </div>
