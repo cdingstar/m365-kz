@@ -17,31 +17,35 @@ const OptimizationSummaryTab = () => {
       description: 'Unused licenses',
       recommendations: '4,720',
       savings: '$170,457',
-      color: 'bg-blue-600'
+      color: 'bg-blue-600',
+      isActive: true
     },
     {
       name: 'Over-Subscribed',
       icon: '📊',
       description: 'Excess subscriptions',
-      recommendations: '15',
-      savings: '$570,789',
-      color: 'bg-purple-600'
+      recommendations: '0',
+      savings: '$0',
+      color: 'bg-gray-600',
+      isActive: false
     },
     {
       name: 'Recategorise',
       icon: '🔄',
       description: 'License optimization',
-      recommendations: '691',
-      savings: '$691',
-      color: 'bg-teal-600'
+      recommendations: '0',
+      savings: '$0',
+      color: 'bg-gray-600',
+      isActive: false
     },
     {
       name: 'Downgrade',
       icon: '⬇️',
       description: 'License downgrade',
-      recommendations: '8',
-      savings: '$160',
-      color: 'bg-orange-600'
+      recommendations: '0',
+      savings: '$0',
+      color: 'bg-gray-600',
+      isActive: false
     },
     {
       name: 'Overlap',
@@ -49,20 +53,21 @@ const OptimizationSummaryTab = () => {
       description: 'Overlapping licenses',
       recommendations: '0',
       savings: '$0',
-      color: 'bg-red-600'
+      color: 'bg-gray-600',
+      isActive: false
     }
   ];
 
   // 子类别数据
   const subCategories = [
-    { name: 'AD Hygiene', value: 8714, color: 'bg-blue-600' },
-    { name: 'Copilot', value: 4720, color: 'bg-purple-600' },
-    { name: 'Zombie', value: 2451, color: 'bg-teal-600' },
-    { name: 'Identity', value: 691, color: 'bg-orange-600' },
-    { name: 'Recategorise', value: 15, color: 'bg-red-600' },
-    { name: 'Over-subscribed', value: 8, color: 'bg-yellow-600' },
-    { name: 'Downgrade', value: 1, color: 'bg-green-600' },
-    { name: 'License Hygiene', value: 1, color: 'bg-pink-600' }
+    { name: 'Zombie', value: 2451, color: 'bg-teal-600', icon: '📦', isActive: true },
+    { name: 'AD Hygiene', value: 0, color: 'bg-gray-600', icon: '🧹', isActive: false },
+    { name: 'Copilot', value: 0, color: 'bg-gray-600', icon: '🤖', isActive: false },
+    { name: 'Identity', value: 0, color: 'bg-gray-600', icon: '👤', isActive: false },
+    { name: 'Recategorise', value: 0, color: 'bg-gray-600', icon: '🔄', isActive: false },
+    { name: 'Over-subscribed', value: 0, color: 'bg-gray-600', icon: '📊', isActive: false },
+    { name: 'Downgrade', value: 0, color: 'bg-gray-600', icon: '⬇️', isActive: false },
+    { name: 'License Hygiene', value: 0, color: 'bg-gray-600', icon: '🧽', isActive: false }
   ];
 
   return (
@@ -113,16 +118,16 @@ const OptimizationSummaryTab = () => {
                     <td className="px-6 py-4">
                       <div className="flex items-center">
                         <div className={`w-12 h-12 ${category.color} rounded-lg flex items-center justify-center mr-4`}>
-                          <span className="text-white text-lg">{category.icon}</span>
+                          <span className={`text-lg ${category.isActive ? 'text-white' : 'text-gray-400'}`}>{category.icon}</span>
                         </div>
                         <div>
-                          <div className="text-sm font-medium text-gray-200">{category.name}</div>
-                          <div className="text-xs text-gray-400">{category.description}</div>
+                          <div className={`text-sm font-medium ${category.isActive ? 'text-gray-200' : 'text-gray-500'}`}>{category.name}</div>
+                          <div className={`text-xs ${category.isActive ? 'text-gray-400' : 'text-gray-600'}`}>{category.description}</div>
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-sm font-medium text-gray-200">{category.recommendations}</td>
-                    <td className="px-6 py-4 text-sm font-medium text-gray-200">{category.savings}</td>
+                    <td className={`px-6 py-4 text-sm font-medium ${category.isActive ? 'text-gray-200' : 'text-gray-500'}`}>{category.recommendations}</td>
+                    <td className={`px-6 py-4 text-sm font-medium ${category.isActive ? 'text-gray-200' : 'text-gray-500'}`}>{category.savings}</td>
                     <td className="px-6 py-4">
                       <div className="w-6 h-6 bg-gray-600 rounded-full flex items-center justify-center">
                         <span className="text-gray-300 text-xs">ℹ</span>
@@ -142,19 +147,24 @@ const OptimizationSummaryTab = () => {
           <div className="space-y-4">
             {subCategories.map((category, index) => (
               <div key={index} className="flex items-center">
-                <div className="w-24 text-sm text-gray-300">{category.name}</div>
+                <div className="flex items-center w-48">
+                  <div className={`w-12 h-12 ${category.color} rounded-lg flex items-center justify-center mr-4 flex-shrink-0`}>
+                    <span className={`text-lg ${category.isActive ? 'text-white' : 'text-gray-400'}`}>{category.icon}</span>
+                  </div>
+                  <div className={`text-sm whitespace-nowrap ${category.isActive ? 'text-gray-300' : 'text-gray-500'}`}>{category.name}</div>
+                </div>
                 <div className="flex-1 mx-4">
                   <div className="bg-gray-700 rounded-full h-6 relative overflow-hidden">
                     <div 
                       className={`${category.color} h-6 rounded-full transition-all duration-500 flex items-center justify-start pl-2`}
-                      style={{width: `${Math.max(10, (category.value / 200))}%`}}
+                      style={{width: `${category.isActive ? Math.max(10, (category.value / 200)) : 8}%`}}
                     >
-                      <span className="text-white text-xs font-medium">{category.value.toLocaleString()}</span>
+                      <span className={`text-xs font-medium ${category.isActive ? 'text-white' : 'text-gray-400'}`}>{category.value.toLocaleString()}</span>
                     </div>
                   </div>
                 </div>
                 <div className="w-16 text-right">
-                  <span className="text-sm font-medium text-white">{category.value.toLocaleString()}</span>
+                  <span className={`text-sm font-medium ${category.isActive ? 'text-white' : 'text-gray-500'}`}>{category.value.toLocaleString()}</span>
                 </div>
               </div>
             ))}

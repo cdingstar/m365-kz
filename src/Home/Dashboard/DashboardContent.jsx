@@ -37,7 +37,7 @@ const DashboardContent = () => {
             <CircleDollarSign size={36} className="text-teal-500" />
           </div>
           <div className="p-4 flex-1">
-            <h3 className="text-gray-400 font-medium">Spend</h3>
+            <h3 className="text-gray-400 font-medium">License Assignment</h3>
             <div className="flex justify-between items-center mt-1">
               <span className="text-4xl font-bold text-white">£4K</span>
               <span className="text-red-500">-£311.05</span>
@@ -105,13 +105,12 @@ const DashboardContent = () => {
           
           {/* 节省潜力 */}
           <div 
-            className={`p-4 rounded-lg cursor-pointer transition-colors duration-200 border ${selectedSpendItem === 'savingsPotential' ? 'bg-teal-900/30 border-teal-600' : 'border-transparent hover:bg-gray-700'}`}
-            onClick={() => setSelectedSpendItem('savingsPotential')}
+            className="p-4 rounded-lg border border-transparent cursor-not-allowed opacity-60"
           >
             <h3 className="text-gray-400 font-medium mb-2">Savings Potential</h3>
             <div className="flex justify-between items-center">
-              <span className="text-2xl font-bold text-white">£1.1K</span>
-              <span className="text-red-500">-40.8%</span>
+              <span className="text-2xl font-bold text-gray-500">£0</span>
+              <span className="text-gray-500">0%</span>
             </div>
           </div>
         </div>

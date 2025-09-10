@@ -78,7 +78,7 @@ const LeftSideBar = ({
         {!isSidebarCollapsed && (
           <div className="relative group">
             <div className="flex items-center cursor-pointer hover:scale-105 transition-transform duration-300">
-              <span className="text-xl font-bold text-[#2563eb] group-hover:text-blue-400 transition-colors duration-300">MS365 SaaS</span>
+              <span className="text-xl font-bold text-[#2563eb] group-hover:text-blue-400 transition-colors duration-300">M365 SaaS</span>
               <ChevronDown 
                 size={16} 
                 className="ml-2 text-[#2563eb] transform transition-all duration-300 
@@ -93,7 +93,7 @@ const LeftSideBar = ({
                           border border-transparent group-hover:border-blue-800">
               <button className="flex items-center px-4 py-2 text-sm text-[#2563eb] font-bold hover:bg-gray-700 w-full text-left
                                transition-all duration-200 hover:pl-6 hover:text-blue-400">
-                MS365 SaaS
+                M365 SaaS
               </button>
               <button className="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 w-full text-left
                                transition-all duration-200 hover:pl-6 hover:text-blue-400">

@@ -3,7 +3,7 @@ import React from 'react';
 const CompanyProfileTab = () => {
   // 租户摘要数据
   const tenantData = {
-    tenantName: 'Totaal',
+    tenantName: 'Total',
     entraAccounts: '86,295',
     licensedAccount: '41,725',
     licensePurchaseCost: '1,163,311',
@@ -16,15 +16,13 @@ const CompanyProfileTab = () => {
   const accountSummary = [
     { category: 'External User', totalUsers: '28,389', totalLicensed: '4' },
     { category: 'Internal User', totalUsers: '57,906', totalLicensed: '41,721' },
-    { category: 'Totaal', totalUsers: '86,295', totalLicensed: '41,725' }
+    { category: 'Total', totalUsers: '86,295', totalLicensed: '41,725' }
   ];
 
   // 端点摘要数据
   const endpointSummary = {
     entraEndpoints: '72,071',
-    activeEntraEndpoints: '49,290',
-    intuneManagedEndpoints: '32,504',
-    activeIntuneDevice: '29,403'
+    activeEntraEndpoints: '49,290'
   };
 
   // 内部域名数据
@@ -49,8 +47,8 @@ const CompanyProfileTab = () => {
   const statsCards = [
     { title: 'Cost Per Licensed Account', value: '$27.88', icon: '💰' },
     { title: 'Defined Countries by Smart Tag', value: '122', icon: '🏷️' },
-    { title: 'Number of Unique Tag Values', value: '761', icon: '🔢' },
-    { title: 'Domains used for Email Communication', value: '6', icon: '📧' },
+    { title: 'Lines of Business', value: '761', icon: '🔢' },
+    { title: 'Number of Domains', value: '6', icon: '📧' },
     { title: 'Number of Unique External Domains', value: '11,373', icon: '🔗' }
   ];
 
@@ -69,8 +67,8 @@ const CompanyProfileTab = () => {
                   <tr>
                     <th className="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">TenantName</th>
                     <th className="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Entra Accounts</th>
-                    <th className="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Licensed Account</th>
-                    <th className="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">License Purchase Cost (Month)</th>
+                    <th className="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">LICENSED ACCOUNTS</th>
+                    <th className="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">AVERAGE COST PER LICENSE ACCOUNT</th>
                     <th className="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Licenses Unassigned Cost (Month)</th>
                     <th className="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">License Consumed Cost (Month)</th>
                     <th className="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">License % Consumed</th>
@@ -140,16 +138,12 @@ const CompanyProfileTab = () => {
                     <tr>
                       <th className="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Entra Endpoints</th>
                       <th className="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Active Entra (&lt;30 Days)</th>
-                      <th className="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Intune Managed</th>
-                      <th className="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Active Intune (&lt;30 Days)</th>
                     </tr>
                   </thead>
                   <tbody className="bg-gray-800">
                     <tr className="hover:bg-gray-750 transition-colors">
                       <td className="px-3 py-3 text-sm font-medium text-gray-200">{endpointSummary.entraEndpoints}</td>
                       <td className="px-3 py-3 text-sm font-medium text-gray-200">{endpointSummary.activeEntraEndpoints}</td>
-                      <td className="px-3 py-3 text-sm font-medium text-gray-200">{endpointSummary.intuneManagedEndpoints}</td>
-                      <td className="px-3 py-3 text-sm font-medium text-gray-200">{endpointSummary.activeIntuneDevice}</td>
                     </tr>
                   </tbody>
                 </table>

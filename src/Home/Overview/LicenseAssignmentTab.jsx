@@ -248,48 +248,58 @@ const LicenseAssignmentTab = () => {
             <table className="min-w-full">
               <thead className="bg-gray-700">
                 <tr>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">License Name</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Category</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Currency</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Unit Cost Per Month</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Quantity Purchased</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Monthly Investment</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">% Assigned</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">LICENSE NAME</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">CURRENCY</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">QUANTITY PURCHASED</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">UNIT COST PER MONTH</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">NUMBER OF LICENSE</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">COST OF ASSIGNED</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">COST OF UNASSIGNED</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">% ASSIGNED</th>
                 </tr>
               </thead>
               <tbody className="bg-gray-800 divide-y divide-gray-600">
-                {licenseData.map((license, index) => (
-                  <tr key={index} className="hover:bg-gray-750 transition-colors">
-                    <td className="px-4 py-3 text-sm font-medium text-gray-200">{license.name}</td>
-                    <td className="px-4 py-3 text-sm text-gray-300">{license.category}</td>
-                    <td className="px-4 py-3 text-sm text-gray-300">{license.currency}</td>
-                    <td className="px-4 py-3 text-sm text-gray-300">{license.unitCost}</td>
-                    <td className="px-4 py-3 text-sm text-gray-300">{license.quantity}</td>
-                    <td className="px-4 py-3 text-sm text-gray-300">{license.monthlyInvestment}</td>
-                    <td className="px-4 py-3">
-                      <div className="flex items-center">
-                        <div className="flex-1 mr-2">
-                          <div className="bg-gray-700 rounded-full h-4 relative overflow-hidden">
-                            <div 
-                              className={`${getAssignedColor(license.assigned)} h-4 rounded-full transition-all duration-500`}
-                              style={{width: license.assigned}}
-                            ></div>
+                {licenseData.map((license, index) => {
+                  const assignedPercent = parseInt(license.assigned) / 100;
+                  const totalCost = parseFloat(license.monthlyInvestment.replace(',', ''));
+                  const assignedCost = (totalCost * assignedPercent).toFixed(2);
+                  const unassignedCost = (totalCost * (1 - assignedPercent)).toFixed(2);
+                  
+                  return (
+                    <tr key={index} className="hover:bg-gray-750 transition-colors">
+                      <td className="px-4 py-3 text-sm font-medium text-gray-200">{license.name}</td>
+                      <td className="px-4 py-3 text-sm text-gray-300">{license.currency}</td>
+                      <td className="px-4 py-3 text-sm text-gray-300">{license.quantity}</td>
+                      <td className="px-4 py-3 text-sm text-gray-300">{license.unitCost}</td>
+                      <td className="px-4 py-3 text-sm text-gray-300">{license.quantity}</td>
+                      <td className="px-4 py-3 text-sm text-gray-300">{assignedCost}</td>
+                      <td className="px-4 py-3 text-sm text-gray-300">{unassignedCost}</td>
+                      <td className="px-4 py-3">
+                        <div className="flex items-center">
+                          <div className="flex-1 mr-2">
+                            <div className="bg-gray-700 rounded-full h-4 relative overflow-hidden">
+                              <div 
+                                className={`${getAssignedColor(license.assigned)} h-4 rounded-full transition-all duration-500`}
+                                style={{width: license.assigned}}
+                              ></div>
+                            </div>
                           </div>
+                          <span className="text-sm font-medium text-white w-10">{license.assigned}</span>
                         </div>
-                        <span className="text-sm font-medium text-white w-10">{license.assigned}</span>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+                      </td>
+                    </tr>
+                  );
+                })}
                 {/* 总计行 */}
                 <tr className="bg-gray-700 hover:bg-gray-650 transition-colors border-t-2 border-gray-600">
-                  <td className="px-4 py-3 text-sm font-bold text-white">Totaal</td>
-                  <td className="px-4 py-3 text-sm font-bold text-white">-</td>
+                  <td className="px-4 py-3 text-sm font-bold text-white">TOTAL</td>
                   <td className="px-4 py-3 text-sm font-bold text-white">USD</td>
-                  <td className="px-4 py-3 text-sm font-bold text-white">745.20</td>
-                  <td className="px-4 py-3 text-sm font-bold text-white">14,352,567</td>
-                  <td className="px-4 py-3 text-sm font-bold text-white">1,163,311.00</td>
+                  <td className="px-4 py-3 text-sm font-bold text-white">114,352</td>
                   <td className="px-4 py-3 text-sm font-bold text-white">-</td>
+                  <td className="px-4 py-3 text-sm font-bold text-white">114,352</td>
+                  <td className="px-4 py-3 text-sm font-bold text-white">592,609.00</td>
+                  <td className="px-4 py-3 text-sm font-bold text-white">570,702.00</td>
+                  <td className="px-4 py-3 text-sm font-bold text-white">51%</td>
                 </tr>
               </tbody>
             </table>
