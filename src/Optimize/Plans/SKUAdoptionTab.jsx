@@ -284,6 +284,8 @@ const SKUAdoptionTab = () => {
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Plan Name (Friendly)</th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Plans within SKU</th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Users Assigned Plan</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Assigned Cost</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Potential Savings</th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Accounts using plan in &lt; 30 Days</th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">% Plan Assigned and Used in &lt; 30 Days</th>
               </tr>
@@ -294,6 +296,8 @@ const SKUAdoptionTab = () => {
                   <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-white">{license.name}</td>
                   <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-300">{license.sku}</td>
                   <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-300 text-center">{license.usersAssigned.toLocaleString()}</td>
+                  <td className="px-4 py-2 whitespace-nowrap text-sm text-green-400 text-center">${(license.usersAssigned * 9.60).toLocaleString()}</td>
+                  <td className="px-4 py-2 whitespace-nowrap text-sm text-orange-400 text-center">${((license.usersAssigned - license.accountsUsing) * 9.60).toLocaleString()}</td>
                   <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-300 text-center">{license.accountsUsing.toLocaleString()}</td>
                   <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-300">
                     <div className="flex items-center">
@@ -318,6 +322,12 @@ const SKUAdoptionTab = () => {
                 <td className="px-4 py-3 whitespace-nowrap text-sm text-white">All SKUs</td>
                 <td className="px-4 py-3 whitespace-nowrap text-sm text-white text-center">
                   {licenseData.reduce((sum, license) => sum + license.usersAssigned, 0).toLocaleString()}
+                </td>
+                <td className="px-4 py-3 whitespace-nowrap text-sm text-green-400 text-center">
+                  ${(licenseData.reduce((sum, license) => sum + license.usersAssigned, 0) * 9.60).toLocaleString()}
+                </td>
+                <td className="px-4 py-3 whitespace-nowrap text-sm text-orange-400 text-center">
+                  ${(licenseData.reduce((sum, license) => sum + (license.usersAssigned - license.accountsUsing), 0) * 9.60).toLocaleString()}
                 </td>
                 <td className="px-4 py-3 whitespace-nowrap text-sm text-white text-center">
                   {licenseData.reduce((sum, license) => sum + license.accountsUsing, 0).toLocaleString()}

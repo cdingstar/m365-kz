@@ -1,26 +1,62 @@
 import React, { useState } from 'react';
 import DateRangePicker from '../../components/DateRangePicker';
+import DropdownSearchMultiSelFilter from '../../components/Filters/DropdownSearchMultiSelFilter';
 import { Calendar, Key, Users, BarChart, TrendingUp } from 'lucide-react';
 
 const PowerBiUsageTab = () => {
   const [dateRange, setDateRange] = useState('2024/8/24 - 2025/8/23');
   
+  // Power BI User 过滤器状态
+  const [selectedPowerBiUsers, setSelectedPowerBiUsers] = useState([]);
+  const [selectedPowerBiDetailUsers, setSelectedPowerBiDetailUsers] = useState([]);
+  const [selectedApps, setSelectedApps] = useState([]);
+  
   const handleDateRangeChange = (newRange) => {
     setDateRange(newRange);
   };
+
+  // Power BI User 选项
+  const powerBiUserOptions = [
+    { value: '0dd552621a9eaf9d45d89bc372292cd8ddd908f', label: '0dd552621a9eaf9d45d89bc372292cd8ddd908f' },
+    { value: '193a88f139039254246c6b2472aff5c059c693b4', label: '193a88f139039254246c6b2472aff5c059c693b4' },
+    { value: '1a1ac37c6620f4961559b46f427092428796437', label: '1a1ac37c6620f4961559b46f427092428796437' },
+    { value: '4fcad4802620c25dd1471dc11d887fb521bc3b1', label: '4fcad4802620c25dd1471dc11d887fb521bc3b1' },
+    { value: '571710b20467afcc1a4f4d1acafb6dd6f39ad806', label: '571710b20467afcc1a4f4d1acafb6dd6f39ad806' },
+    { value: '9de963cc329a626083d34a26c6766cdc7a1d37a4', label: '9de963cc329a626083d34a26c6766cdc7a1d37a4' },
+    { value: 'b0ca73216498c61b1c2c3019458cd3f8cd5c6c4', label: 'b0ca73216498c61b1c2c3019458cd3f8cd5c6c4' },
+    { value: 'bb9c38772dbcf13977451da3db554d9654140456', label: 'bb9c38772dbcf13977451da3db554d9654140456' },
+    { value: 'cb6130545d2a92a46f75c0431af1e4bcc58bc7f', label: 'cb6130545d2a92a46f75c0431af1e4bcc58bc7f' },
+    { value: 'cfa5becfc38b34ac57821c2bc78337c6019c28a', label: 'cfa5becfc38b34ac57821c2bc78337c6019c28a' },
+    { value: 'd0f497cb3f8db082dc66c8638c3f68bb00ba239', label: 'd0f497cb3f8db082dc66c8638c3f68bb00ba239' }
+  ];
+
+  // Power BI Detail User 选项
+  const powerBiDetailUserOptions = [
+    { value: '0dd552621a9eaf9d45d89bc372292cd8ddd908f', label: '0dd552621a9eaf9d45d89bc372292cd8ddd908f' },
+    { value: '193a88f139039254246c6b2472aff5c059c693b4', label: '193a88f139039254246c6b2472aff5c059c693b4' },
+    { value: '1a1ac37c6620f4961559b46f427092428796437', label: '1a1ac37c6620f4961559b46f427092428796437' },
+    { value: '4fcad4802620c25dd1471dc11d887fb521bc3b1', label: '4fcad4802620c25dd1471dc11d887fb521bc3b1' },
+    { value: '571710b20467afcc1a4f4d1acafb6dd6f39ad806', label: '571710b20467afcc1a4f4d1acafb6dd6f39ad806' },
+    { value: '9de963cc329a626083d34a26c6766cdc7a1d37a4', label: '9de963cc329a626083d34a26c6766cdc7a1d37a4' }
+  ];
+
+  // App 选项
+  const appOptions = [
+    { value: 'Microsoft Power BI', label: 'Microsoft Power BI' }
+  ];
   // Power BI App Summary Usage by User 数据
   const userSummaryData = [
-    { userId: '0dd552621a9eaf9d45d89bc372292cd8ddd908f', userCount: 1, appCount: 5, lastSignin: 1 },
-    { userId: '193a88f139039254246c6b2472aff5c059c693b4', userCount: 1, appCount: 2, lastSignin: 1 },
-    { userId: '1a1ac37c6620f4961559b46f427092428796437', userCount: 1, appCount: 4, lastSignin: 1 },
-    { userId: '4fcad4802620c25dd1471dc11d887fb521bc3b1', userCount: 1, appCount: 5, lastSignin: 1 },
-    { userId: '571710b20467afcc1a4f4d1acafb6dd6f39ad806', userCount: 1, appCount: 1, lastSignin: 1 },
-    { userId: '9de963cc329a626083d34a26c6766cdc7a1d37a4', userCount: 1, appCount: 2, lastSignin: 1 },
-    { userId: 'b0ca73216498c61b1c2c3019458cd3f8cd5c6c4', userCount: 1, appCount: 2, lastSignin: 1 },
-    { userId: 'bb9c38772dbcf13977451da3db554d9654140456', userCount: 1, appCount: 4, lastSignin: 1 },
-    { userId: 'cb6130545d2a92a46f75c0431af1e4bcc58bc7f', userCount: 1, appCount: 2, lastSignin: 1 },
-    { userId: 'cfa5becfc38b34ac57821c2bc78337c6019c28a', userCount: 1, appCount: 4, lastSignin: 1 },
-    { userId: 'd0f497cb3f8db082dc66c8638c3f68bb00ba239', userCount: 1, appCount: 4, lastSignin: 1 }
+    { userId: '0dd552621a9eaf9d45d89bc372292cd8ddd908f', userCount: 1, licenseNeeds: 'Plan2', appCount: 5, lastSignin: 1 },
+    { userId: '193a88f139039254246c6b2472aff5c059c693b4', userCount: 1, licenseNeeds: 'Plan1', appCount: 2, lastSignin: 1 },
+    { userId: '1a1ac37c6620f4961559b46f427092428796437', userCount: 1, licenseNeeds: 'Plan3', appCount: 4, lastSignin: 1 },
+    { userId: '4fcad4802620c25dd1471dc11d887fb521bc3b1', userCount: 1, licenseNeeds: 'Plan2', appCount: 5, lastSignin: 1 },
+    { userId: '571710b20467afcc1a4f4d1acafb6dd6f39ad806', userCount: 1, licenseNeeds: 'Plan1', appCount: 1, lastSignin: 1 },
+    { userId: '9de963cc329a626083d34a26c6766cdc7a1d37a4', userCount: 1, licenseNeeds: 'Plan1', appCount: 2, lastSignin: 1 },
+    { userId: 'b0ca73216498c61b1c2c3019458cd3f8cd5c6c4', userCount: 1, licenseNeeds: 'Plan3', appCount: 2, lastSignin: 1 },
+    { userId: 'bb9c38772dbcf13977451da3db554d9654140456', userCount: 1, licenseNeeds: 'Plan2', appCount: 4, lastSignin: 1 },
+    { userId: 'cb6130545d2a92a46f75c0431af1e4bcc58bc7f', userCount: 1, licenseNeeds: 'Plan1', appCount: 2, lastSignin: 1 },
+    { userId: 'cfa5becfc38b34ac57821c2bc78337c6019c28a', userCount: 1, licenseNeeds: 'Plan3', appCount: 4, lastSignin: 1 },
+    { userId: 'd0f497cb3f8db082dc66c8638c3f68bb00ba239', userCount: 1, licenseNeeds: 'Plan2', appCount: 4, lastSignin: 1 }
   ];
 
   // Power BI App Summary Detail 数据
@@ -204,12 +240,43 @@ const PowerBiUsageTab = () => {
           <div className="p-4 border-b border-gray-700">
             <h2 className="text-xl font-semibold text-white">Power BI App Summary Usage by User</h2>
           </div>
+          
+          {/* Power BI User 过滤器 */}
+          <div className="bg-gray-700 border-b border-gray-600">
+            <table className="w-full">
+              <tbody>
+                <tr>
+                  <td className="px-3 py-3" style={{ width: '300px' }}>
+                    <DropdownSearchMultiSelFilter
+                      selectedValues={selectedPowerBiUsers}
+                      onChange={setSelectedPowerBiUsers}
+                      options={powerBiUserOptions}
+                      placeholder="ALL POWER BI USER"
+                      searchPlaceholder="搜索 Power BI User"
+                      noResultsText="无结果"
+                      selectAllText="全选"
+                      applyText="应用"
+                      closeText="关闭"
+                      className="w-full"
+                      dropdownWidth="300px"
+                    />
+                  </td>
+                  <td className="px-3 py-3"></td>
+                  <td className="px-3 py-3"></td>
+                  <td className="px-3 py-3"></td>
+                  <td className="px-3 py-3"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
           <div className="overflow-x-auto">
             <table className="min-w-full">
               <thead className="bg-gray-700">
                 <tr>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">User using Power BI Apps (Auth to Power BI)</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider" style={{ width: '300px' }}>User using Power BI Apps (Auth to Power BI)</th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"># User</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">License Needs</th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">App Count</th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Last App signin (Days)</th>
                 </tr>
@@ -217,15 +284,17 @@ const PowerBiUsageTab = () => {
               <tbody className="bg-gray-800 divide-y divide-gray-700">
                 {userSummaryData.map((item, index) => (
                   <tr key={index} className="hover:bg-gray-750 transition-colors">
-                    <td className="px-4 py-2 whitespace-nowrap text-sm text-white">{item.userId}</td>
+                    <td className="px-4 py-2 whitespace-nowrap text-sm text-white" style={{ width: '300px' }}>{item.userId}</td>
                     <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-300">{item.userCount}</td>
+                    <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-300">{item.licenseNeeds}</td>
                     <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-300">{item.appCount}</td>
                     <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-300">{item.lastSignin}</td>
                   </tr>
                 ))}
                 <tr className="bg-gray-700 font-medium">
-                  <td className="px-4 py-2 whitespace-nowrap text-sm text-white">总计</td>
+                  <td className="px-4 py-2 whitespace-nowrap text-sm text-white" style={{ width: '300px' }}>总计</td>
                   <td className="px-4 py-2 whitespace-nowrap text-sm text-white">83</td>
+                  <td className="px-4 py-2 whitespace-nowrap text-sm text-white"></td>
                   <td className="px-4 py-2 whitespace-nowrap text-sm text-white">194</td>
                   <td className="px-4 py-2 whitespace-nowrap text-sm text-white"></td>
                 </tr>
@@ -239,11 +308,55 @@ const PowerBiUsageTab = () => {
           <div className="p-4 border-b border-gray-700">
             <h2 className="text-xl font-semibold text-white">Power BI App Summary Detail</h2>
           </div>
+          
+          {/* Power BI Detail User 过滤器 */}
+          <div className="bg-gray-700 border-b border-gray-600">
+            <table className="w-full">
+              <tbody>
+                <tr>
+                  <td className="px-3 py-3" style={{ width: '300px' }}>
+                    <DropdownSearchMultiSelFilter
+                      selectedValues={selectedPowerBiDetailUsers}
+                      onChange={setSelectedPowerBiDetailUsers}
+                      options={powerBiDetailUserOptions}
+                      placeholder="ALL POWER BI USER"
+                      searchPlaceholder="搜索 Power BI User"
+                      noResultsText="无结果"
+                      selectAllText="全选"
+                      applyText="应用"
+                      closeText="关闭"
+                      className="w-full"
+                      dropdownWidth="300px"
+                    />
+                  </td>
+                  <td className="px-3 py-3"></td>
+                  <td className="px-3 py-3"></td>
+                  <td className="px-3 py-3">
+                    <DropdownSearchMultiSelFilter
+                      selectedValues={selectedApps}
+                      onChange={setSelectedApps}
+                      options={appOptions}
+                      placeholder="ALL APP"
+                      searchPlaceholder="搜索 App"
+                      noResultsText="无结果"
+                      selectAllText="全选"
+                      applyText="应用"
+                      closeText="关闭"
+                      className="w-full"
+                      dropdownWidth="200px"
+                    />
+                  </td>
+                  <td className="px-3 py-3"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
           <div className="overflow-x-auto">
             <table className="min-w-full">
               <thead className="bg-gray-700">
                 <tr>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">User using Power BI Apps (Auth to Power BI)</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider" style={{ width: '300px' }}>User using Power BI Apps (Auth to Power BI)</th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"># User</th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Last App sign in Days Ago</th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">App</th>
@@ -253,7 +366,7 @@ const PowerBiUsageTab = () => {
               <tbody className="bg-gray-800 divide-y divide-gray-700">
                 {appDetailData.map((item, index) => (
                   <tr key={index} className="hover:bg-gray-750 transition-colors">
-                    <td className="px-4 py-2 whitespace-nowrap text-sm text-white">{item.userId}</td>
+                    <td className="px-4 py-2 whitespace-nowrap text-sm text-white" style={{ width: '300px' }}>{item.userId}</td>
                     <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-300">{item.userCount}</td>
                     <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-300">{item.lastSigninDays}</td>
                     <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-300">{item.app}</td>
@@ -261,7 +374,7 @@ const PowerBiUsageTab = () => {
                   </tr>
                 ))}
                 <tr className="bg-gray-700 font-medium">
-                  <td className="px-4 py-2 whitespace-nowrap text-sm text-white">总计</td>
+                  <td className="px-4 py-2 whitespace-nowrap text-sm text-white" style={{ width: '300px' }}>总计</td>
                   <td className="px-4 py-2 whitespace-nowrap text-sm text-white">83</td>
                   <td className="px-4 py-2 whitespace-nowrap text-sm text-white"></td>
                   <td className="px-4 py-2 whitespace-nowrap text-sm text-white"></td>

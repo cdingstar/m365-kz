@@ -1,6 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
+import DropdownSearchMultiSelFilter from '../../components/Filters/DropdownSearchMultiSelFilter';
 
 const AdoptionOverviewTab = () => {
+  // Smart Tag 过滤器状态
+  const [selectedSmartTags, setSelectedSmartTags] = useState([]);
+  
+  // 排序状态
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
+  
+  // Smart Tag 选项 (类似 accounts.SKUNAME)
+  const smartTagOptions = [
+    { value: 'accounts.SKUNAME', label: 'accounts.SKUNAME' },
+    { value: 'accounts.REGION', label: 'accounts.REGION' },
+    { value: 'accounts.DEPARTMENT', label: 'accounts.DEPARTMENT' },
+    { value: 'accounts.BUSINESS_UNIT', label: 'accounts.BUSINESS_UNIT' },
+    { value: 'accounts.COST_CENTER', label: 'accounts.COST_CENTER' },
+    { value: 'accounts.LICENSE_TYPE', label: 'accounts.LICENSE_TYPE' }
+  ];
+
   // Microsoft 365 关键产品使用情况数据
   const keyProductsData = [
     { product: 'Entra', users: 107, usageRate: 15, type: 'Assigned Users' },
@@ -188,6 +205,52 @@ const AdoptionOverviewTab = () => {
     }
   ];
 
+  // 排序函数
+  const handleSort = (key) => {
+    let direction = 'asc';
+    if (sortConfig.key === key && sortConfig.direction === 'asc') {
+      direction = 'desc';
+    }
+    setSortConfig({ key, direction });
+  };
+
+  // 排序数据
+  const sortedData = React.useMemo(() => {
+    let sortableData = [...productConsumptionData];
+    if (sortConfig.key) {
+      sortableData.sort((a, b) => {
+        if (a[sortConfig.key] < b[sortConfig.key]) {
+          return sortConfig.direction === 'asc' ? -1 : 1;
+        }
+        if (a[sortConfig.key] > b[sortConfig.key]) {
+          return sortConfig.direction === 'asc' ? 1 : -1;
+        }
+        return 0;
+      });
+    }
+    return sortableData;
+  }, [productConsumptionData, sortConfig]);
+
+  // 渲染排序图标
+  const renderSortIcon = (columnKey) => {
+    if (sortConfig.key === columnKey) {
+      return sortConfig.direction === 'asc' ? (
+        <svg className="w-3 h-3 ml-1 inline" fill="currentColor" viewBox="0 0 20 20">
+          <path fillRule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clipRule="evenodd" />
+        </svg>
+      ) : (
+        <svg className="w-3 h-3 ml-1 inline" fill="currentColor" viewBox="0 0 20 20">
+          <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+        </svg>
+      );
+    }
+    return (
+      <svg className="w-3 h-3 ml-1 inline opacity-30" fill="currentColor" viewBox="0 0 20 20">
+        <path fillRule="evenodd" d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
+      </svg>
+    );
+  };
+
   // 渲染圆形进度条
   const renderCircularProgress = (percentage) => {
     // 计算圆环路径
@@ -283,33 +346,123 @@ const AdoptionOverviewTab = () => {
       {/* 产品消费表格 */}
       <div className="bg-gray-800 rounded-lg shadow-lg overflow-hidden mb-8">
         <div className="p-4 border-b border-gray-700">
-          <h2 className="text-xl font-semibold text-white">Product Consumption (LoB) - 30 Day Summary</h2>
+          <h2 className="text-xl font-semibold text-white mb-4">Product Consumption (LoB) - 30 Days Summary</h2>
         </div>
+        
+        {/* Smart Tag 过滤器 */}
+        <div className="bg-gray-700 border-b border-gray-600">
+          <table className="w-full">
+            <tbody>
+              <tr>
+                <td className="px-3 py-3" style={{ width: '200px' }}>
+                  <DropdownSearchMultiSelFilter
+                    selectedValues={selectedSmartTags}
+                    onChange={setSelectedSmartTags}
+                    options={smartTagOptions}
+                    placeholder="ALL SMART TAG"
+                    searchPlaceholder="搜索 Smart Tag"
+                    noResultsText="无结果"
+                    selectAllText="全选"
+                    applyText="应用"
+                    closeText="关闭"
+                    className="w-full"
+                    dropdownWidth="200px"
+                  />
+                </td>
+                <td className="px-3 py-3"></td>
+                <td className="px-3 py-3"></td>
+                <td className="px-3 py-3"></td>
+                <td className="px-3 py-3"></td>
+                <td className="px-3 py-3"></td>
+                <td className="px-3 py-3"></td>
+                <td className="px-3 py-3"></td>
+                <td className="px-3 py-3"></td>
+                <td className="px-3 py-3"></td>
+                <td className="px-3 py-3"></td>
+                <td className="px-3 py-3"></td>
+                <td className="px-3 py-3"></td>
+                <td className="px-3 py-3"></td>
+                <td className="px-3 py-3"></td>
+                <td className="px-3 py-3"></td>
+                <td className="px-3 py-3"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
         <div className="overflow-x-auto">
           <table className="min-w-full">
             <thead className="bg-gray-700">
               <tr>
                 <th className="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Smart Tag - Line of Business</th>
-                <th className="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Users with assigned M365 Licenses (V/N)</th>
-                <th className="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Entra Assigned Users</th>
-                <th className="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Total Entra Accounts</th>
-                <th className="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Exchange Users Active in 30 Days</th>
-                <th className="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">% Exchange Consumption</th>
-                <th className="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Teams Users Active in 30 Days</th>
-                <th className="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">% Teams Consumption</th>
-                <th className="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">SharePoint Users Active in 30 Days</th>
-                <th className="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">% SharePoint Consumption</th>
-                <th className="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">OneDrive Users Active in 30 Days</th>
-                <th className="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">% OneDrive Consumption</th>
-                <th className="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Apps for Enterprise User Count</th>
-                <th className="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Loop Users Active in 30 Days</th>
-                <th className="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Loop Usage %</th>
-                <th className="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Copilot Users Active in 30 Days</th>
-                <th className="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Copilot Usage %</th>
+                <th className="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-600" onClick={() => handleSort('usersWithLicenses')}>
+                  Users with assigned M365 Licenses (V/N)
+                  {renderSortIcon('usersWithLicenses')}
+                </th>
+                <th className="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-600" onClick={() => handleSort('entraAssigned')}>
+                  Entra Assigned Users
+                  {renderSortIcon('entraAssigned')}
+                </th>
+                <th className="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-600" onClick={() => handleSort('totalEntra')}>
+                  Total Entra Accounts
+                  {renderSortIcon('totalEntra')}
+                </th>
+                <th className="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-600" onClick={() => handleSort('exchangeActive')}>
+                  Exchange Users Active in 30 Days
+                  {renderSortIcon('exchangeActive')}
+                </th>
+                <th className="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-600" onClick={() => handleSort('exchangeRate')}>
+                  % Exchange Consumption
+                  {renderSortIcon('exchangeRate')}
+                </th>
+                <th className="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-600" onClick={() => handleSort('teamsActive')}>
+                  Teams Users Active in 30 Days
+                  {renderSortIcon('teamsActive')}
+                </th>
+                <th className="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-600" onClick={() => handleSort('teamsRate')}>
+                  % Teams Consumption
+                  {renderSortIcon('teamsRate')}
+                </th>
+                <th className="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-600" onClick={() => handleSort('sharepointActive')}>
+                  SharePoint Users Active in 30 Days
+                  {renderSortIcon('sharepointActive')}
+                </th>
+                <th className="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-600" onClick={() => handleSort('sharepointRate')}>
+                  % SharePoint Consumption
+                  {renderSortIcon('sharepointRate')}
+                </th>
+                <th className="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-600" onClick={() => handleSort('onedriveActive')}>
+                  OneDrive Users Active in 30 Days
+                  {renderSortIcon('onedriveActive')}
+                </th>
+                <th className="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-600" onClick={() => handleSort('onedriveRate')}>
+                  % OneDrive Consumption
+                  {renderSortIcon('onedriveRate')}
+                </th>
+                <th className="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-600" onClick={() => handleSort('appsCount')}>
+                  Apps for Enterprise User Count
+                  {renderSortIcon('appsCount')}
+                </th>
+                <th className="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-600" onClick={() => handleSort('loopActive')}>
+                  Loop Users Active in 30 Days
+                  {renderSortIcon('loopActive')}
+                </th>
+                <th className="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-600" onClick={() => handleSort('loopRate')}>
+                  Loop Usage %
+                  {renderSortIcon('loopRate')}
+                </th>
+                <th className="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-600" onClick={() => handleSort('copilotActive')}>
+                  Copilot Users Active in 30 Days
+                  {renderSortIcon('copilotActive')}
+                </th>
+                <th className="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-600" onClick={() => handleSort('copilotRate')}>
+                  Copilot Usage %
+                  {renderSortIcon('copilotRate')}
+                </th>
               </tr>
             </thead>
             <tbody className="bg-gray-800 divide-y divide-gray-700">
-              {productConsumptionData.map((item, index) => (
+              {sortedData.map((item, index) => (
                 <tr key={index} className={`hover:bg-gray-750 transition-colors ${item.region === '总计' ? 'font-bold bg-gray-700' : ''}`}>
                   <td className="px-3 py-2 whitespace-nowrap text-sm text-white">{item.region}</td>
                   <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-300">{item.usersWithLicenses}</td>
