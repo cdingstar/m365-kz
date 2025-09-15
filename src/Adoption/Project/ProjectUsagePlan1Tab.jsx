@@ -1,9 +1,9 @@
 import React from 'react';
 import ProductUsageTemplate from '../../components/ProductUsageTemplate';
-import { projectUsageConfigs } from './projectUsageConfig';
+import { projectPlan1Config } from './projectUsageConfig';
 
 const ProjectUsagePlan1Tab = () => {
-  return <ProductUsageTemplate config={projectUsageConfigs.plan1} />;
+  return <ProductUsageTemplate config={projectPlan1Config} />;
 };
 
 export default ProjectUsagePlan1Tab;
