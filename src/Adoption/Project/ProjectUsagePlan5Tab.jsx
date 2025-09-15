@@ -1,81 +1,46 @@
-import React from 'react';
+import React, { useState } from 'react';
+import DateRangePicker from '../../components/DateRangePicker';
+import { projectUsageConfigs } from './projectUsageConfig';
 
 const ProjectUsagePlan5Tab = () => {
-  // Project Plan 5 使用数据
-  const projectPlan5UsageData = [
-    { department: 'Finance', totalUsers: 5, activeUsers: 5, projects: 12, tasks: 180, adoptionRate: 100 },
-    { department: 'Sales', totalUsers: 3, activeUsers: 2, projects: 5, tasks: 85, adoptionRate: 67 },
-    { department: 'Marketing', totalUsers: 6, activeUsers: 5, projects: 10, tasks: 165, adoptionRate: 83 },
-    { department: 'IT', totalUsers: 10, activeUsers: 9, projects: 20, tasks: 320, adoptionRate: 90 },
-    { department: 'Operations', totalUsers: 8, activeUsers: 7, projects: 15, tasks: 240, adoptionRate: 88 },
-    { department: 'HR', totalUsers: 2, activeUsers: 1, projects: 3, tasks: 45, adoptionRate: 50 }
-  ];
-
-  // 企业级功能使用分布
-  const enterpriseFeatureUsage = [
-    { feature: 'Portfolio Management', percentage: 40 },
-    { feature: 'Resource Management', percentage: 25 },
-    { feature: 'Demand Management', percentage: 15 },
-    { feature: 'Enterprise Reporting', percentage: 12 },
-    { feature: 'Other Enterprise Features', percentage: 8 }
-  ];
-
-  // 使用趋势数据
-  const usageTrendData = [
-    { month: 'Jan', projects: 58, activeUsers: 30 },
-    { month: 'Feb', projects: 60, activeUsers: 31 },
-    { month: 'Mar', projects: 62, activeUsers: 32 },
-    { month: 'Apr', projects: 63, activeUsers: 32 },
-    { month: 'May', projects: 64, activeUsers: 33 },
-    { month: 'Jun', projects: 65, activeUsers: 34 }
-  ];
-
-  // 热门项目组合
-  const topPortfolios = [
-    { name: 'Strategic Initiatives', department: 'Finance', projects: 8, budget: '$1.2M', roi: '185%' },
-    { name: 'Digital Transformation', department: 'IT', projects: 12, budget: '$2.5M', roi: '160%' },
-    { name: 'Market Expansion', department: 'Marketing', projects: 6, budget: '$950K', roi: '140%' },
-    { name: 'Operational Excellence', department: 'Operations', projects: 10, budget: '$1.8M', roi: '125%' }
-  ];
+  const [dateRange, setDateRange] = useState('2024/8/24 - 2025/8/23');
+  const config = projectUsageConfigs.plan5;
+  
+  const handleDateRangeChange = (newRange) => {
+    setDateRange(newRange);
+  };
 
   return (
     <div className="p-6 bg-gray-900 min-h-screen">
-      {/* 版本信息 */}
-      <div className="flex justify-end items-center mb-8">
-        <div className="flex items-center space-x-6">
-          <div className="text-right">
-            <div className="text-sm font-medium text-gray-300">4.1</div>
-            <div className="text-xs text-gray-400">Current Version</div>
-          </div>
-          <div className="text-right">
-            <div className="text-sm font-medium text-gray-300">28-7-2025</div>
-            <div className="text-xs text-gray-400">Last Refresh</div>
-          </div>
-        </div>
+      {/* 日期范围显示 */}
+      <div className="flex justify-end mb-4">
+        <DateRangePicker 
+          initialDateRange={dateRange}
+          onDateRangeChange={handleDateRangeChange}
+        />
       </div>
 
       {/* 摘要卡片 */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <div className="bg-gray-800 rounded-lg shadow-lg p-6">
-          <h3 className="text-gray-400 text-sm mb-1">Total Project Plan 5 Users</h3>
-          <p className="text-2xl font-bold text-white">34</p>
-          <p className="text-sm text-green-500 mt-2">+6.3% from last month</p>
-        </div>
-        <div className="bg-gray-800 rounded-lg shadow-lg p-6">
-          <h3 className="text-gray-400 text-sm mb-1">Active Users</h3>
-          <p className="text-2xl font-bold text-white">29</p>
-          <p className="text-sm text-green-500 mt-2">+3.6% from last month</p>
-        </div>
-        <div className="bg-gray-800 rounded-lg shadow-lg p-6">
-          <h3 className="text-gray-400 text-sm mb-1">Total Projects</h3>
-          <p className="text-2xl font-bold text-white">65</p>
-          <p className="text-sm text-green-500 mt-2">+5.0% from last month</p>
-        </div>
-        <div className="bg-gray-800 rounded-lg shadow-lg p-6">
-          <h3 className="text-gray-400 text-sm mb-1">Overall Adoption Rate</h3>
-          <p className="text-2xl font-bold text-white">85%</p>
-          <p className="text-sm text-green-500 mt-2">+3.0% from last month</p>
-        </div>
+        {config.summaryCards.map((card, index) => {
+          const IconComponent = card.icon;
+          return (
+            <div key={index} className="bg-gray-800 rounded-lg shadow-lg p-6">
+              <div className="flex items-start">
+                <div className="mr-4">
+                  <IconComponent size={36} className={card.iconColor} />
+                </div>
+                <div>
+                  <h3 className="text-gray-400 text-sm mb-1">{card.title}</h3>
+                  <p className="text-2xl font-bold text-white">{card.value}</p>
+                  {card.trend && (
+                    <p className="text-sm text-green-500 mt-2">{card.trend}</p>
+                  )}
+                </div>
+              </div>
+            </div>
+          );
+        })}
       </div>
 
       {/* 主要内容区域：左右布局 */}
@@ -83,7 +48,7 @@ const ProjectUsagePlan5Tab = () => {
         {/* 左侧区域：部门使用情况表格 */}
         <div className="lg:col-span-2 bg-gray-800 rounded-lg shadow-lg overflow-hidden">
           <div className="p-4 border-b border-gray-700">
-            <h2 className="text-xl font-semibold text-white">Project Plan 5 Usage by Department</h2>
+            <h2 className="text-xl font-semibold text-white">{config.customContent.departmentUsage.title}</h2>
           </div>
           <div className="overflow-x-auto">
             <table className="min-w-full">
@@ -98,7 +63,7 @@ const ProjectUsagePlan5Tab = () => {
                 </tr>
               </thead>
               <tbody className="bg-gray-800 divide-y divide-gray-700">
-                {projectPlan5UsageData.map((dept, index) => (
+                {config.customContent.departmentUsage.data.map((dept, index) => (
                   <tr key={index} className="hover:bg-gray-750 transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">{dept.department}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{dept.totalUsers}</td>
@@ -129,9 +94,9 @@ const ProjectUsagePlan5Tab = () => {
 
         {/* 右侧区域：企业级功能使用分布 */}
         <div className="bg-gray-800 rounded-lg shadow-lg p-6">
-          <h2 className="text-xl font-semibold text-white mb-4">Enterprise Feature Usage</h2>
+          <h2 className="text-xl font-semibold text-white mb-4">{config.customContent.enterpriseFeatures.title}</h2>
           <div className="space-y-4">
-            {enterpriseFeatureUsage.map((feature, index) => (
+            {config.customContent.enterpriseFeatures.data.map((feature, index) => (
               <div key={index} className="space-y-2">
                 <div className="flex justify-between items-center">
                   <span className="text-sm font-medium text-white">{feature.feature}</span>
@@ -181,9 +146,9 @@ const ProjectUsagePlan5Tab = () => {
 
       {/* 项目组合 */}
       <div className="bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
-        <h2 className="text-xl font-semibold text-white mb-4">Top Project Portfolios</h2>
+        <h2 className="text-xl font-semibold text-white mb-4">{config.customContent.topPortfolios.title}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {topPortfolios.map((portfolio, index) => (
+          {config.customContent.topPortfolios.data.map((portfolio, index) => (
             <div key={index} className="bg-gray-700 p-4 rounded-lg">
               <div className="flex items-center mb-3">
                 <div className={`w-10 h-10 rounded-lg flex items-center justify-center mr-3 ${
@@ -258,7 +223,7 @@ const ProjectUsagePlan5Tab = () => {
 
       {/* 使用趋势图 */}
       <div className="bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
-        <h2 className="text-xl font-semibold text-white mb-4">Usage Trends (Last 6 Months)</h2>
+        <h2 className="text-xl font-semibold text-white mb-4">{config.customContent.usageTrends.title}</h2>
         <div className="h-64 bg-gray-700 rounded-lg relative overflow-hidden">
           <svg className="absolute inset-0 w-full h-full" viewBox="0 0 400 200">
             {/* 背景网格线 */}
@@ -277,12 +242,9 @@ const ProjectUsagePlan5Tab = () => {
             <text x="15" y="180" fill="#9CA3AF" fontSize="10" textAnchor="middle">0</text>
             
             {/* X轴标签 */}
-            <text x="60" y="195" fill="#9CA3AF" fontSize="10" textAnchor="middle">Jan</text>
-            <text x="120" y="195" fill="#9CA3AF" fontSize="10" textAnchor="middle">Feb</text>
-            <text x="180" y="195" fill="#9CA3AF" fontSize="10" textAnchor="middle">Mar</text>
-            <text x="240" y="195" fill="#9CA3AF" fontSize="10" textAnchor="middle">Apr</text>
-            <text x="300" y="195" fill="#9CA3AF" fontSize="10" textAnchor="middle">May</text>
-            <text x="360" y="195" fill="#9CA3AF" fontSize="10" textAnchor="middle">Jun</text>
+            {config.customContent.usageTrends.data.map((item, index) => (
+              <text key={index} x={60 + index * 60} y="195" fill="#9CA3AF" fontSize="10" textAnchor="middle">{item.month}</text>
+            ))}
             
             {/* 项目曲线 */}
             <path 
