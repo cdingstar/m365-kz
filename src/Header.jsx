@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Search, Bell, UserCircle, LogOut, LifeBuoy, MessageCircle, MessageSquare } from 'lucide-react';
+import FeedbackDialog from './components/FeedbackDialog';
 
 const Header = ({ currentPath, onLogout, activeTab, tabs, onTabChange }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
   const menuRef = useRef(null);
 
   // Close menu when clicking outside
@@ -26,6 +28,7 @@ const Header = ({ currentPath, onLogout, activeTab, tabs, onTabChange }) => {
     >
       <button
         onClick={() => {
+          window.open('https://help.kaizen-iq.com', '_blank');
           setIsMenuOpen(false);
         }}
         className="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 w-full text-left"
@@ -34,6 +37,7 @@ const Header = ({ currentPath, onLogout, activeTab, tabs, onTabChange }) => {
       </button>
       <button
         onClick={() => {
+          setIsFeedbackOpen(true);
           setIsMenuOpen(false);
         }}
         className="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 w-full text-left"
@@ -41,10 +45,8 @@ const Header = ({ currentPath, onLogout, activeTab, tabs, onTabChange }) => {
         <MessageCircle size={16} className="mr-2" /> Feedback
       </button>
       <button
-        onClick={() => {
-          setIsMenuOpen(false);
-        }}
-        className="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 w-full text-left"
+        disabled
+        className="flex items-center px-4 py-2 text-sm text-gray-500 w-full text-left cursor-not-allowed opacity-50"
       >
         <MessageSquare size={16} className="mr-2" /> Assistant
       </button>
@@ -121,6 +123,12 @@ const Header = ({ currentPath, onLogout, activeTab, tabs, onTabChange }) => {
           </div>
         </div>
       )}
+      
+      {/* Feedback Dialog */}
+      <FeedbackDialog 
+        isOpen={isFeedbackOpen} 
+        onClose={() => setIsFeedbackOpen(false)} 
+      />
     </div>
   );
 };

@@ -28,107 +28,136 @@
 
 ### 1. 过滤器组件优化
 - 创建了三个通用过滤器组件：
-  - `DropdownSingleFilter` - 简单的下拉单选过滤器
-  - `DropdownSearchFilter` - 带搜索功能的下拉单选过滤器
-  - `DropdownSearchMultiSelFilter` - 带搜索功能的下拉多选过滤器
-  - `PriceRangeFilter` - 双滑块价格范围选择器
+  - `DropdownSingleFilter`: 单选下拉过滤器
+  - `DropdownSearchFilter`: 带搜索功能的单选过滤器
+  - `DropdownSearchMultiSelFilter`: 带搜索功能的多选过滤器
 
-### 2. SKUAdoptionTab 优化
-- 删除了多余的列（COUNT OF PLANS WITHIN SKU、COUNT OF ASSIGNED PLANS、RULE?）
-- 添加了汇总行，显示总计数据
-- 优化了过滤器布局，使用表格确保控件不会相互覆盖
-- 添加了License多选过滤器和价格范围双滑块选择器
+### 2. 页面布局优化
+- 优化了各个页面的过滤器布局和样式
+- 统一了过滤器的交互体验
+- 改进了表格和图表的显示效果
 
-### 3. ActiveInactiveAccountsTab 优化
-- 将原始过滤器替换为通用组件
-- 优化了Account Status、User Name、SKU Name、Account Age和Activity Days过滤器
+### 3. 响应式设计
+- 优化了移动端和桌面端的显示效果
+- 改进了各种屏幕尺寸下的用户体验
 
-### 4. 登录页优化
-- 添加了3秒自动登录功能，提升用户体验
+---
 
-### 5. 代码清理
-- 删除了未使用的文件，如`AccountDetailsNoSKUTab.jsx`、`AccountDetailsWithSKUTab.jsx`等
-- 删除了`Optimize/Plans`目录下的未使用文件
+## 2025年9月15日 修改记录
 
-所有这些优化都保持了与原有设计一致的深色主题和配色方案，同时提高了用户体验和界面的一致性。
+### 1. 右上角菜单 Feedback 功能实现
 
-## 版本更新 - 2025/9/10 UI 调整和数据优化
+#### 新增文件
+- `src/components/FeedbackDialog.jsx` - Feedback 对话框组件
 
-### 1. 左侧导航栏优化 (LeftSideBar.jsx)
-- 将标题从 "MS365 SaaS" 更改为 "M365 SaaS"
-- 统一品牌命名规范
+#### 修改文件
+- `src/Header.jsx` - 添加 Feedback 功能到用户菜单
 
-### 2. 公司概况页面优化 (CompanyProfileTab.jsx)
-- **Endpoint Summary 表格**：
-  - 删除了 "INTUNE MANAGED" 列和对应数据 (32,504)
-  - 删除了 "ACTIVE INTUNE (<30 DAYS)" 列和对应数据 (29,403)
-  - 保留 "ENTRA ENDPOINTS" 和 "ACTIVE ENTRA (<30 DAYS)" 两列
-- **Tenant Summary 表格**：
-  - "LICENSED ACCOUNT" → "LICENSED ACCOUNTS" (添加复数形式)
-  - "LICENSE PURCHASE COST (MONTH)" → "AVERAGE COST PER LICENSE ACCOUNT"
-- **统计卡片文字调整**：
-  - "Number of Unique Tag Values" → "Lines of Business"
-  - "Domains used for Email Communication" → "Number of Domains"
+#### 功能特性
+- **Type 下拉选择框**：包含多种反馈类型（Bug Report、Feature Request、Improvement Suggestion等）
+- **Description 文本输入框**：带有默认灰色提示文字 "Your feedback/comment"
+- **Contact 文本输入框**：带有默认灰色提示文字 "Your contact info"
+- **Submit 按钮**：提交反馈信息
+- **深色主题**：与登录页保持一致的样式设计
+- **响应式设计**：支持不同屏幕尺寸
+- **表单验证**：必填字段验证和用户反馈
 
-### 3. 许可证分配页面优化 (LicenseAssignmentTab.jsx)
-- **License Breakdown 表格列标题重构**：
-  1. LICENSE NAME
-  2. CURRENCY
-  3. QUANTITY PURCHASED
-  4. UNIT COST PER MONTH
-  5. NUMBER OF LICENSE
-  6. COST OF ASSIGNED
-  7. COST OF UNASSIGNED
-  8. % ASSIGNED
-- 所有列标题保持大写格式，确保拼写正确
-- 添加了成本计算逻辑，根据分配百分比计算已分配和未分配成本
+### 2. Help 菜单功能实现
 
-### 4. 仪表板内容优化 (DashboardContent.jsx)
-- **Savings Potential 卡片状态调整**：
-  - 数值改为 £0 和 0%，显示为灰色
-  - 禁用点击功能，添加 `cursor-not-allowed` 样式
-  - 降低透明度表示功能未实现
-  - 保留 License Consumed 和 License Wastage 的点击功能
+#### 修改内容
+- 在 `src/Header.jsx` 中为 Help 按钮添加新标签页打开功能
+- 点击 Help 时打开 https://help.kaizen-iq.com
 
-### 5. 优化摘要页面重构 (OptimizationSummaryTab.jsx)
-- **Financial 部分调整**：
-  - Zombie 行保持原数据和颜色
-  - 其他行（Over-Subscribed, Recategorise, Downgrade, Overlap）数据改为0，显示灰色
-- **Sub-Categories 部分重构**：
-  - 添加了统一的图标系统，与 Financial 部分保持一致 (12x12 尺寸)
-  - Zombie 移动到第一行，保持原数据 (2,451)
-  - 其他所有项目数值改为0，图标和文字显示灰色
-  - 统一进度条宽度：非活跃项目固定为8%小宽度
-  - 优化布局防止文字换行，确保图标对齐一致
+### 3. Assistant 菜单状态调整
 
-### 6. 版本控制
-- 提交哈希：74591d0
-- 修改文件：5个文件
-- 代码变更：94行新增，81行删除
+#### 修改内容
+- 将 Assistant 菜单项设置为禁用状态
+- 使用灰色字体显示，表示当前版本不实现此功能
+- 添加 `cursor-not-allowed` 和透明度效果
 
-所有修改都通过 Vite 热重载实时更新，保持了深色主题的一致性，并明确区分了已实现功能（正常颜色）和未实现功能（灰色显示）。
+### 4. Account Details 页面重构
 
-## 版本更新 - 2025/9/11 仪表板卡片状态优化
+#### 文件修改
+- `src/Optimize/Accounts/ActiveInactiveAccountsTab.jsx`
 
-### 1. 仪表板内容进一步优化 (DashboardContent.jsx)
-- **Savings 卡片状态调整**：
-  - 数值从 `£1.67K` 改为 `£0`，显示为灰色
-  - 变化值从 `-£1,529.03` 改为 `0`，显示为灰色
-  - 添加 `opacity-60` 样式，降低透明度表示功能未实现
-  
-- **Recommendations 卡片状态调整**：
-  - 数值从 `999` 改为 `0`，显示为灰色
-  - 变化值从 `-101` 改为 `0`，显示为灰色
-  - 添加 `opacity-60` 样式，降低透明度表示功能未实现
+#### 主要修改
 
-- **样式优化**：
-  - 移除了不必要的 `cursor-not-allowed` 样式，因为这些卡片本身就是纯展示性的
-  - 与 Savings Potential 卡片保持一致的视觉状态
+##### 4.1 文字内容更新
+- **标题修改**：`Account Details` → `Account Status`
+- **分类标题修改**：`Account Aging Classification` → `Account aging categories`
 
-### 2. 版本控制
-- 提交哈希：8e39311
-- 提交消息：feat: 优化仪表板 Savings 和 Recommendations 卡片显示状态
-- 修改文件：1个文件
-- 代码变更：6行新增，6行删除
+##### 4.2 Account aging categories 更新
+更新为七个分类：
+- **Active** - 绿色进度条
+- **30 Days** - 黄色进度条
+- **45 Days** - 橙色进度条  
+- **90 Days** - 红色进度条
+- **180 Days** - 深红色进度条
+- **Over 180 Days** - 最深红色进度条
+- **No Activity Dates** - 灰色进度条
 
-这次更新进一步统一了仪表板顶部卡片的视觉状态，明确区分了已实现功能（License Assignment - 正常显示）和未实现功能（Savings、Recommendations - 灰色显示 + 降低透明度）。
+##### 4.3 过滤器功能升级
+- **User Name 过滤器**：从单选改为多选（`DropdownSearchMultiSelFilter`）
+- **Account Status 过滤器**：从单选改为多选（`DropdownSearchMultiSelFilter`）
+- 所有过滤器现在支持：单选、多选、全部选择、搜索功能
+
+##### 4.4 布局结构优化
+- **标题和操作按钮**：移到表格内部作为第一行
+- **过滤器行**：作为表格的第二行
+- **表格头部**：作为第三行
+- **颜色层次**：
+  - 标题行：`bg-gray-600`
+  - 过滤器行：`bg-gray-700`
+  - 表头行：`bg-gray-700`
+  - 表格内容：`bg-gray-800`
+
+##### 4.5 精确对齐实现
+使用表格布局确保过滤器与对应列完美垂直对齐：
+- **User Name 过滤器** ↔ **User Principal Name 列**
+- **SKU Name 过滤器** ↔ **SKU Name 列**  
+- **Account Status 过滤器** ↔ **Has Activations? 列**
+- **Account Age 过滤器** ↔ **Days Since Account Creation 列**
+- **Activity Days 过滤器** ↔ **Last Account Activity (Days) 列**
+
+### 5. Recommendations 内容更新
+
+#### 修改内容
+将 Recommendations 表格内容完全替换为四个新分类：
+
+1. **Disabled with license** - 红色进度条，342个账户
+2. **Disabled without License** - 橙色进度条，189个账户  
+3. **Enabled with License** - 绿色进度条，1,456个账户
+4. **Enabled without license** - 黄色进度条，267个账户
+
+#### 颜色设计逻辑
+- **绿色**：最理想状态（Enabled with License）
+- **黄色**：需要注意（Enabled without license）
+- **橙色**：需要处理（Disabled without License）
+- **红色**：需要优先处理（Disabled with license）
+
+### 6. 技术实现细节
+
+#### 组件架构
+- 使用 React Hooks（useState, useEffect, useRef）
+- 组件化设计，提高代码复用性
+- 事件处理和状态管理优化
+
+#### 样式系统
+- 完全基于 Tailwind CSS
+- 深色主题统一设计
+- 响应式布局支持
+
+#### 开发环境
+- Vite 热更新支持
+- 开发服务器：http://localhost:5173/
+- 构建命令：`npm run build`
+
+---
+
+## 下一步计划
+
+1. 完善 Feedback 系统的后端集成
+2. 优化移动端响应式设计
+3. 添加更多数据可视化功能
+4. 实现 Assistant 功能（未来版本）
+5. 性能优化和代码重构
