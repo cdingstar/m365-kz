@@ -154,6 +154,183 @@
 
 ---
 
+---
+
+## 2025年9月15日 Power BI 表格功能增强
+
+### 提交信息
+- **提交哈希**: b976d29
+- **修改文件**: 4个文件
+- **新增代码**: 367行
+- **删除代码**: 57行
+
+### 1. Power BI App Summary Usage by User 表格增强
+
+#### 1.1 新增 License Needs 列
+- **位置**: 在"# User"和"App Count"列之间
+- **数据类型**: Plan1、Plan2、Plan3
+- **功能**: 显示每个用户的许可证需求分类
+
+#### 1.2 用户数据更新
+更新了 `userSummaryData` 数组，为每个用户添加 `licenseNeeds` 字段：
+```javascript
+{ userId: '0dd552621a9eaf9d45d89bc372292cd8ddd908f', userCount: 1, licenseNeeds: 'Plan2', appCount: 5, lastSignin: 1 }
+{ userId: '193a88f139039254246c6b2472aff5c059c693b4', userCount: 1, licenseNeeds: 'Plan1', appCount: 2, lastSignin: 1 }
+// ... 其他用户数据
+```
+
+#### 1.3 表格结构调整
+- **表头**: 添加"License Needs"列头
+- **数据行**: 在相应位置显示许可证需求
+- **总计行**: 为新列预留空位
+
+### 2. 多选过滤器功能实现
+
+#### 2.1 组件导入
+```javascript
+import DropdownSearchMultiSelFilter from '../../components/Filters/DropdownSearchMultiSelFilter';
+```
+
+#### 2.2 状态管理
+新增三个过滤器状态：
+```javascript
+const [selectedPowerBiUsers, setSelectedPowerBiUsers] = useState([]);
+const [selectedPowerBiDetailUsers, setSelectedPowerBiDetailUsers] = useState([]);
+const [selectedApps, setSelectedApps] = useState([]);
+```
+
+#### 2.3 过滤器选项配置
+- **Power BI User 选项**: 包含所有用户ID（11个选项）
+- **Power BI Detail User 选项**: 包含详情表格用户ID（6个选项）
+- **App 选项**: 包含"Microsoft Power BI"应用
+
+### 3. Power BI App Summary Usage by User 过滤器
+
+#### 3.1 过滤器行布局
+```html
+<div className="bg-gray-700 border-b border-gray-600">
+  <table className="w-full">
+    <tbody>
+      <tr>
+        <td className="px-3 py-3" style={{ width: '300px' }}>
+          <DropdownSearchMultiSelFilter ... />
+        </td>
+        <!-- 其他列为空 -->
+      </tr>
+    </tbody>
+  </table>
+</div>
+```
+
+#### 3.2 过滤器配置
+- **占位符**: "ALL POWER BI USER"
+- **搜索占位符**: "搜索 Power BI User"
+- **下拉框宽度**: 300px
+- **功能**: 支持搜索、多选、全选
+
+### 4. Power BI App Summary Detail 过滤器
+
+#### 4.1 双过滤器布局
+在过滤器行中添加两个过滤器：
+- **第一列**: Power BI User 过滤器
+- **第四列**: APP 过滤器
+
+#### 4.2 APP 过滤器配置
+```javascript
+<DropdownSearchMultiSelFilter
+  selectedValues={selectedApps}
+  onChange={setSelectedApps}
+  options={appOptions}
+  placeholder="ALL APP"
+  searchPlaceholder="搜索 App"
+  dropdownWidth="200px"
+/>
+```
+
+### 5. 列宽对齐优化
+
+#### 5.1 统一第一列宽度
+- **设置**: `style={{ width: '300px' }}`
+- **应用范围**: 
+  - 过滤器行第一列
+  - 表头第一列
+  - 数据行第一列
+  - 总计行第一列
+
+#### 5.2 垂直对齐确保
+- 过滤器与对应列完美对齐
+- 使用表格布局确保一致性
+- 响应式设计保持
+
+### 6. 样式设计统一
+
+#### 6.1 颜色方案
+- **过滤器行背景**: `bg-gray-700`
+- **表头背景**: `bg-gray-700`
+- **表格内容背景**: `bg-gray-800`
+- **边框**: `border-gray-600`
+
+#### 6.2 交互效果
+- **悬停效果**: `hover:bg-gray-750`
+- **过渡动画**: `transition-colors`
+- **焦点状态**: `focus:ring-teal-500`
+
+### 7. 功能特性
+
+#### 7.1 搜索功能
+- 实时搜索用户ID和应用名称
+- 大小写不敏感匹配
+- 无结果时显示"无结果"提示
+
+#### 7.2 多选功能
+- 支持单个选择和取消选择
+- 全选/取消全选功能
+- 选中项数量显示
+
+#### 7.3 用户体验
+- 点击外部自动关闭下拉框
+- 应用/关闭按钮操作
+- 一致的占位符文本
+
+### 8. 技术实现细节
+
+#### 8.1 组件复用
+- 使用统一的 `DropdownSearchMultiSelFilter` 组件
+- 通过 props 配置不同的行为
+- 保持代码一致性和可维护性
+
+#### 8.2 状态管理
+- 使用 React useState 管理过滤器状态
+- 独立的状态管理避免冲突
+- 支持受控组件模式
+
+#### 8.3 布局技术
+- 使用 CSS Grid 和 Flexbox
+- 表格布局确保对齐
+- 响应式设计支持
+
+### 9. 文件修改清单
+
+#### 主要修改文件
+- `src/Adoption/PowerPlatform/PowerBiUsageTab.jsx` - 主要功能实现
+
+#### 依赖组件
+- `src/components/Filters/DropdownSearchMultiSelFilter.jsx` - 过滤器组件
+
+### 10. 测试和验证
+
+#### 10.1 功能测试
+- ✅ License Needs 列正确显示
+- ✅ 过滤器下拉框正常工作
+- ✅ 搜索功能正常
+- ✅ 多选功能正常
+- ✅ 列对齐正确
+
+#### 10.2 样式验证
+- ✅ 与现有表格样式一致
+- ✅ 响应式布局正常
+- ✅ 交互效果流畅
+
 ## 下一步计划
 
 1. 完善 Feedback 系统的后端集成
@@ -161,3 +338,5 @@
 3. 添加更多数据可视化功能
 4. 实现 Assistant 功能（未来版本）
 5. 性能优化和代码重构
+6. 为其他表格添加类似的过滤器功能
+7. 实现过滤器的数据联动功能
