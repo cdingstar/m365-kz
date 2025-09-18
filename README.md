@@ -73,7 +73,7 @@
 #### 修改内容
 - 将 Assistant 菜单项设置为禁用状态
 - 使用灰色字体显示，表示当前版本不实现此功能
-- 添加 `cursor-not-allowed` 和透明度效果
+- 添加禁用状态的视觉效果
 
 ### 4. Account Details 页面重构
 
@@ -97,8 +97,8 @@
 - **No Activity Dates** - 灰色进度条
 
 ##### 4.3 过滤器功能升级
-- **User Name 过滤器**：从单选改为多选（`DropdownSearchMultiSelFilter`）
-- **Account Status 过滤器**：从单选改为多选（`DropdownSearchMultiSelFilter`）
+- **User Name 过滤器**：从单选改为多选
+- **Account Status 过滤器**：从单选改为多选
 - 所有过滤器现在支持：单选、多选、全部选择、搜索功能
 
 ##### 4.4 布局结构优化
@@ -154,8 +154,6 @@
 
 ---
 
----
-
 ## 2025年9月15日 Power BI 表格功能增强
 
 ### 提交信息
@@ -172,12 +170,7 @@
 - **功能**: 显示每个用户的许可证需求分类
 
 #### 1.2 用户数据更新
-更新了 `userSummaryData` 数组，为每个用户添加 `licenseNeeds` 字段：
-```javascript
-{ userId: '0dd552621a9eaf9d45d89bc372292cd8ddd908f', userCount: 1, licenseNeeds: 'Plan2', appCount: 5, lastSignin: 1 }
-{ userId: '193a88f139039254246c6b2472aff5c059c693b4', userCount: 1, licenseNeeds: 'Plan1', appCount: 2, lastSignin: 1 }
-// ... 其他用户数据
-```
+更新了用户数据，为每个用户添加许可证需求字段
 
 #### 1.3 表格结构调整
 - **表头**: 添加"License Needs"列头
@@ -186,20 +179,13 @@
 
 ### 2. 多选过滤器功能实现
 
-#### 2.1 组件导入
-```javascript
-import DropdownSearchMultiSelFilter from '../../components/Filters/DropdownSearchMultiSelFilter';
-```
-
-#### 2.2 状态管理
+#### 2.1 状态管理
 新增三个过滤器状态：
-```javascript
-const [selectedPowerBiUsers, setSelectedPowerBiUsers] = useState([]);
-const [selectedPowerBiDetailUsers, setSelectedPowerBiDetailUsers] = useState([]);
-const [selectedApps, setSelectedApps] = useState([]);
-```
+- Power BI User 过滤器状态
+- Power BI Detail User 过滤器状态
+- Apps 过滤器状态
 
-#### 2.3 过滤器选项配置
+#### 2.2 过滤器选项配置
 - **Power BI User 选项**: 包含所有用户ID（11个选项）
 - **Power BI Detail User 选项**: 包含详情表格用户ID（6个选项）
 - **App 选项**: 包含"Microsoft Power BI"应用
@@ -207,20 +193,7 @@ const [selectedApps, setSelectedApps] = useState([]);
 ### 3. Power BI App Summary Usage by User 过滤器
 
 #### 3.1 过滤器行布局
-```html
-<div className="bg-gray-700 border-b border-gray-600">
-  <table className="w-full">
-    <tbody>
-      <tr>
-        <td className="px-3 py-3" style={{ width: '300px' }}>
-          <DropdownSearchMultiSelFilter ... />
-        </td>
-        <!-- 其他列为空 -->
-      </tr>
-    </tbody>
-  </table>
-</div>
-```
+在表格中添加专门的过滤器行，确保与列头对齐
 
 #### 3.2 过滤器配置
 - **占位符**: "ALL POWER BI USER"
@@ -236,21 +209,14 @@ const [selectedApps, setSelectedApps] = useState([]);
 - **第四列**: APP 过滤器
 
 #### 4.2 APP 过滤器配置
-```javascript
-<DropdownSearchMultiSelFilter
-  selectedValues={selectedApps}
-  onChange={setSelectedApps}
-  options={appOptions}
-  placeholder="ALL APP"
-  searchPlaceholder="搜索 App"
-  dropdownWidth="200px"
-/>
-```
+- 支持搜索和多选功能
+- 占位符为"ALL APP"
+- 下拉框宽度200px
 
 ### 5. 列宽对齐优化
 
 #### 5.1 统一第一列宽度
-- **设置**: `style={{ width: '300px' }}`
+- **设置**: 固定宽度300px
 - **应用范围**: 
   - 过滤器行第一列
   - 表头第一列
@@ -295,7 +261,7 @@ const [selectedApps, setSelectedApps] = useState([]);
 ### 8. 技术实现细节
 
 #### 8.1 组件复用
-- 使用统一的 `DropdownSearchMultiSelFilter` 组件
+- 使用统一的多选过滤器组件
 - 通过 props 配置不同的行为
 - 保持代码一致性和可维护性
 
@@ -367,27 +333,6 @@ const [selectedApps, setSelectedApps] = useState([]);
 - 完整的功能支持（过滤、排序、License Needs列）
 - 约300行代码，支持所有产品
 
-**核心特性**:
-```javascript
-// 摘要卡片渲染
-{config.summaryCards.map((card, index) => (
-  <div key={index} className="bg-gray-800 p-4 rounded-lg">
-    <card.icon className={`w-8 h-8 ${card.iconColor} mb-2`} />
-    <h3 className="text-lg font-semibold text-white">{card.title}</h3>
-    <p className="text-2xl font-bold text-white">{card.value}</p>
-  </div>
-))}
-
-// 动态表格生成
-<th className="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-600"
-    onClick={() => handleSort('userCount')}>
-  <div className="flex items-center">
-    {config.userSummaryColumns.userCount}
-    {getSortIcon('userCount')}
-  </div>
-</th>
-```
-
 #### 2.2 配置文件模块化拆分
 
 ##### Power Platform 配置
@@ -408,71 +353,20 @@ const [selectedApps, setSelectedApps] = useState([]);
 ### 3. 配置结构标准化
 
 #### 3.1 配置对象结构
-```javascript
-export const productConfig = {
-  // 摘要卡片配置
-  summaryCards: [
-    {
-      title: 'Assigned Product Capable Licenses',
-      value: '80',
-      icon: Key,
-      iconColor: 'text-blue-500'
-    }
-  ],
-  
-  // 图表配置
-  appUsageTitle: 'Product App Usage',
-  licenseTitle: 'Assigned Product Capable Licenses to App Users',
-  appUsageData: [...],
-  licenseData: [...],
-  
-  // 表格配置
-  userSummaryTitle: 'Product App Summary Usage by User',
-  appDetailTitle: 'Product App Summary Detail',
-  userFilterPlaceholder: 'ALL PRODUCT USER',
-  userSearchPlaceholder: '搜索 Product User',
-  
-  // 列定义
-  userSummaryColumns: {
-    user: 'User using Product Apps (Auth to Product)',
-    userCount: '# User',
-    licenseNeeds: 'License Needs',
-    appCount: 'App Count',
-    lastSignin: 'Last App signin (Days)'
-  },
-  
-  // 数据配置
-  userSummaryData: [...],
-  appDetailData: [...],
-  appOptions: [...],
-  userSummaryTotals: {...},
-  appDetailTotals: {...}
-};
-```
+每个产品配置包含以下标准结构：
+- 摘要卡片配置
+- 图表配置
+- 表格配置
+- 列定义
+- 数据配置
 
 ### 4. 组件简化实现
 
 #### 4.1 重构前（每个产品约400行）
-```javascript
-// PowerBiUsageTab.jsx - 400+ lines
-import React, { useState } from 'react';
-import DropdownSearchMultiSelFilter from '../../components/Filters/DropdownSearchMultiSelFilter';
-// ... 大量重复的状态管理、数据处理、UI渲染代码
-```
+每个产品都有大量重复的状态管理、数据处理、UI渲染代码
 
 #### 4.2 重构后（每个产品仅3行）
-```javascript
-// PowerBiUsageTab.jsx - 3 lines
-import React from 'react';
-import ProductUsageTemplate from '../../components/ProductUsageTemplate';
-import { powerBiConfig } from './powerPlatformUsageConfig';
-
-const PowerBiUsageTab = () => {
-  return <ProductUsageTemplate config={powerBiConfig} />;
-};
-
-export default PowerBiUsageTab;
-```
+每个产品组件简化为仅导入模板和配置的3行代码
 
 ### 5. 功能完整性保持
 
@@ -501,78 +395,27 @@ export default PowerBiUsageTab;
 
 #### 6.1 Power Platform 产品线
 1. **Power BI Usage** ✅
-   - 配置：powerBiConfig
-   - 组件：PowerBiUsageTab.jsx
-
 2. **Power Apps Usage** ✅  
-   - 配置：powerAppsConfig
-   - 组件：PowerAppsUsageTab.jsx
-
 3. **Power Automate Usage** ✅
-   - 配置：powerAutomateConfig  
-   - 组件：PowerAutomateUsageTab.jsx
 
 #### 6.2 Teams 产品线
 4. **Teams Standard Usage** ✅
-   - 配置：teamsStandardConfig
-   - 组件：TeamsStandardUsageTab.jsx
-
 5. **Teams Premium Usage** ✅
-   - 配置：teamsPremiumConfig
-   - 组件：TeamsPremiumUsageTab.jsx
 
 #### 6.3 Visio 产品线  
 6. **Visio Usage Plan 1** ✅
-   - 配置：visioPlan1Config
-   - 组件：VisioUsagePlan1Tab.jsx
-
 7. **Visio Usage Plan 2** ✅
-   - 配置：visioPlan2Config
-   - 组件：VisioUsagePlan2Tab.jsx
 
 ### 7. 技术实现细节
 
 #### 7.1 状态管理优化
-```javascript
-// 通用的排序状态管理
-const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
-
-// 通用的过滤器状态管理  
-const [selectedUsers, setSelectedUsers] = useState([]);
-const [selectedDetailUsers, setSelectedDetailUsers] = useState([]);
-const [selectedApps, setSelectedApps] = useState([]);
-```
+通用的排序状态管理和过滤器状态管理
 
 #### 7.2 数据处理抽象
-```javascript
-// 通用的排序逻辑
-const sortedUserData = React.useMemo(() => {
-  if (!sortConfig.key) return config.userSummaryData;
-  
-  return [...config.userSummaryData].sort((a, b) => {
-    if (a[sortConfig.key] < b[sortConfig.key]) {
-      return sortConfig.direction === 'asc' ? -1 : 1;
-    }
-    if (a[sortConfig.key] > b[sortConfig.key]) {
-      return sortConfig.direction === 'asc' ? 1 : -1;
-    }
-    return 0;
-  });
-}, [config.userSummaryData, sortConfig]);
-```
+通用的排序逻辑和数据处理
 
 #### 7.3 UI组件复用
-```javascript
-// 通用的排序图标渲染
-const getSortIcon = (columnKey) => {
-  if (sortConfig.key !== columnKey) {
-    return <ChevronDown className="w-4 h-4 ml-1 opacity-50" />;
-  }
-  return sortConfig.direction === 'asc' 
-    ? <ChevronUp className="w-4 h-4 ml-1" />
-    : <ChevronDown className="w-4 h-4 ml-1" />;
-};
-```
+通用的排序图标渲染和界面组件
 
 ### 8. 性能优化
 
@@ -636,13 +479,7 @@ const getSortIcon = (columnKey) => {
 - `src/Adoption/Visio/visioUsageConfig.js` - Visio配置
 
 #### 11.2 修改文件
-- `src/Adoption/PowerPlatform/PowerBiUsageTab.jsx` - 简化为3行
-- `src/Adoption/PowerPlatform/PowerAppsUsageTab.jsx` - 简化为3行
-- `src/Adoption/PowerPlatform/PowerAutomateUsageTab.jsx` - 简化为3行
-- `src/Adoption/Teams/TeamsStandardUsageTab.jsx` - 简化为3行
-- `src/Adoption/Teams/TeamsPremiumUsageTab.jsx` - 简化为3行
-- `src/Adoption/Visio/VisioUsagePlan1Tab.jsx` - 简化为3行
-- `src/Adoption/Visio/VisioUsagePlan2Tab.jsx` - 简化为3行
+- 7个产品组件文件简化为3行代码
 
 #### 11.3 删除文件
 - `src/config/productUsageConfigs.js` - 大配置文件已拆分
@@ -685,18 +522,8 @@ const getSortIcon = (columnKey) => {
 
 #### 1.2 支持的Project计划
 1. **Project Usage Plan 1** ✅
-   - 标准的双表格布局（Summary + Detail）
-   - 完整的过滤器和排序功能
-   - License Needs列支持
-
 2. **Project Usage Plan 3** ✅  
-   - 与Plan 1相同的结构和功能
-   - 独立的配置和数据
-
 3. **Project Usage Plan 5** ✅
-   - 企业级功能展示
-   - 自定义布局（部门使用情况、企业功能分布）
-   - 项目组合和使用趋势图表
 
 ### 2. 配置文件架构
 
@@ -706,220 +533,25 @@ const getSortIcon = (columnKey) => {
 **包含**: plan1Config、plan3Config、plan5Config
 
 #### 2.2 Plan 1 & Plan 3 配置结构
-```javascript
-export const projectUsageConfigs = {
-  plan1: {
-    productName: 'Project Plan 1',
-    icon: Folder,
-    summaryCards: [
-      {
-        title: 'Assigned Project Plan 1 Capable Licenses',
-        value: '80',
-        icon: Key,
-        iconColor: 'text-blue-500'
-      },
-      // ... 其他摘要卡片
-    ],
-    chartData: {
-      appUsage: {
-        title: 'Project Plan 1 App Usage',
-        data: [
-          { app: 'Microsoft Project Plan 1', count: 70 },
-          { app: 'Project Plan 1 Service', count: 60 },
-          // ... 其他应用数据
-        ]
-      },
-      licenseData: {
-        title: 'Assigned Project Plan 1 Capable Licenses to App Users',
-        data: [
-          { license: 'Project Plan 1 Pro', count: 41 },
-          { license: 'Project Plan 1 (Free)', count: 35 }
-        ]
-      }
-    },
-    tables: {
-      userSummary: {
-        title: 'Project Plan 1 App Summary Usage by User',
-        columns: [
-          { 
-            key: 'userId', 
-            label: 'User using Project Plan 1 Apps (Auth to Project Plan 1)', 
-            width: '300px',
-            hasFilter: true,
-            filterDefault: 'ALL PROJECT PLAN 1 USER'
-          },
-          { key: 'licenseNeeds', label: 'License Needs', width: '80px' },
-          { key: 'userCount', label: '# User', width: '80px', sortable: true },
-          { key: 'appCount', label: 'App Count', width: '100px', sortable: true },
-          { key: 'lastSignin', label: 'Last App signin (Days)', width: '160px', sortable: true }
-        ],
-        data: [
-          { userId: '0dd552621a9eaf9d45d89bc372292cd8ddd908f', licenseNeeds: 'Plan1', userCount: 1, appCount: 5, lastSignin: 1 },
-          // ... 其他用户数据
-        ],
-        totals: { userId: '总计', userCount: 83, appCount: 194, lastSignin: '' }
-      },
-      appDetail: {
-        title: 'Project Plan 1 App Summary Detail',
-        columns: [
-          { 
-            key: 'userId', 
-            label: 'User using Project Plan 1 Apps (Auth to Project Plan 1)', 
-            width: '300px',
-            hasFilter: true,
-            filterDefault: 'ALL PROJECT PLAN 1 USER'
-          },
-          { key: 'licenseNeeds', label: 'License Needs', width: '80px' },
-          { key: 'userCount', label: '# User', width: '80px', sortable: true },
-          { key: 'lastSigninDays', label: 'Last App sign in Days Ago', width: '180px', sortable: true },
-          { 
-            key: 'app', 
-            label: 'App', 
-            width: '160px',
-            hasFilter: true,
-            filterDefault: 'ALL APP'
-          },
-          { key: 'pbiUserAssigned', label: 'Project Plan 1 User Assigned License count', width: '200px', sortable: true }
-        ],
-        data: [
-          { userId: '0dd552621a9eaf9d45d89bc372292cd8ddd908f', licenseNeeds: 'Plan1', userCount: 1, lastSigninDays: 1, app: 'Microsoft Project Plan 1', pbiUserAssigned: 2 },
-          // ... 其他详情数据
-        ],
-        totals: { userId: '总计', userCount: 83, lastSigninDays: '', app: '', pbiUserAssigned: 73 }
-      }
-    }
-  }
-};
-```
+标准的双表格布局（Summary + Detail），完整的过滤器和排序功能，License Needs列支持
 
 #### 2.3 Plan 5 特殊配置
-```javascript
-plan5: {
-  productName: 'Project Plan 5',
-  icon: Target,
-  summaryCards: [
-    {
-      title: 'Total Project Plan 5 Users',
-      value: '34',
-      icon: Users,
-      iconColor: 'text-blue-500',
-      trend: '+6.3% from last month'
-    },
-    // ... 其他带趋势的摘要卡片
-  ],
-  customContent: {
-    departmentUsage: {
-      title: 'Project Plan 5 Usage by Department',
-      data: [
-        { department: 'Finance', totalUsers: 5, activeUsers: 5, projects: 12, tasks: 180, adoptionRate: 100 },
-        { department: 'Sales', totalUsers: 3, activeUsers: 2, projects: 5, tasks: 85, adoptionRate: 67 },
-        // ... 其他部门数据
-      ]
-    },
-    enterpriseFeatures: {
-      title: 'Enterprise Feature Usage',
-      data: [
-        { feature: 'Portfolio Management', percentage: 40 },
-        { feature: 'Resource Management', percentage: 25 },
-        // ... 其他企业功能
-      ]
-    },
-    topPortfolios: {
-      title: 'Top Project Portfolios',
-      data: [
-        { name: 'Strategic Initiatives', department: 'Finance', projects: 8, budget: '$1.2M', roi: '185%' },
-        // ... 其他项目组合
-      ]
-    },
-    usageTrends: {
-      title: 'Usage Trends (Last 6 Months)',
-      data: [
-        { month: 'Jan', projects: 58, activeUsers: 30 },
-        // ... 其他月份数据
-      ]
-    }
-  }
-}
-```
+企业级功能展示，自定义布局（部门使用情况、企业功能分布），项目组合和使用趋势图表
 
 ### 3. 组件实现策略
 
 #### 3.1 Plan 1 & Plan 3 - 标准模板
-```javascript
-// ProjectUsagePlan1Tab.jsx & ProjectUsagePlan3Tab.jsx
-import React from 'react';
-import ProductUsageTemplate from '../../components/ProductUsageTemplate';
-import { projectUsageConfigs } from './projectUsageConfig';
-
-const ProjectUsagePlan1Tab = () => {
-  return <ProductUsageTemplate config={projectUsageConfigs.plan1} />;
-};
-
-export default ProjectUsagePlan1Tab;
-```
+使用标准的ProductUsageTemplate模板，3行代码实现
 
 #### 3.2 Plan 5 - 自定义实现
-由于Plan 5具有独特的企业级功能展示需求，采用自定义实现：
-
-**主要特性**:
-- 部门使用情况表格
-- 企业功能使用分布图
-- 项目组合展示
-- 使用趋势图表
-- 企业功能成功案例
-- 采用建议
-
-**实现方式**:
-```javascript
-// ProjectUsagePlan5Tab.jsx - 自定义布局
-const ProjectUsagePlan5Tab = () => {
-  const config = projectUsageConfigs.plan5;
-  
-  return (
-    <div className="p-6 bg-gray-900 min-h-screen">
-      {/* 摘要卡片 - 复用配置 */}
-      {config.summaryCards.map((card, index) => (
-        <SummaryCard key={index} {...card} />
-      ))}
-      
-      {/* 部门使用情况表格 */}
-      <DepartmentUsageTable data={config.customContent.departmentUsage} />
-      
-      {/* 企业功能分布 */}
-      <EnterpriseFeatures data={config.customContent.enterpriseFeatures} />
-      
-      {/* 其他自定义内容... */}
-    </div>
-  );
-};
-```
+由于Plan 5具有独特的企业级功能展示需求，采用自定义实现
 
 ### 4. License Needs 列实现
 
 #### 4.1 数据结构
-在所有Project计划的用户数据中添加`licenseNeeds`字段：
-```javascript
-{ 
-  userId: '0dd552621a9eaf9d45d89bc372292cd8ddd908f', 
-  licenseNeeds: 'Plan1',  // 新增字段
-  userCount: 1, 
-  appCount: 5, 
-  lastSignin: 1 
-}
-```
+在所有Project计划的用户数据中添加许可证需求字段
 
-#### 4.2 列配置
-```javascript
-columns: [
-  { key: 'userId', label: 'User using Project Plan X Apps', width: '300px', hasFilter: true },
-  { key: 'licenseNeeds', label: 'License Needs', width: '80px' },  // 新增列
-  { key: 'userCount', label: '# User', width: '80px', sortable: true },
-  { key: 'appCount', label: 'App Count', width: '100px', sortable: true },
-  // ...
-]
-```
-
-#### 4.3 数据分布
+#### 4.2 数据分布
 - **Plan1**: 分配给基础用户
 - **Plan2**: 分配给中级用户  
 - **Plan3**: 分配给高级用户
@@ -945,19 +577,8 @@ columns: [
 ### 6. 代码优化成果
 
 #### 6.1 代码减少统计
-- **重构前**: 
-  - ProjectUsagePlan1Tab.jsx: 250行
-  - ProjectUsagePlan3Tab.jsx: 250行  
-  - ProjectUsagePlan5Tab.jsx: 357行
-  - **总计**: 857行
-
-- **重构后**:
-  - ProjectUsagePlan1Tab.jsx: 7行
-  - ProjectUsagePlan3Tab.jsx: 7行
-  - ProjectUsagePlan5Tab.jsx: 285行（自定义实现）
-  - projectUsageConfig.js: 370行
-  - **总计**: 669行
-
+- **重构前**: 857行总计
+- **重构后**: 669行总计
 - **净减少**: 188行（22%减少）
 - **模板复用**: Plan 1和Plan 3实现97%代码复用
 
@@ -969,70 +590,30 @@ columns: [
 ### 7. 企业级功能展示（Plan 5）
 
 #### 7.1 部门使用情况表格
-- **列**: Department, Total Users, Active Users, Projects, Tasks, Adoption Rate
-- **数据**: 6个部门的详细使用统计
-- **可视化**: 采用率进度条（绿色>85%, 蓝色>70%, 黄色>50%, 红色<50%）
+6个部门的详细使用统计，采用率进度条可视化
 
 #### 7.2 企业功能使用分布
-- **Portfolio Management**: 40%使用率
-- **Resource Management**: 25%使用率
-- **Demand Management**: 15%使用率
-- **Enterprise Reporting**: 12%使用率
-- **Other Enterprise Features**: 8%使用率
+Portfolio Management、Resource Management等企业功能的使用率分布
 
 #### 7.3 项目组合展示
-- **Strategic Initiatives**: Finance部门，8个项目，$1.2M预算，185% ROI
-- **Digital Transformation**: IT部门，12个项目，$2.5M预算，160% ROI
-- **Market Expansion**: Marketing部门，6个项目，$950K预算，140% ROI
-- **Operational Excellence**: Operations部门，10个项目，$1.8M预算，125% ROI
+Strategic Initiatives、Digital Transformation等项目组合的详细信息
 
 #### 7.4 使用趋势图表
-- **时间范围**: 最近6个月（Jan-Jun）
-- **指标**: 项目数量和活跃用户数
-- **可视化**: SVG折线图，紫色线（项目）和蓝色线（用户）
+最近6个月的项目数量和活跃用户数趋势
 
 #### 7.5 采用建议
-1. **Sales & HR Focus**: 针对采用率最低的部门进行培训
-2. **Enterprise Reporting**: 提高企业报告功能的采用率
-3. **ROI Tracking**: 实施标准化ROI跟踪
+针对Sales & HR Focus、Enterprise Reporting、ROI Tracking的三个关键建议
 
 ### 8. 技术实现亮点
 
 #### 8.1 配置灵活性
-```javascript
-// 支持不同的图标和颜色
-summaryCards: [
-  { icon: Key, iconColor: 'text-blue-500' },
-  { icon: Users, iconColor: 'text-green-500' },
-  { icon: BarChart, iconColor: 'text-yellow-500' },
-  { icon: Target, iconColor: 'text-purple-500' }  // Plan 5特有
-]
-```
+支持不同的图标和颜色配置
 
 #### 8.2 数据结构标准化
-```javascript
-// 统一的用户数据结构
-userData: [
-  {
-    userId: 'hash_string',
-    licenseNeeds: 'Plan1|Plan2|Plan3',
-    userCount: number,
-    appCount: number,
-    lastSignin: number
-  }
-]
-```
+统一的用户数据结构
 
 #### 8.3 自定义内容支持
-```javascript
-// Plan 5的自定义内容结构
-customContent: {
-  departmentUsage: { title, data },
-  enterpriseFeatures: { title, data },
-  topPortfolios: { title, data },
-  usageTrends: { title, data }
-}
-```
+Plan 5的自定义内容结构
 
 ### 9. 质量保证
 
@@ -1059,27 +640,13 @@ customContent: {
 ### 10. 扩展性设计
 
 #### 10.1 新Project计划支持
-添加新的Project计划只需：
-1. 在projectUsageConfig.js中添加新配置
-2. 创建3行代码的组件文件
-3. 如需自定义布局，参考Plan 5实现
+添加新的Project计划只需添加配置和创建组件文件
 
 #### 10.2 企业功能扩展
-Plan 5的自定义内容结构支持：
-- 新的图表类型
-- 新的数据维度
-- 新的可视化组件
-- 新的分析指标
+Plan 5的自定义内容结构支持新的图表类型、数据维度、可视化组件、分析指标
 
 #### 10.3 配置验证
-```javascript
-// 未来可添加配置验证
-const validateProjectConfig = (config) => {
-  if (!config.productName) throw new Error('Product name required');
-  if (!config.summaryCards) throw new Error('Summary cards required');
-  // ... 其他验证逻辑
-};
-```
+未来可添加配置验证机制
 
 ### 11. 文件变更清单
 
@@ -1103,9 +670,9 @@ const validateProjectConfig = (config) => {
 5. **Teams Premium Usage** ✅
 6. **Visio Usage Plan 1** ✅
 7. **Visio Usage Plan 2** ✅
-8. **Project Usage Plan 1** ✅ (新增)
-9. **Project Usage Plan 3** ✅ (新增)
-10. **Project Usage Plan 5** ✅ (新增，自定义实现)
+8. **Project Usage Plan 1** ✅
+9. **Project Usage Plan 3** ✅
+10. **Project Usage Plan 5** ✅
 
 #### 12.2 代码复用统计
 - **标准模板使用**: 9个产品（90%）
@@ -1130,19 +697,11 @@ const validateProjectConfig = (config) => {
 **问题**: Project Usage 页面点击后显示空白内容
 
 **根本原因**: 
-- `ProjectUsagePlan1Tab.jsx` 和 `ProjectUsagePlan3Tab.jsx` 中导入了不存在的 `projectUsageConfigs` 对象
-- 配置文件中实际导出的是 `projectPlan1Config` 和 `projectPlan3Config`
+- Project组件中导入了不存在的配置对象
+- 配置文件中实际导出的配置名称不匹配
 
 **修复方案**:
-```javascript
-// 修复前
-import { projectUsageConfigs } from './projectUsageConfig';
-return <ProductUsageTemplate config={projectUsageConfigs.plan1} />;
-
-// 修复后  
-import { projectPlan1Config } from './projectUsageConfig';
-return <ProductUsageTemplate config={projectPlan1Config} />;
-```
+修复所有Project组件的导入和配置引用
 
 #### 1.2 修复文件清单
 - `src/Adoption/Project/ProjectUsagePlan1Tab.jsx` - 修复导入和配置引用
@@ -1158,60 +717,11 @@ return <ProductUsageTemplate config={projectPlan1Config} />;
 
 #### 2.2 配置重构
 **重构前**: 自定义复杂布局（319行代码）
-```javascript
-// 自定义的部门表格、企业功能图表、项目组合等
-customContent: {
-  departmentUsage: {...},
-  enterpriseFeatures: {...},
-  topPortfolios: {...},
-  usageTrends: {...}
-}
-```
-
 **重构后**: 标准模板配置（符合ProductUsageTemplate结构）
-```javascript
-export const projectPlan5Config = {
-  summaryCards: [
-    {
-      title: 'Assigned Project Plan 5 Capable Licenses',
-      value: '45',
-      icon: Key,
-      iconColor: 'text-blue-500'
-    },
-    // ... 其他摘要卡片
-  ],
-  
-  appUsageTitle: 'Project Plan 5 App Usage',
-  licenseTitle: 'Assigned Project Plan 5 Capable Licenses to App Users',
-  
-  appUsageData: [
-    { app: 'Microsoft Project Plan 5', count: 29 },
-    { app: 'Project Plan 5 Service', count: 25 },
-    { app: 'Project Plan 5 Portfolio Management', count: 18 },
-    { app: 'Project Plan 5 Desktop', count: 15 },
-    { app: 'Project Plan 5 Resource Management', count: 12 },
-    { app: 'Project Plan 5 Enterprise Reporting', count: 8 },
-    { app: 'Project Plan 5 PowerShell', count: 5 }
-  ],
-  
-  // ... 完整的用户数据和表格配置
-};
-```
 
 #### 2.3 组件简化
 **重构前**: 319行自定义JSX代码
 **重构后**: 9行标准模板调用
-```javascript
-import React from 'react';
-import ProductUsageTemplate from '../../components/ProductUsageTemplate';
-import { projectPlan5Config } from './projectUsageConfig';
-
-const ProjectUsagePlan5Tab = () => {
-  return <ProductUsageTemplate config={projectPlan5Config} />;
-};
-
-export default ProjectUsagePlan5Tab;
-```
 
 ### 3. Plan 5 虚拟数据设计
 
@@ -1342,17 +852,6 @@ export default ProjectUsagePlan5Tab;
 - `src/Adoption/Project/projectUsageConfig.js` - 新增Plan 5配置
 - `README.md` - 更新修改历史
 
-#### 10.2 Git提交信息
-```
-fix: Project Usage 页面导入错误修复和 Plan 5 模板化重构
-
-- 修复 ProjectUsagePlan1Tab 和 ProjectUsagePlan3Tab 中的配置导入错误
-- 将 Project Usage Plan 5 重构为使用 ProductUsageTemplate 模板
-- 统一所有 Project 标签页使用相同的模板结构
-- 为 Plan 5 创建符合模板的虚拟数据配置
-- 提高代码复用率和维护性
-```
-
 ### 11. ProductUsageTemplate 覆盖总结
 
 截至目前，ProductUsageTemplate已完整覆盖：
@@ -1367,7 +866,7 @@ fix: Project Usage 页面导入错误修复和 Plan 5 模板化重构
 7. **Visio Usage Plan 2** ✅
 8. **Project Usage Plan 1** ✅
 9. **Project Usage Plan 3** ✅
-10. **Project Usage Plan 5** ✅ (新完成模板化)
+10. **Project Usage Plan 5** ✅
 
 #### 11.2 模板化成就
 - **标准模板使用**: 13个产品（100%）
@@ -1375,6 +874,92 @@ fix: Project Usage 页面导入错误修复和 Plan 5 模板化重构
 - **总代码减少**: 约1200行
 - **配置文件**: 4个模块化文件
 - **维护效率**: 提升80%
+
+---
+
+## 2025年9月18日 UI/UX 优化和功能增强
+
+### 提交信息
+- **修改时间**: 2025年9月18日 15:00-18:00
+- **修改文件**: 5个文件
+- **主要改进**: 登录页面、表格排序、过滤器、标题布局优化
+
+### 1. 登录页面第三方登录功能
+**文件**: `src/LoginPage.jsx`
+
+**新增功能**:
+- 添加 Microsoft 和 Google 登录按钮
+- 按钮并排摆放，整体宽度与 Sign In 按钮对齐
+- 使用官方品牌图标和颜色
+- 添加 "Or continue with" 分隔线设计
+- 实现 hover 和 focus 交互效果
+
+### 2. SKU Adoption Details 表格排序功能
+**文件**: `src/Optimize/Plans/SKUAdoptionTab.jsx`
+
+**新增功能**:
+- 为 4 个数值列添加排序功能：
+  - Users Assigned Plan（分配用户数）
+  - Assigned Cost（分配成本）
+  - Potential Savings（潜在节省）
+  - Accounts Using Plan in < 30 Days（30天内使用账户数）
+- 支持升序/降序切换
+- 添加排序状态指示图标
+- 优化表格布局，删除冗余注释
+
+### 3. Optimization Summary 表格结构统一
+**文件**: `src/Home/Overview/OptimizationSummaryTab.jsx`
+
+**主要改进**:
+- 将 Sub-Categories 从卡片式布局改为表格布局
+- 添加 "CATEGORY" 和 "RECOMMENDATIONS" 列头
+- 与 Financial 部分保持一致的设计风格
+- 保留图标和类别名称的视觉展示
+
+### 4. License Assignment 过滤器功能增强
+**文件**: `src/Home/Overview/LicenseAssignmentTab.jsx`
+
+**主要改进**:
+- 将 "License Breakdown" 标题移到表格内作为表格头
+- 添加 LICENSE NAME 多选下拉框过滤器
+- 修复过滤器默认显示文本为 "ALL LICENSE NAME"
+- 添加操作按钮（导出、下载、过滤等）
+- 调整过滤器宽度与表格列头对齐
+
+### 5. Company Profile 表格标题内置
+**文件**: `src/Home/Overview/CompanyProfileTab.jsx`
+
+**主要改进**:
+- 将三个摘要表格的标题移到表格内：
+  - Tenant Summary
+  - Account Summary
+  - Endpoint Summary
+- 为 Endpoint Summary 添加新数据行：
+  - Web: 28,456 总端点，19,823 活跃端点
+  - Mobile: 18,234 总端点，12,567 活跃端点
+  - Desktop: 15,892 总端点，11,234 活跃端点
+  - Phone: 9,489 总端点，5,666 活跃端点
+  - Total: 72,071 总端点，49,290 活跃端点
+- 统一所有表格的操作按钮设计
+
+### 用户体验改进
+- **登录流程**: 提供多种登录方式选择
+- **数据操作**: 快速排序和过滤功能提升数据查找效率
+- **界面一致性**: 统一的表格布局和交互模式
+- **视觉设计**: 保持深色主题的一致性和专业感
+
+### 质量保证
+- ✅ 所有功能测试通过
+- ✅ 视觉一致性验证完成
+- ✅ 响应式布局正常
+- ✅ 性能测试通过
+- ✅ 原有数据完整性保持
+
+### 技术亮点
+- 状态管理优化
+- 性能优化的排序算法
+- 组件复用和配置驱动设计
+- 响应式布局和交互效果优化
 
 ---
 
@@ -1392,3 +977,6 @@ fix: Project Usage 页面导入错误修复和 Plan 5 模板化重构
 10. **实现配置文件的动态加载功能**
 11. **优化数据可视化图表功能**
 12. **添加更多企业级分析功能**
+13. **实现表格数据的导出功能**
+14. **添加更多表格的排序和过滤功能**
+15. **优化登录页面的第三方登录集成**

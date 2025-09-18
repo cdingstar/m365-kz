@@ -177,41 +177,32 @@ const OptimizationSummaryTab = () => {
         {/* 右侧区域：Sub-Categories */}
         <div>
           <h2 className="text-xl font-semibold text-white mb-4">Sub-Categories</h2>
-          <div className="bg-gray-800 rounded-lg shadow-lg p-6">
-          <div className="space-y-4">
-            {subCategories.map((category, index) => (
-              <div key={index} className="flex items-center">
-                <div className="flex items-center w-48">
-                  <div className={`w-12 h-12 ${category.color} rounded-lg flex items-center justify-center mr-4 flex-shrink-0`}>
-                    <span className={`text-lg ${category.isActive ? 'text-white' : 'text-gray-400'}`}>{category.icon}</span>
-                  </div>
-                  <div className={`text-sm whitespace-nowrap ${category.isActive ? 'text-gray-300' : 'text-gray-500'}`}>{category.name}</div>
-                </div>
-                <div className="flex-1 mx-4">
-                  <div className="bg-gray-700 rounded-full h-6 relative overflow-hidden">
-                    <div 
-                      className={`${category.color} h-6 rounded-full transition-all duration-500 flex items-center justify-start pl-2`}
-                      style={{width: `${category.isActive ? Math.max(10, (category.value / 200)) : 8}%`}}
-                    >
-                      <span className={`text-xs font-medium ${category.isActive ? 'text-white' : 'text-gray-400'}`}>{category.value.toLocaleString()}</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="w-16 text-right">
-                  <span className={`text-sm font-medium ${category.isActive ? 'text-white' : 'text-gray-500'}`}>{category.value.toLocaleString()}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-          
-          {/* X轴标签 */}
-          <div className="flex justify-between mt-4 px-24">
-            <span className="text-xs text-gray-400">0K</span>
-            <span className="text-xs text-gray-400">5K</span>
-            <span className="text-xs text-gray-400">10K</span>
-            <span className="text-xs text-gray-400">15K</span>
-            <span className="text-xs text-gray-400">20K</span>
-          </div>
+          <div className="bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+            <table className="min-w-full">
+              <thead className="bg-gray-700">
+                <tr>
+                  <th className="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Category</th>
+                  <th className="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Recommendations</th>
+                </tr>
+              </thead>
+              <tbody className="bg-gray-800 divide-y divide-gray-600">
+                {subCategories.map((category, index) => (
+                  <tr key={index} className="hover:bg-gray-750 transition-colors">
+                    <td className="px-6 py-4">
+                      <div className="flex items-center">
+                        <div className={`w-12 h-12 ${category.color} rounded-lg flex items-center justify-center mr-4`}>
+                          <span className={`text-lg ${category.isActive ? 'text-white' : 'text-gray-400'}`}>{category.icon}</span>
+                        </div>
+                        <div>
+                          <div className={`text-sm font-medium ${category.isActive ? 'text-gray-200' : 'text-gray-500'}`}>{category.name}</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className={`px-6 py-4 text-sm font-medium ${category.isActive ? 'text-gray-200' : 'text-gray-500'}`}>{category.value.toLocaleString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

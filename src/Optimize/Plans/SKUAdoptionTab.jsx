@@ -7,6 +7,7 @@ const SKUAdoptionTab = () => {
   const [selectedSKUType, setSelectedSKUType] = useState('all');
   const [selectedLicenses, setSelectedLicenses] = useState(['all']);
   const [priceRange, setPriceRange] = useState([0, 500]);
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   
   // SKU类型选项
   const skuTypeOptions = [
@@ -177,6 +178,80 @@ const SKUAdoptionTab = () => {
     }
   ];
 
+  // 排序函数
+  const handleSort = (key) => {
+    let direction = 'asc';
+    if (sortConfig.key === key && sortConfig.direction === 'asc') {
+      direction = 'desc';
+    }
+    setSortConfig({ key, direction });
+  };
+
+  // 排序数据
+  const sortedLicenseData = React.useMemo(() => {
+    let sortableData = [...licenseData];
+    if (sortConfig.key) {
+      sortableData.sort((a, b) => {
+        let aValue, bValue;
+        
+        switch (sortConfig.key) {
+          case 'usersAssigned':
+            aValue = a.usersAssigned;
+            bValue = b.usersAssigned;
+            break;
+          case 'assignedCost':
+            aValue = a.usersAssigned * 9.60;
+            bValue = b.usersAssigned * 9.60;
+            break;
+          case 'potentialSavings':
+            aValue = (a.usersAssigned - a.accountsUsing) * 9.60;
+            bValue = (b.usersAssigned - b.accountsUsing) * 9.60;
+            break;
+          case 'accountsUsing':
+            aValue = a.accountsUsing;
+            bValue = b.accountsUsing;
+            break;
+          default:
+            return 0;
+        }
+        
+        if (aValue < bValue) {
+          return sortConfig.direction === 'asc' ? -1 : 1;
+        }
+        if (aValue > bValue) {
+          return sortConfig.direction === 'asc' ? 1 : -1;
+        }
+        return 0;
+      });
+    }
+    return sortableData;
+  }, [licenseData, sortConfig]);
+
+  // 排序图标组件
+  const SortIcon = ({ column }) => {
+    if (sortConfig.key !== column) {
+      return (
+        <svg className="w-4 h-4 ml-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+        </svg>
+      );
+    }
+    
+    if (sortConfig.direction === 'asc') {
+      return (
+        <svg className="w-4 h-4 ml-1 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+        </svg>
+      );
+    } else {
+      return (
+        <svg className="w-4 h-4 ml-1 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      );
+    }
+  };
+
   // 计算总计
   const totals = {
     plansCount: 236,
@@ -273,25 +348,53 @@ const SKUAdoptionTab = () => {
           </div>
         </div>
         
-        <div className="p-3 bg-gray-700 text-xs text-gray-300">
-          <p>Note (Rule on plan outlines if a rule is in place to identify use of the plan (Green = Yes), right click on plan name to view further details</p>
-        </div>
-        
         <div className="overflow-x-auto">
           <table className="min-w-full">
             <thead className="bg-gray-700">
               <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Plan Name (Friendly)</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Plans within SKU</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Users Assigned Plan</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Assigned Cost</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Potential Savings</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Accounts using plan in &lt; 30 Days</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">% Plan Assigned and Used in &lt; 30 Days</th>
+                <th className="px-4 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Plan Name (Friendly)</th>
+                <th className="px-4 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Plans within SKU</th>
+                <th 
+                  className="px-4 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-600 transition-colors"
+                  onClick={() => handleSort('usersAssigned')}
+                >
+                  <div className="flex items-center justify-center">
+                    Users Assigned Plan
+                    <SortIcon column="usersAssigned" />
+                  </div>
+                </th>
+                <th 
+                  className="px-4 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-600 transition-colors"
+                  onClick={() => handleSort('assignedCost')}
+                >
+                  <div className="flex items-center justify-center">
+                    Assigned Cost
+                    <SortIcon column="assignedCost" />
+                  </div>
+                </th>
+                <th 
+                  className="px-4 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-600 transition-colors"
+                  onClick={() => handleSort('potentialSavings')}
+                >
+                  <div className="flex items-center justify-center">
+                    Potential Savings
+                    <SortIcon column="potentialSavings" />
+                  </div>
+                </th>
+                <th 
+                  className="px-4 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-600 transition-colors"
+                  onClick={() => handleSort('accountsUsing')}
+                >
+                  <div className="flex items-center justify-center">
+                    Accounts using plan in &lt; 30 Days
+                    <SortIcon column="accountsUsing" />
+                  </div>
+                </th>
+                <th className="px-4 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">% Plan Assigned and Used in &lt; 30 Days</th>
               </tr>
             </thead>
             <tbody className="bg-gray-800 divide-y divide-gray-700">
-              {licenseData.map((license, index) => (
+              {sortedLicenseData.map((license, index) => (
                 <tr key={index} className="hover:bg-gray-750 transition-colors">
                   <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-white">{license.name}</td>
                   <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-300">{license.sku}</td>

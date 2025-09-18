@@ -20,10 +20,13 @@ const CompanyProfileTab = () => {
   ];
 
   // 端点摘要数据
-  const endpointSummary = {
-    entraEndpoints: '72,071',
-    activeEntraEndpoints: '49,290'
-  };
+  const endpointSummary = [
+    { category: 'Web', entraEndpoints: '28,456', activeEntraEndpoints: '19,823' },
+    { category: 'Mobile', entraEndpoints: '18,234', activeEntraEndpoints: '12,567' },
+    { category: 'Desktop', entraEndpoints: '15,892', activeEntraEndpoints: '11,234' },
+    { category: 'Phone', entraEndpoints: '9,489', activeEntraEndpoints: '5,666' },
+    { category: 'Total', entraEndpoints: '72,071', activeEntraEndpoints: '49,290' }
+  ];
 
   // 内部域名数据
   const internalDomains = [
@@ -60,8 +63,33 @@ const CompanyProfileTab = () => {
         <div className="lg:col-span-3 space-y-8">
           {/* Tenant Summary */}
           <div>
-            <h2 className="text-xl font-semibold text-white mb-4">Tenant Summary</h2>
             <div className="bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+              {/* 标题行 */}
+              <div className="px-4 py-3 bg-gray-600 border-b border-gray-500 flex items-center justify-between">
+                <div className="flex items-center space-x-4">
+                  <h2 className="text-xl font-semibold text-white">Tenant Summary</h2>
+                </div>
+                <div className="flex items-center space-x-4">
+                  <div className="flex space-x-2">
+                    <button className="p-1 hover:bg-gray-500 rounded text-gray-300 hover:text-white transition-colors">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                      </svg>
+                    </button>
+                    <button className="p-1 hover:bg-gray-500 rounded text-gray-300 hover:text-white transition-colors">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                    </button>
+                    <button className="p-1 hover:bg-gray-500 rounded text-gray-300 hover:text-white transition-colors">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.414A1 1 0 013 6.707V4z" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              
               <table className="min-w-full">
                 <thead className="bg-gray-700">
                   <tr>
@@ -106,8 +134,33 @@ const CompanyProfileTab = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Account Summary */}
             <div>
-              <h2 className="text-xl font-semibold text-white mb-4">Account Summary</h2>
               <div className="bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+                {/* 标题行 */}
+                <div className="px-4 py-3 bg-gray-600 border-b border-gray-500 flex items-center justify-between">
+                  <div className="flex items-center space-x-4">
+                    <h2 className="text-xl font-semibold text-white">Account Summary</h2>
+                  </div>
+                  <div className="flex items-center space-x-4">
+                    <div className="flex space-x-2">
+                      <button className="p-1 hover:bg-gray-500 rounded text-gray-300 hover:text-white transition-colors">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                        </svg>
+                      </button>
+                      <button className="p-1 hover:bg-gray-500 rounded text-gray-300 hover:text-white transition-colors">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                      </button>
+                      <button className="p-1 hover:bg-gray-500 rounded text-gray-300 hover:text-white transition-colors">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.414A1 1 0 013 6.707V4z" />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                
                 <table className="min-w-full h-48">
                   <thead className="bg-gray-700">
                     <tr>
@@ -131,20 +184,49 @@ const CompanyProfileTab = () => {
 
             {/* Endpoint Summary */}
             <div>
-              <h2 className="text-xl font-semibold text-white mb-4">Endpoint Summary</h2>
               <div className="bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+                {/* 标题行 */}
+                <div className="px-4 py-3 bg-gray-600 border-b border-gray-500 flex items-center justify-between">
+                  <div className="flex items-center space-x-4">
+                    <h2 className="text-xl font-semibold text-white">Endpoint Summary</h2>
+                  </div>
+                  <div className="flex items-center space-x-4">
+                    <div className="flex space-x-2">
+                      <button className="p-1 hover:bg-gray-500 rounded text-gray-300 hover:text-white transition-colors">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                        </svg>
+                      </button>
+                      <button className="p-1 hover:bg-gray-500 rounded text-gray-300 hover:text-white transition-colors">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                      </button>
+                      <button className="p-1 hover:bg-gray-500 rounded text-gray-300 hover:text-white transition-colors">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.414A1 1 0 013 6.707V4z" />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                
                 <table className="min-w-full h-48">
                   <thead className="bg-gray-700">
                     <tr>
-                      <th className="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Entra Endpoints</th>
-                      <th className="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Active Entra (&lt;30 Days)</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Endpoint Category</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Entra Endpoints</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Active Entra (&lt;30 Days)</th>
                     </tr>
                   </thead>
-                  <tbody className="bg-gray-800">
-                    <tr className="hover:bg-gray-750 transition-colors">
-                      <td className="px-3 py-3 text-sm font-medium text-gray-200">{endpointSummary.entraEndpoints}</td>
-                      <td className="px-3 py-3 text-sm font-medium text-gray-200">{endpointSummary.activeEntraEndpoints}</td>
-                    </tr>
+                  <tbody className="bg-gray-800 divide-y divide-gray-600">
+                    {endpointSummary.map((item, index) => (
+                      <tr key={index} className={`${index === endpointSummary.length - 1 ? 'bg-gray-700 font-bold' : 'hover:bg-gray-750'} transition-colors`}>
+                        <td className="px-4 py-3 text-sm text-gray-200">{item.category}</td>
+                        <td className="px-4 py-3 text-sm text-gray-200">{item.entraEndpoints}</td>
+                        <td className="px-4 py-3 text-sm text-gray-200">{item.activeEntraEndpoints}</td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>

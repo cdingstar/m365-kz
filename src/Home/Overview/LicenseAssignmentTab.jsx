@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
+import DropdownSearchMultiSelFilter from '../../components/Filters/DropdownSearchMultiSelFilter';
 
 const LicenseAssignmentTab = () => {
+  // LICENSE NAME 多选过滤器状态
+  const [selectedLicenseNames, setSelectedLicenseNames] = useState([]);
   // 许可证投资数据
   const investmentData = {
     yearlyInvestment: '$13,959,732',
@@ -175,6 +178,29 @@ const LicenseAssignmentTab = () => {
     }
   ];
 
+  // LICENSE NAME 选项
+  const licenseNameOptions = [
+    { value: 'all', label: 'ALL LICENSE NAME' },
+    { value: 'entra_id_p2', label: 'Entra ID P2' },
+    { value: 'microsoft_365_e3', label: 'Microsoft 365 E3' },
+    { value: 'windows_10_11_enterprise_e3', label: 'Windows 10/11 Enterprise E3' },
+    { value: 'dynamics_365_sales', label: 'Dynamics 365 for Sales Enterprise Edition' },
+    { value: 'power_pages_capacity_t3', label: 'Power Pages Capacity T3' },
+    { value: 'microsoft_365_f3', label: 'Microsoft 365 F3' },
+    { value: 'dynamics_365_team_members', label: 'Dynamics 365 Team Members' },
+    { value: 'project_p3', label: 'Project P3' },
+    { value: 'visio_p2', label: 'Visio P2' },
+    { value: 'dataverse_log_capacity', label: 'Dataverse Log Capacity' },
+    { value: 'power_bi_pro', label: 'Power BI Pro' },
+    { value: 'power_virtual_agents', label: 'Power Virtual Agents' },
+    { value: 'microsoft_365_e5', label: 'Microsoft 365 E5' },
+    { value: 'project_p1', label: 'Project P1' },
+    { value: 'power_automate_rpa', label: 'Power Automate - RPA' },
+    { value: 'teams_rooms_pro', label: 'Teams Rooms Pro' },
+    { value: 'power_apps_per_app', label: 'Power Apps per app plan (1 app or portal)' },
+    { value: 'power_apps_per_user', label: 'Power Apps per user plan' }
+  ];
+
   // 获取分配百分比的颜色
   const getAssignedColor = (percentage) => {
     const percent = parseInt(percentage);
@@ -242,8 +268,54 @@ const LicenseAssignmentTab = () => {
 
       {/* License Breakdown 表格 */}
       <div>
-        <h2 className="text-xl font-semibold text-white mb-4">License Breakdown</h2>
         <div className="bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+          {/* 标题行 */}
+          <div className="px-4 py-3 bg-gray-600 border-b border-gray-500 flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <h2 className="text-xl font-semibold text-white">License Breakdown</h2>
+            </div>
+            <div className="flex items-center space-x-4">
+              <div className="flex space-x-2">
+                <button className="p-1 hover:bg-gray-500 rounded text-gray-300 hover:text-white transition-colors">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                  </svg>
+                </button>
+                <button className="p-1 hover:bg-gray-500 rounded text-gray-300 hover:text-white transition-colors">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                </button>
+                <button className="p-1 hover:bg-gray-500 rounded text-gray-300 hover:text-white transition-colors">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.414A1 1 0 013 6.707V4z" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          {/* 过滤器行 */}
+          <div className="px-4 py-3 bg-gray-700 border-b border-gray-600">
+            <div className="flex items-center">
+              <div style={{ width: '200px' }}>
+                <DropdownSearchMultiSelFilter
+                  selectedValues={selectedLicenseNames}
+                  onChange={setSelectedLicenseNames}
+                  options={licenseNameOptions}
+                  placeholder="ALL LICENSE NAME"
+                  searchPlaceholder="搜索License Name"
+                  noResultsText="无结果"
+                  selectAllText="ALL LICENSE NAME"
+                  applyText="应用"
+                  closeText="关闭"
+                  className="w-full"
+                  dropdownWidth="w-80"
+                />
+              </div>
+            </div>
+          </div>
+          
           <div className="overflow-x-auto">
             <table className="min-w-full">
               <thead className="bg-gray-700">
