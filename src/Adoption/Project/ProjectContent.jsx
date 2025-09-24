@@ -3,7 +3,7 @@ import ProjectUsagePlan1Tab from './ProjectUsagePlan1Tab';
 import ProjectUsagePlan3Tab from './ProjectUsagePlan3Tab';
 import ProjectUsagePlan5Tab from './ProjectUsagePlan5Tab';
 
-const ProjectContent = ({ activeTab }) => {
+const ProjectContent = ({ activeTab, onTabChange }) => {
   const [currentTab, setCurrentTab] = useState(activeTab || 'Project Usage Plan 1');
   
   useEffect(() => {

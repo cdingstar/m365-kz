@@ -16,7 +16,8 @@ const tabRegistry = {
   'Adoption/PowerPlatform': ['Power Bi Usage', 'Power Apps Usage', 'Power Automate Usage'],
   'Adoption/Teams': ['Teams Standard Usage', 'Teams Premium Usage'],
   'Adoption/Visio': ['Visio Usage Plan 1', 'Visio Usage Plan 2'],
-  'Adoption/Project': ['Project Usage Plan 1', 'Project Usage Plan 3', 'Project Usage Plan 5']
+  'Adoption/Project': ['Project Usage Plan 1', 'Project Usage Plan 3', 'Project Usage Plan 5'],
+  'Adoption/MainLicense': ['Main License F1', 'Main License F3', 'Main License E1', 'Main License E3', 'Main License E5']
 };
 
 // 获取指定页面的标签页

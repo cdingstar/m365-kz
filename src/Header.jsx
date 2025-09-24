@@ -1,11 +1,26 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Search, Bell, UserCircle, LogOut, LifeBuoy, MessageCircle, MessageSquare } from 'lucide-react';
+import { Search, Bell, UserCircle, LogOut, LifeBuoy, MessageCircle, MessageSquare, Globe, ChevronDown } from 'lucide-react';
 import FeedbackDialog from './components/FeedbackDialog';
+import AssistantDialog from './components/AssistantDialog';
 
 const Header = ({ currentPath, onLogout, activeTab, tabs, onTabChange }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
+  const [isAssistantOpen, setIsAssistantOpen] = useState(false);
+  const [selectedLanguage, setSelectedLanguage] = useState('中文');
+  const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
   const menuRef = useRef(null);
+  const languageDropdownRef = useRef(null);
+
+  const languages = [
+    { code: 'zh', name: '中文', flag: '🇨🇳' },
+    { code: 'en', name: 'English', flag: '🇺🇸' },
+    { code: 'nl', name: 'Nederlands', flag: '🇳🇱' },
+    { code: 'fr', name: 'Français', flag: '🇫🇷' },
+    { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
+    { code: 'es', name: 'Español', flag: '🇪🇸' },
+    { code: 'it', name: 'Italiano', flag: '🇮🇹' },
+  ];
 
   // Close menu when clicking outside
   useEffect(() => {
@@ -13,12 +28,22 @@ const Header = ({ currentPath, onLogout, activeTab, tabs, onTabChange }) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setIsMenuOpen(false);
       }
+      if (languageDropdownRef.current && !languageDropdownRef.current.contains(event.target)) {
+        setIsLanguageDropdownOpen(false);
+      }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  const handleLanguageSelect = (language) => {
+    setSelectedLanguage(language.name);
+    setIsLanguageDropdownOpen(false);
+    // 这里可以添加语言切换的逻辑
+    console.log('Language changed to:', language);
+  };
 
   // User menu component
   const UserMenu = () => (
@@ -46,7 +71,8 @@ const Header = ({ currentPath, onLogout, activeTab, tabs, onTabChange }) => {
       </button>
       <button
         disabled
-        className="flex items-center px-4 py-2 text-sm text-gray-500 w-full text-left cursor-not-allowed opacity-50"
+        className="flex items-center px-4 py-2 text-sm text-gray-500 cursor-not-allowed w-full text-left opacity-50"
+        title="Assistant 功能暂时不可用"
       >
         <MessageSquare size={16} className="mr-2" /> Assistant
       </button>
@@ -58,7 +84,7 @@ const Header = ({ currentPath, onLogout, activeTab, tabs, onTabChange }) => {
         }}
         className="flex items-center px-4 py-2 text-sm text-red-400 hover:bg-gray-700 w-full text-left"
       >
-        <LogOut size={16} className="mr-2" /> Logout
+        <LogOut size={16} className="mr-2" /> Sign Out
       </button>
     </div>
   );
@@ -77,6 +103,35 @@ const Header = ({ currentPath, onLogout, activeTab, tabs, onTabChange }) => {
               className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#2563eb] focus:border-transparent transition-colors text-sm bg-gray-700 text-white placeholder-gray-400"
             />
           </div>
+          {/* Language Selector */}
+          <div className="relative" ref={languageDropdownRef}>
+            <button 
+              onClick={() => setIsLanguageDropdownOpen(!isLanguageDropdownOpen)}
+              className="p-2 text-gray-400 hover:text-gray-200 rounded-lg transition-colors flex items-center space-x-1"
+            >
+              <Globe size={20} />
+              <ChevronDown size={14} className={`transition-transform ${isLanguageDropdownOpen ? 'rotate-180' : ''}`} />
+            </button>
+            
+            {/* Language Dropdown */}
+            {isLanguageDropdownOpen && (
+              <div className="absolute right-0 mt-2 w-48 bg-gray-800 rounded-lg shadow-lg border border-gray-600 py-2 z-50">
+                {languages.map((language) => (
+                  <button
+                    key={language.code}
+                    onClick={() => handleLanguageSelect(language)}
+                    className={`w-full px-4 py-2 text-left hover:bg-gray-700 flex items-center space-x-3 transition-colors ${
+                      selectedLanguage === language.name ? 'bg-gray-700 text-[#2563eb]' : 'text-gray-300'
+                    }`}
+                  >
+                    <span className="text-lg">{language.flag}</span>
+                    <span className="font-medium">{language.name}</span>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
           <Bell size={24} className="text-gray-400 hover:text-gray-200 cursor-pointer" />
           <div className="relative">
             <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-1 rounded-full focus:outline-none">
@@ -128,6 +183,12 @@ const Header = ({ currentPath, onLogout, activeTab, tabs, onTabChange }) => {
       <FeedbackDialog 
         isOpen={isFeedbackOpen} 
         onClose={() => setIsFeedbackOpen(false)} 
+      />
+      
+      {/* Assistant Dialog */}
+      <AssistantDialog 
+        isOpen={isAssistantOpen} 
+        onClose={() => setIsAssistantOpen(false)} 
       />
     </div>
   );

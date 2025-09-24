@@ -12,10 +12,11 @@ import PowerPlatformContent from './Adoption/PowerPlatform/PowerPlatformContent'
 import TeamsContent from './Adoption/Teams/TeamsContent';
 import VisioContent from './Adoption/Visio/VisioContent';
 import ProjectContent from './Adoption/Project/ProjectContent';
+import MainLicenseContent from './Adoption/MainLicense/MainLicenseContent';
 import { getTabs, getDefaultTab } from './TabRegistry';
 
 // Universal page component with consistent tabs for all pages
-const PageContent = ({ activeTab, selectedMenuItem }) => {
+const PageContent = ({ activeTab, selectedMenuItem, onTabChange }) => {
     const renderContent = () => {
         const [category, pageName] = selectedMenuItem.split('/');
         
@@ -48,7 +49,10 @@ const PageContent = ({ activeTab, selectedMenuItem }) => {
             } else if (pageName === 'Visio') {
                 return <VisioContent activeTab={activeTab} />;
             } else if (pageName === 'Project') {
-                return <ProjectContent activeTab={activeTab} />;
+                return <ProjectContent activeTab={activeTab} onTabChange={onTabChange} />;
+            } else if (pageName === 'MainLicense') {
+                console.log('App.jsx - Rendering MainLicense with activeTab:', activeTab);
+                return <MainLicenseContent activeTab={activeTab} onTabChange={onTabChange} />;
             }
         }
         
@@ -92,7 +96,7 @@ const App = () => {
 
   // Main content area - all pages now use the same structure
   const MainContent = () => {
-    return <PageContent activeTab={activeTab} selectedMenuItem={selectedMenuItem} />;
+    return <PageContent activeTab={activeTab} selectedMenuItem={selectedMenuItem} onTabChange={handleTabChange} />;
   };
 
   // Main application layout

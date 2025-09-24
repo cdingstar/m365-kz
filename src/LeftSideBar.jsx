@@ -10,6 +10,7 @@ import {
   Layers,
   Video,
   Briefcase,
+  FileText,
   ChevronsLeft,
   ChevronsRight,
   ChevronDown,
@@ -39,7 +40,8 @@ const navItems = [
       { name: 'Power Platform', icon: LineChart, id: 'Adoption/PowerPlatform' },
       { name: 'Teams', icon: Layers, id: 'Adoption/Teams' },
       { name: 'Visio', icon: Video, id: 'Adoption/Visio' },
-      { name: 'Project', icon: Briefcase, id: 'Adoption/Project' }
+      { name: 'Project', icon: Briefcase, id: 'Adoption/Project' },
+      { name: 'Main License', icon: FileText, id: 'Adoption/MainLicense' }
     ],
   }
 ];
